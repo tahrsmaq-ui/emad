@@ -1,564 +1,343 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مطعم الزين | التجربة الفاخرة</title>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Readex+Pro:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مطعم عماد الدين - Imad Al-Din Restaurant</title>
+  <style>
+    /* Global Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <style>
-        :root {
-            --bg-dark: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --accent: #f59e0b;
-            --accent-glow: rgba(245, 158, 11, 0.35);
-            --primary: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --blur: blur(16px);
-            --radius: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    body {
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a0303 50%, #050505 100%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Readex Pro', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    /* Header & Navigation */
+    header {
+      background-color: rgba(15, 15, 15, 0.95);
+      border-bottom: 2px solid #b30000;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(179, 0, 0, 0.3);
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: #e60000;
+      text-shadow: 0 0 10px rgba(230, 0, 0, 0.5);
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            padding-bottom: 120px;
-            overflow-x: hidden;
-        }
+    .logo span {
+      color: #ffcc00;
+    }
 
-        /* Ambient Background Effect */
-        .ambient-glow {
-            position: fixed;
-            top: -10%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(239,68,68,0.15) 0%, rgba(0,0,0,0) 70%);
-            z-index: -1;
-            pointer-events: none;
-        }
+    .currency-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #262626;
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #b30000;
+    }
 
-        /* Header Navigation */
-        header {
-            position: sticky;
-            top: 0;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-            padding: 18px 6%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .currency-selector label {
+      font-size: 14px;
+      color: #ddd;
+    }
 
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: -0.5px;
-        }
+    .currency-selector select {
+      background: #111;
+      color: #ffcc00;
+      border: 1px solid #b30000;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      outline: none;
+    }
 
-        .logo i {
-            color: var(--accent);
-            filter: drop-shadow(0 0 8px var(--accent-glow));
-        }
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  radial-gradient(circle, #800000 0%, #000000 100%);
+      border-bottom: 1px solid #333;
+    }
 
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .hero h1 {
+      font-size: 38px;
+      color: #ff3333;
+      margin-bottom: 10px;
+    }
 
-        .nav-link {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
+    .hero p {
+      font-size: 18px;
+      color: #ccc;
+    }
 
-        .nav-link:hover {
-            color: var(--accent);
-        }
+    /* Main Container */
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
 
-        .currency-switch {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            outline: none;
-            cursor: pointer;
-            backdrop-filter: var(--blur);
-        }
+    .section-title {
+      font-size: 24px;
+      border-right: 4px solid #e60000;
+      padding-right: 12px;
+      margin-bottom: 25px;
+      color: #ffcc00;
+    }
 
-        /* Hero Banner */
-        .hero {
-            position: relative;
-            padding: 60px 6% 40px;
-            text-align: center;
-        }
+    /* Meals Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
 
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff 30%, var(--text-muted));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 12px;
-        }
+    .card {
+      background: #141414;
+      border: 1px solid #2a0000;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .hero p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 500px;
-            margin: auto;
-            font-weight: 300;
-        }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(230, 0, 0, 0.4);
+      border-color: #e60000;
+    }
 
-        /* Categories Bar */
-        .categories {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 6% 20px;
-            scrollbar-width: none;
-        }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 2px solid #b30000;
+    }
 
-        .categories::-webkit-scrollbar { display: none; }
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
 
-        .cat-chip {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
-            color: var(--text-muted);
-            padding: 8px 18px;
-            border-radius: 30px;
-            white-space: nowrap;
-            font-size: 0.88rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
+    .card-title {
+      font-size: 20px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
 
-        .cat-chip.active, .cat-chip:hover {
-            background: var(--accent);
-            color: #000;
-            font-weight: 700;
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
+    .card-desc {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      flex: 1;
+    }
 
-        /* Menu Grid */
-        section {
-            padding: 20px 6%;
-            max-width: 1200px;
-            margin: auto;
-        }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
+    .price-tag {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffcc00;
+      background: #2a0505;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #800000;
+    }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            overflow: hidden;
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+    .btn-order {
+      background: linear-gradient(45deg, #b30000, #ff1a1a);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(245, 158, 11, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+    .btn-order:hover {
+      background: linear-gradient(45deg, #e60000, #ff4d4d);
+    }
 
-        .card-img-wrapper {
-            position: relative;
-            width: 100%;
-            height: 190px;
-            overflow: hidden;
-        }
+    /* Footer */
+    footer {
+      background-color: #0a0a0a;
+      text-align: center;
+      padding: 20px;
+      border-top: 1px solid #333;
+      color: #777;
+      font-size: 14px;
+      margin-top: 40px;
+    }
 
-        .card-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.05);
-        }
-
-        .card-body {
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .card-desc {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 16px;
-            flex-grow: 1;
-        }
-
-        .card-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .price {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--accent);
-        }
-
-        .add-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .add-btn:hover {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            box-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        /* Section About (#About) */
-        .about-card {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            padding: 28px;
-            margin-top: 40px;
-            backdrop-filter: var(--blur);
-        }
-
-        .about-card h2 {
-            font-size: 1.4rem;
-            color: var(--accent);
-            margin-bottom: 12px;
-        }
-
-        .about-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        /* Floating Order Bar */
-        .cart-bar {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(120px);
-            width: calc(100% - 12%);
-            max-width: 500px;
-            background: rgba(30, 41, 59, 0.9);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            padding: 12px 20px;
-            border-radius: 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-            z-index: 2000;
-            transition: var(--transition);
-        }
-
-        .cart-bar.visible {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .cart-details {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .cart-count {
-            background: var(--accent);
-            color: #000;
-            font-weight: 700;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-        }
-
-        .btn-checkout {
-            background: #22c55e;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 0 15px rgba(34, 197, 94, 0.3);
-            transition: var(--transition);
-        }
-
-        .btn-checkout:hover {
-            background: #16a34a;
-        }
-
-        /* Shimmer Loading Animation */
-        .shimmer {
-            background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.03) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-    </style>
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="ambient-glow"></div>
-
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-utensils"></i> مطعم الزين
-        </div>
-        <div class="nav-actions">
-            <a href="#About" class="nav-link">عن المطعم</a>
-            <select class="currency-switch" id="currencySelect" onchange="switchCurrency()">
-                <option value="SYP">SYP (ل.س)</option>
-                <option value="TRY">TRY (₺)</option>
-            </select>
-        </div>
-    </header>
-
-    <div class="hero">
-        <h1>قائمة الطعام الفاخرة</h1>
-        <p>تذوق أفضل الوجبات المحضرة بأعلى معايير الجودة</p>
+  <!-- Header Section -->
+  <header>
+    <div class="logo">مطعم <span>عماد الدين</span></div>
+    
+    <!-- Currency Selector Dropdown -->
+    <div class="currency-selector">
+      <label for="currency">اختر العملة:</label>
+      <select id="currency" onchange="updatePrices()">
+        <option value="TRY">ليرة تركية (TRY)</option>
+        <option value="SYP">ليرة سورية (SYP)</option>
+      </select>
     </div>
+  </header>
 
-    <!-- التصنيفات -->
-    <div class="categories" id="categoryContainer">
-        <button class="cat-chip active" onclick="filterCategory('all')">الكل</button>
-        <button class="cat-chip" onclick="filterCategory('شاورما')">شاورما</button>
-        <button class="cat-chip" onclick="filterCategory('برغر')">برغر</button>
-        <button class="cat-chip" onclick="filterCategory('بيتزا')">بيتزا</button>
-        <button class="cat-chip" onclick="filterCategory('مشروبات')">مشروبات</button>
+  <!-- Hero Banner -->
+  <section class="hero">
+    <h1>أهلاً بكم في مطعم عماد الدين</h1>
+    <p>أطيب المأكولات السريعة والغربية بأعلى جودة وأفضل طعم</p>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container">
+    <h2 class="section-title">قائمة الوجبات</h2>
+    
+    <div class="grid" id="meals-grid">
+      <!-- Cards will be dynamically loaded from JavaScript -->
     </div>
+  </main>
 
-    <!-- شبكة المنيو -->
-    <section>
-        <div class="grid" id="menuGrid">
-            <!-- Shimmer Effect Skeleton loader -->
-            <div class="card shimmer" style="height: 320px;"></div>
-            <div class="card shimmer" style="height: 320px;"></div>
-            <div class="card shimmer" style="height: 320px;"></div>
-        </div>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2026 مطعم عماد الدين - جميع الحقوق محفوظة</p>
+  </footer>
 
-        <!-- قسم عن المطعم المعرف بـ #About -->
-        <div class="about-card" id="About">
-            <h2>عن مطعم الزين</h2>
-            <p>نحن نقدم تجربة طهي رفيعة المستوى تجمع بين الأصالة والابتكار. يتم اختيار كافة المكونات بعناية فائقة وضمان وصول الطلبات طازجة وساخنة مع إمكانية التخصيص والمتابعة المباشرة عبر الواتساب.</p>
-        </div>
-    </section>
+  <!-- JavaScript Code -->
+  <script>
+    // قائمة الوجبات مع أسعار العملات المختلفة
+    const meals = [
+      {
+        id: 1,
+        title: "وجبة شاورما اكسترا",
+        desc: "شاورما دجاج ممتازة مع جبنة موزاريلا + فطر + بطاطا + ثوم + مخلل + دبس رمان",
+        priceTRY: 200,
+        priceSYP: 600,
+        image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=500&q=80"
+      },
+      {
+        id: 2,
+        title: "وجبة كريسبي",
+        desc: "قطغ دجاج كريسبي مقرمشة + بطاطا + صوص ثوم + كولسلو + مخلل",
+        priceTRY: 220,
+        priceSYP: 660,
+        image: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=500&q=80"
+      },
+      {
+        id: 3,
+        title: "وجبة زنجر حار",
+        desc: "صدر دجاج زنجر مقرمش مع الصوص الحار + جبنة شيدر + بطاطا + كولسلو",
+        priceTRY: 230,
+        priceSYP: 690,
+        image: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=500&q=80"
+      },
+      {
+        id: 4,
+        title: "وجبة فاهيتا",
+        desc: "صدر دجاج مشوي مع الذرة والفلفل الرومي والبصل والجبنة الذائبة",
+        priceTRY: 250,
+        priceSYP: 750,
+        image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=500&q=80"
+      },
+      {
+        id: 5,
+        title: "وجبة مكسيكانو",
+        desc: "قطع دجاج حارة على الطريقة المكسيكية مع الفطر والبصل والصوص الخاص",
+        priceTRY: 210,
+        priceSYP: 630,
+        image: "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=500&q=80"
+      },
+      {
+        id: 6,
+        title: "برغر دجاج دبل",
+        desc: "شريحتا دجاج مع الجبنة والشريحة الذهبية والصوص الخاص مع البطاطا",
+        priceTRY: 190,
+        priceSYP: 570,
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80"
+      }
+    ];
 
-    <!-- شريط الطلب العائم -->
-    <div class="cart-bar" id="cartBar">
-        <div class="cart-details">
-            <div class="cart-count" id="cartCount">0</div>
-            <div>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">المجموع الكلي</div>
-                <div style="font-weight: 700; color: var(--accent);" id="cartTotal">0</div>
+    // دالة عرض الوجبات حسب العملة المحددة
+    function renderMeals(selectedCurrency) {
+      const grid = document.getElementById("meals-grid");
+      grid.innerHTML = "";
+
+      meals.forEach(meal => {
+        const price = selectedCurrency === "TRY" 
+          ? `${meal.priceTRY} TL` 
+          : `${meal.priceSYP} ل.س`;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${meal.image}" alt="${meal.title}">
+          <div class="card-content">
+            <h3 class="card-title">${meal.title}</h3>
+            <p class="card-desc">${meal.desc}</p>
+            <div class="card-footer">
+              <span class="price-tag">${price}</span>
+              <button class="btn-order">طلب الآن</button>
             </div>
-        </div>
-        <button class="btn-checkout" onclick="sendOrder()">
-            <i class="fa-brands fa-whatsapp"></i> تأكيد الطلب
-        </button>
-    </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
 
-    <script>
-        // رابط الـ API الخاص بـ Google Apps Script الذي سيربط مع Google Sheets
-        const GOOGLE_SHEETS_API = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+    // دالة التحديث فور تغيير القائمة المنسدلة
+    function updatePrices() {
+      const currencySelect = document.getElementById("currency");
+      renderMeals(currencySelect.value);
+    }
 
-        let menuData = [];
-        let cart = {};
-        let currentCurrency = 'SYP';
-        let currentCategory = 'all';
-
-        // بيانات احتياطية تعمل فوراً في حال عدم ربط Google Sheets بعد
-        const fallbackData = [
-            { id: 1, name: 'شاورما عربي دبل', category: 'شاورما', priceSYP: 45000, priceTRY: 110, desc: 'قطع شاورما مع كريم ثوم وبطاطا مقرمشة ومخلل', img: 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=500' },
-            { id: 2, name: 'برغر كلاسيك تشيدر', category: 'برغر', priceSYP: 65000, priceTRY: 160, desc: 'لحم أنغوس فاخر مع جبنة تشيدر ذائبة وصوص الزين', img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500' },
-            { id: 3, name: 'بيتزا نابولي ببروني', category: 'بيتزا', priceSYP: 85000, priceTRY: 210, desc: 'صلصة إيطالية، جبنة موزاريللا طازجة شرائح ببروني', img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500' }
-        ];
-
-        async function fetchMenu() {
-            try {
-                if(GOOGLE_SHEETS_API !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL") {
-                    const response = await fetch(GOOGLE_SHEETS_API);
-                    menuData = await response.json();
-                } else {
-                    menuData = fallbackData;
-                }
-            } catch (err) {
-                console.log("استخدام البيانات المحلية الاحتياطية");
-                menuData = fallbackData;
-            }
-            renderMenu();
-        }
-
-        function renderMenu() {
-            const grid = document.getElementById('menuGrid');
-            grid.innerHTML = '';
-
-            const filtered = currentCategory === 'all' 
-                ? menuData 
-                : menuData.filter(i => i.category === currentCategory);
-
-            filtered.forEach(item => {
-                const price = currentCurrency === 'SYP' 
-                    ? `${item.priceSYP.toLocaleString()} ل.س` 
-                    : `${item.priceTRY} ₺`;
-
-                grid.innerHTML += `
-                    <div class="card">
-                        <div class="card-img-wrapper">
-                            <img src="${item.img}" class="card-img" alt="${item.name}">
-                        </div>
-                        <div class="card-body">
-                            <div class="card-title">${item.name}</div>
-                            <div class="card-desc">${item.desc}</div>
-                            <div class="card-footer">
-                                <div class="price">${price}</div>
-                                <button class="add-btn" onclick="addToCart(${item.id})">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function filterCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-chip').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            renderMenu();
-        }
-
-        function switchCurrency() {
-            currentCurrency = document.getElementById('currencySelect').value;
-            renderMenu();
-            updateCart();
-        }
-
-        function addToCart(id) {
-            cart[id] = (cart[id] || 0) + 1;
-            updateCart();
-        }
-
-        function updateCart() {
-            let count = 0;
-            let total = 0;
-
-            for (let id in cart) {
-                const item = menuData.find(i => i.id == id);
-                if(item) {
-                    count += cart[id];
-                    total += cart[id] * (currentCurrency === 'SYP' ? item.priceSYP : item.priceTRY);
-                }
-            }
-
-            const cartBar = document.getElementById('cartBar');
-            if (count > 0) cartBar.classList.add('visible');
-            else cartBar.classList.remove('visible');
-
-            document.getElementById('cartCount').innerText = count;
-            document.getElementById('cartTotal').innerText = currentCurrency === 'SYP' 
-                ? `${total.toLocaleString()} ل.س` 
-                : `${total} ₺`;
-        }
-
-        function sendOrder() {
-            let text = "🛒 *طلب جديد من الموقع - مطعم الزين*\n\n";
-            let total = 0;
-
-            for (let id in cart) {
-                const item = menuData.find(i => i.id == id);
-                const price = currentCurrency === 'SYP' ? item.priceSYP : item.priceTRY;
-                const sub = cart[id] * price;
-                total += sub;
-                text += `• ${item.name} × ${cart[id]} = ${sub.toLocaleString()}\n`;
-            }
-
-            const formattedTotal = currentCurrency === 'SYP' ? `${total.toLocaleString()} ل.س` : `${total} ₺`;
-            text += `\n💰 *الإجمالي:* ${formattedTotal}`;
-
-            const phone = "963932510043";
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
-        fetchMenu();
-    </script>
+    // تشغيل الصفحة لأول مرة بفرز العملة الافتراضية
+    window.onload = function() {
+      renderMeals("TRY");
+    };
+  </script>
 </body>
 </html>
