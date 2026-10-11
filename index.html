@@ -12,13 +12,14 @@
 
   <style>
     :root {
-      --bg-color: #0a0a0a;
-      --card-bg: #141414;
-      /* درجة الأصفر الخردلي المطفي المطابقة للصورة */
+      /* اللون الأخضر الزيتي الداكن من خلفية الصورة */
+      --bg-green: #0a2118; 
+      --card-bg: #0f2c21;
+      /* اللون الأصفر الخردلي المطفي من عناوين وإطارات الصورة */
       --primary-mustard: #E5A84B; 
       --mustard-dark: #c48b36;
       --text-main: #ffffff;
-      --text-muted: #b0b0b0;
+      --text-muted: #d0dcd7;
       --border-color: #E5A84B;
     }
 
@@ -30,7 +31,7 @@
     }
 
     body {
-      background-color: var(--bg-color);
+      background-color: var(--bg-green);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -39,7 +40,7 @@
 
     /* Header Navigation */
     header {
-      background: #111111;
+      background: #061711;
       border-bottom: 2px solid var(--border-color);
       padding: 18px 40px;
       display: flex;
@@ -64,7 +65,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: #1a1a1a;
+      background: #0f2c21;
       padding: 6px 14px;
       border-radius: 8px;
       border: 1px solid var(--border-color);
@@ -77,7 +78,7 @@
     }
 
     .currency-selector select {
-      background: #0a0a0a;
+      background: #061711;
       color: #ffffff;
       border: 1px solid var(--border-color);
       padding: 5px 12px;
@@ -92,7 +93,7 @@
     .hero {
       text-align: center;
       padding: 60px 20px 30px 20px;
-      background: radial-gradient(circle, #1a150d 0%, #0a0a0a 100%);
+      background: radial-gradient(circle, #123829 0%, #0a2118 100%);
     }
 
     .hero h1 {
@@ -145,7 +146,7 @@
 
     .card {
       background: var(--card-bg);
-      border: 1px solid #262626;
+      border: 1px solid rgba(229, 168, 75, 0.3);
       border-radius: 12px;
       overflow: hidden;
       transition: all 0.3s ease;
@@ -156,7 +157,7 @@
     .card:hover {
       transform: translateY(-6px);
       border-color: var(--primary-mustard);
-      box-shadow: 0 6px 20px rgba(229, 168, 75, 0.2);
+      box-shadow: 0 6px 20px rgba(229, 168, 75, 0.25);
     }
 
     .card img {
@@ -193,14 +194,14 @@
       justify-content: space-between;
       align-items: center;
       padding-top: 12px;
-      border-top: 1px solid #222;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .price-tag {
       font-size: 17px;
       font-weight: 800;
       color: var(--primary-mustard);
-      background: rgba(229, 168, 75, 0.12);
+      background: rgba(229, 168, 75, 0.15);
       padding: 6px 14px;
       border-radius: 6px;
       border: 1px solid var(--primary-mustard);
@@ -224,11 +225,11 @@
 
     /* Footer */
     footer {
-      background: #0d0d0d;
+      background: #061711;
       text-align: center;
       padding: 20px;
       border-top: 1px solid var(--primary-mustard);
-      color: #888;
+      color: #90a49c;
       font-size: 14px;
       margin-top: auto;
     }
