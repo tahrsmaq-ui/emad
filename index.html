@@ -12,9 +12,6 @@
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- PapaParse -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
     :root {
@@ -484,49 +481,51 @@
     let currentCurrency = "TRY";
 
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
-    function fetchSheetData() {
-      Papa.parse(sheetUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          if (results && results.data && results.data.length > 0) {
-            fullMenuData = results.data.map(row => {
-              // قراءة القيم بناءً على اسم العمود أو الترتيب
-              const title = row['title'] || row['title '] || Object.values(row)[0] || '';
-              const priceTry = row['price_try'] || Object.values(row)[1] || '0';
-              const priceSyr = row['price_syr'] || row['price_s'] || row['price_syp'] || Object.values(row)[2] || '0';
-              let category = row['category'] || Object.values(row)[3] || 'shawarma-meals';
-              const description = row['description'] || Object.values(row)[4] || '';
-              const image = row['image'] || Object.values(row)[5] || '';
+    // دالة JSONP المعالجة للبيانات القادمة من قوقل شيت بدون حظر CORS
+    window.handleGvizResponse = function(response) {
+      if (!response || !response.table || !response.table.rows) {
+        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر قراءة بيانات الشيت.</div>';
+        return;
+      }
 
-              if (category.includes('grilled') || category.includes('فروج') || category.includes('grilled-ch...')) {
-                category = 'manasif';
-              }
+      const rows = response.table.rows;
+      fullMenuData = rows.map(r => {
+        const c = r.c;
+        if (!c || !c[0] || !c[0].v) return null;
 
-              return {
-                title: title.trim(),
-                price_try: parseFloat(priceTry.toString().replace(/[^0-9.]/g, '')) || 0,
-                price_s: parseFloat(priceSyr.toString().replace(/[^0-9.]/g, '')) || 0,
-                category: category.trim().toLowerCase(),
-                description: description.trim(),
-                image: image.trim()
-              };
-            }).filter(item => item.title !== '' && item.title.toLowerCase() !== 'title');
+        const title = c[0] ? String(c[0].v).trim() : '';
+        const priceTry = c[1] ? parseFloat(String(c[1].v).replace(/[^0-9.]/g, '')) || 0 : 0;
+        const priceSyr = c[2] ? parseFloat(String(c[2].v).replace(/[^0-9.]/g, '')) || 0 : 0;
+        let category = c[3] ? String(c[3].v).trim().toLowerCase() : 'shawarma-meals';
+        const description = c[4] ? String(c[4].v).trim() : '';
+        const image = c[5] ? String(c[5].v).trim() : '';
 
-            renderMenuCards(fullMenuData);
-          } else {
-            document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر العثور على وجبات في القائمة.</div>';
-          }
-        },
-        error: function(err) {
-          console.error(err);
-          document.getElementById('menu-grid').innerHTML = '<div class="status-msg">خطأ في جلب البيانات، يرجى التأكد من الشيت.</div>';
+        if (category.includes('grilled') || category.includes('فروج') || category.includes('grilled-ch...')) {
+          category = 'manasif';
         }
-      });
+
+        return {
+          title: title,
+          price_try: priceTry,
+          price_s: priceSyr,
+          category: category,
+          description: description,
+          image: image
+        };
+      }).filter(item => item && item.title !== '' && item.title.toLowerCase() !== 'title');
+
+      renderMenuCards(fullMenuData);
+    };
+
+    function loadSheetViaJSONP() {
+      const script = document.createElement('script');
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
+      script.onerror = function() {
+        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">خطأ في الاتصال بالشيت.</div>';
+      };
+      document.body.appendChild(script);
     }
 
     function switchCurrency(curr) {
@@ -658,4 +657,12 @@
       }
 
       if (category === 'all') {
-        renderMenuCard
+        renderMenuCards(fullMenuData);
+      } else {
+        const filtered = fullMenuData.filter(item => {
+          if (!item.category) return false;
+          const cat = item.category.trim().toLowerCase();
+
+          if (category === 'shawarma-sand') {
+            return cat.includes('shawarma-sand') || (cat.includes('shawarma') && cat.includes('sand'));
+          } else if (category
