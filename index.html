@@ -192,15 +192,15 @@ body.no-scroll{overflow:hidden}
   </div>
 
   <p class="side-label">أقسام القائمة</p>
-<nav id="categories" class="categories">
-  <button class="cat-btn active" data-category="all" onclick="filterMenu('all')"><i class="fa-solid fa-border-all"></i> الكل</button>
-  <button class="cat-btn" data-category="shawarma-sand" onclick="filterMenu('shawarma-sand')"><i class="fa-solid fa-burger"></i> سندويش شاورما</button>
-  <button class="cat-btn" data-category="western-sand" onclick="filterMenu('western-sand')"><i class="fa-solid fa-hotdog"></i> سندويش غربي</button>
-  <button class="cat-btn" data-category="shawarma-meals" onclick="filterMenu('shawarma-meals')"><i class="fa-solid fa-drumstick-bite"></i> وجبات شاورما</button>
-  <button class="cat-btn" data-category="western-meals" onclick="filterMenu('western-meals')"><i class="fa-solid fa-utensils"></i> وجبات غربية</button>
-  <button class="cat-btn" data-category="appetizers" onclick="filterMenu('appetizers')"><i class="fa-solid fa-bowl-food"></i> مقبلات</button>
-  <button class="cat-btn" data-category="drinks" onclick="filterMenu('drinks')"><i class="fa-solid fa-glass-water"></i> مشروبات</button>
-</nav>
+  <nav id="categories" class="categories">
+    <button class="cat-btn active" data-category="all" onclick="filterMenu('all')"><i class="fa-solid fa-border-all"></i> الكل</button>
+    <button class="cat-btn" data-category="سندويش شاورما" onclick="filterMenu('سندويش شاورما')"><i class="fa-solid fa-burger"></i> سندويش شاورما</button>
+    <button class="cat-btn" data-category="سندويش غربي" onclick="filterMenu('سندويش غربي')"><i class="fa-solid fa-hotdog"></i> سندويش غربي</button>
+    <button class="cat-btn" data-category="وجبات شاورما" onclick="filterMenu('وجبات شاورما')"><i class="fa-solid fa-drumstick-bite"></i> وجبات شاورما</button>
+    <button class="cat-btn" data-category="وجبات غربية" onclick="filterMenu('وجبات غربية')"><i class="fa-solid fa-utensils"></i> وجبات غربية</button>
+    <button class="cat-btn" data-category="مقبلات" onclick="filterMenu('مقبلات')"><i class="fa-solid fa-bowl-food"></i> مقبلات</button>
+    <button class="cat-btn" data-category="مشروبات" onclick="filterMenu('مشروبات')"><i class="fa-solid fa-glass-water"></i> مشروبات</button>
+  </nav>
 
   <div class="sidebar-note">
     <i class="fa-solid fa-circle-info"></i>
@@ -220,7 +220,7 @@ body.no-scroll{overflow:hidden}
   <div class="cart-footer">
     <div class="cart-field">
       <label for="orderType">طريقة الطلب</label>
-      <select id="orderType">
+      <select id="orderType" onchange="updateCartBar()">
         <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
         <option value="استلام من المطعم">🏪 استلام من المطعم</option>
         <option value="سفري">📦 طعام سفري</option>
@@ -229,7 +229,7 @@ body.no-scroll{overflow:hidden}
     </div>
     <div class="cart-field">
       <label for="orderNotes">عنوان التوصيل أو ملاحظات</label>
-      <input id="orderNotes" type="text" placeholder="اكتب العنوان أو ملاحظاتك...">
+      <input id="orderNotes" type="text" placeholder="اكتب العنوان أو ملاحظاتك..." oninput="updateCartBar()">
     </div>
     <div id="cart-totals" class="cart-totals"></div>
     <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn disabled" target="_blank" rel="noopener noreferrer">
@@ -315,14 +315,14 @@ function formatPrice(item, qty = 1) {
   return parts.join(' / ');
 }
 
-function setCurrency(mode) {
+window.setCurrency = function(mode) {
   currencyMode = mode;
   document.querySelectorAll('.currency-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.currency === mode);
   });
   renderMenuItems(getFilteredMenu());
   updateCartBar();
-}
+};
 
 async function loadMenu() {
   try {
@@ -397,12 +397,12 @@ function parseCSV(csvText) {
       const priceSyp = parseFloat(String(item.price_syr || item.pricesyr || item.price_s || '0').replace(/[^0-9.]/g,'')) || 0;
 
       return {
-        title:item.title || item['عنوان'] || '',
-        price_try:priceTry,
-        price_s:priceSyp,
-        category:item.category || item['قسم'] || 'وجبات عامة',
-        description:item.description || item['وصف'] || 'مجهّزة طازجة يومياً بأعلى جودة',
-        image:item.image || ''
+        title: item.title || item['عنوان'] || '',
+        price_try: priceTry,
+        price_s: priceSyp,
+        category: item.category || item['قسم'] || 'وجبات عامة',
+        description: item.description || item['وصف'] || 'مجهّزة طازجة يومياً بأعلى جودة',
+        image: item.image || ''
       };
     }).filter(item => item.title);
   } catch (error) {
@@ -416,41 +416,27 @@ function getFilteredMenu() {
     String(item.category || '').trim().toLowerCase() === currentCategory.toLowerCase()
   );
 }
-function filterMenu(category) {
-  currentCategory = category;
 
+window.filterMenu = function(category) {
+  currentCategory = category;
   document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.classList.toggle(
-      'active',
-      btn.dataset.category === category
-    );
+    btn.classList.toggle('active', btn.dataset.category === category);
   });
 
   const titles = {
-    all: 'كل الوجبات',
-    'shawarma-sand': 'سندويش شاورما',
-    'western-sand': 'سندويش غربي',
-    'shawarma-meals': 'وجبات شاورما',
-    'western-meals': 'وجبات غربية',
-    appetizers: 'المقبلات',
-    drinks: 'المشروبات'
+    all:'كل الوجبات',
+    'سندويش شاورما':'سندويش شاورما',
+    'سندويش غربي':'سندويش غربي',
+    'وجبات شاورما':'وجبات شاورما',
+    'وجبات غربية':'وجبات غربية',
+    'مقبلات':'المقبلات',
+    'مشروبات':'المشروبات'
   };
-
-  document.getElementById('section-title').textContent =
-    titles[category] || category;
-
-  renderMenuItems(getFilteredMenu());
-
-  if (window.innerWidth <= 991) {
-    closeSidebar();
-  }
-}
-
   document.getElementById('section-title').textContent = titles[category] || category;
   renderMenuItems(getFilteredMenu());
 
   if (window.innerWidth <= 991) closeSidebar();
-}
+};
 
 function renderMenuItems(menuData) {
   const container = document.getElementById('menu-container');
@@ -476,6 +462,8 @@ function renderMenuItems(menuData) {
       badges += `<span class="price-badge">${formatNumber(item.price_s)} ل.س</span>`;
     }
 
+    const encodedTitle = encodeURIComponent(item.title);
+
     return `
       <article class="card">
         <div class="card-img-container">
@@ -484,4 +472,163 @@ function renderMenuItems(menuData) {
           <div class="price-badges">${badges}</div>
         </div>
         <div class="card-body">
-          <h3 class="card-title">${
+          <h3 class="card-title">${escapeHTML(item.title)}</h3>
+          <p class="card-description">${escapeHTML(item.description)}</p>
+          <div class="card-price">${formatPrice(item)}</div>
+          ${qty === 0 ? `
+            <button class="add-to-cart-btn" onclick="addToCart('${encodedTitle}')">
+              <i class="fa-solid fa-cart-plus"></i> إضافة للسلة
+            </button>
+          ` : `
+            <div class="quantity-controls">
+              <button class="qty-btn" onclick="changeQty('${encodedTitle}', -1)">-</button>
+              <span class="qty-count">${qty}</span>
+              <button class="qty-btn" onclick="changeQty('${encodedTitle}', 1)">+</button>
+            </div>
+          `}
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+window.addToCart = function(encodedTitle) {
+  const title = decodeURIComponent(encodedTitle);
+  const item = fullMenuData.find(i => i.title === title);
+  if (!item) return;
+
+  if (!cart[title]) {
+    cart[title] = { item, qty: 1 };
+  } else {
+    cart[title].qty++;
+  }
+  renderMenuItems(getFilteredMenu());
+  updateCartBar();
+};
+
+window.changeQty = function(encodedTitle, delta) {
+  const title = decodeURIComponent(encodedTitle);
+  if (cart[title]) {
+    cart[title].qty += delta;
+    if (cart[title].qty <= 0) {
+      delete cart[title];
+    }
+  }
+  renderMenuItems(getFilteredMenu());
+  updateCartBar();
+};
+
+function updateCartBar() {
+  const cartItemsContainer = document.getElementById('cart-items');
+  const cartTotalsContainer = document.getElementById('cart-totals');
+  const whatsappBtn = document.getElementById('whatsapp-order-btn');
+  const topCartCount = document.getElementById('top-cart-count');
+
+  const cartKeys = Object.keys(cart);
+  const totalCount = cartKeys.reduce((acc, k) => acc + cart[k].qty, 0);
+
+  if (totalCount > 0) {
+    topCartCount.textContent = totalCount;
+    topCartCount.hidden = false;
+  } else {
+    topCartCount.hidden = true;
+  }
+
+  if (cartKeys.length === 0) {
+    cartItemsContainer.innerHTML = `
+      <div class="empty-cart">
+        <i class="fa-solid fa-cart-flatbed-suitcases"></i>
+        سلتك فارغة حالياً.<br>أضف بعض الوجبات الشهية لبدء الطلب!
+      </div>`;
+    cartTotalsContainer.innerHTML = '';
+    whatsappBtn.classList.add('disabled');
+    whatsappBtn.href = '#';
+    return;
+  }
+
+  let totalTry = 0;
+  let totalSyp = 0;
+
+  cartItemsContainer.innerHTML = cartKeys.map(key => {
+    const { item, qty } = cart[key];
+    totalTry += item.price_try * qty;
+    totalSyp += item.price_s * qty;
+
+    const encodedTitle = encodeURIComponent(item.title);
+
+    return `
+      <div class="cart-item">
+        <div>
+          <h3>${escapeHTML(item.title)}</h3>
+          <div class="cart-item-price">${formatPrice(item, 1)}</div>
+          <div class="cart-item-controls">
+            <button onclick="changeQty('${encodedTitle}', -1)">-</button>
+            <span>${qty}</span>
+            <button onclick="changeQty('${encodedTitle}', 1)">+</button>
+            <button class="remove-item" onclick="changeQty('${encodedTitle}', -${qty})"><i class="fa-solid fa-trash-can"></i></button>
+          </div>
+        </div>
+        <div class="cart-item-subtotal">${formatPrice(item, qty)}</div>
+      </div>
+    `;
+  }).join('');
+
+  let totalTextParts = [];
+  if (currencyMode === 'both' || currencyMode === 'try') totalTextParts.push(`${formatNumber(totalTry)} TL`);
+  if (currencyMode === 'both' || currencyMode === 'syp') totalTextParts.push(`${formatNumber(totalSyp)} ل.س`);
+
+  cartTotalsContainer.innerHTML = `
+    <div class="total-line">
+      <span>المجموع الكلي:</span>
+      <strong>${totalTextParts.join(' / ')}</strong>
+    </div>
+  `;
+
+  const orderType = document.getElementById('orderType').value;
+  const orderNotes = document.getElementById('orderNotes').value.trim();
+
+  let message = `*طلب جديد من مطعم عماد الدين* 🍽️\n\n`;
+  cartKeys.forEach(key => {
+    const { item, qty } = cart[key];
+    message += `• ${item.title} (عدد ${qty}) - ${formatPrice(item, qty)}\n`;
+  });
+
+  message += `\n*طريقة الطلب:* ${orderType}\n`;
+  if (orderNotes) message += `*ملاحظات/العنوان:* ${orderNotes}\n`;
+  message += `*المجموع الكلي:* ${totalTextParts.join(' / ')}\n`;
+
+  whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${encodeURIComponent(message)}`;
+  whatsappBtn.classList.remove('disabled');
+}
+
+window.toggleSidebar = function() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+};
+
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+};
+
+window.openCart = function() {
+  document.getElementById('cart-drawer').classList.add('open');
+  document.getElementById('overlay').classList.show ? null : document.getElementById('overlay').classList.add('show');
+  document.body.classList.add('no-scroll');
+};
+
+window.closeCart = function() {
+  document.getElementById('cart-drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.body.classList.remove('no-scroll');
+};
+
+window.closePanels = function() {
+  closeSidebar();
+  closeCart();
+};
+
+document.addEventListener('DOMContentLoaded', loadMenu);
+</script>
+</body>
+</html>
