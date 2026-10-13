@@ -302,14 +302,18 @@ let currentCategory = 'all';
 let currencyMode = 'both';
 
 const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-// استخدام روابط بديلة في حال حجب المتصفح للرابط المباشر
-const sheetUrls = [
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`,
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`
-];
+// استخدام بروكسي مجاني لتجاوز حظر CORS نهائياً وعرض بيانات الشيت المباشرة
+const sheetUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`);
 
 const restaurantPhoneNumber = '963948893053';
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
+
+// القائمة الاحتياطية في حال تعذر الاتصال تماماً بالإنترنت
+const fallbackMenu = [
+  {title:'وجبة شاورما دبل',price_try:240,price_s:720,category:'shawarma-meal',description:'شاورما دجاج 220غ مع البطاطا والثومية',image:'sha.jpg'},
+  {title:'سندويش شاورما عادي',price_try:90,price_s:270,category:'shawarma-sand',description:'شاورما + ثوم + مخلل 110غ',image:'sh.jpg'},
+  {title:'كوكولا 2',price_try:70,price_s:210,category:'drinks',description:'',image:'cola.jpg'}
+];
 
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -342,37 +346,24 @@ window.setCurrency = function(mode) {
 };
 
 async function loadMenu() {
-  let csvText = '';
-  
-  // محاولة الجلب من أكثر من مسار لضمان النجاح
-  for (const url of sheetUrls) {
-    try {
-      const response = await fetch(url);
-      if (response.ok) {
-        csvText = await response.text();
-        if (csvText && csvText.length > 20) break;
-      }
-    } catch (e) {
-      console.warn('فشل الرابط الأول، محاولة الرابط البديل...', e);
-    }
-  }
-
-  if (csvText) {
+  try {
+    const response = await fetch(sheetUrl);
+    if (!response.ok) throw new Error('فشل الاتصال');
+    const csvText = await response.text();
     const parsedData = parseCSV(csvText);
+    
     if (parsedData.length > 0) {
       fullMenuData = parsedData;
-      renderMenuItems(getFilteredMenu());
-      updateCartBar();
-      return;
+    } else {
+      throw new Error('بيانات فارغة');
     }
+  } catch (error) {
+    console.warn('تم استخدام القائمة الاحتياطية:', error);
+    fullMenuData = fallbackMenu;
   }
-
-  // في حال تعثر الشبكة تماماً
-  document.getElementById('menu-container').innerHTML = `
-    <div class="loading-status">
-      تعذر تحميل القائمة المباشرة.<br>
-      <button onclick="loadMenu()" style="margin-top:10px;padding:8px 16px;border-radius:8px;background:var(--gold);border:0;color:#111;font-weight:bold;">إعادة المحاولة 🔄</button>
-    </div>`;
+  
+  renderMenuItems(getFilteredMenu());
+  updateCartBar();
 }
 
 function parseCSV(csvText) {
@@ -431,8 +422,6 @@ function parseCSV(csvText) {
 
 function getFilteredMenu() {
   if (currentCategory === 'all') return fullMenuData;
-  
-  // مطابقة مرنة تتجاهل الفروقات البسيطة وحرف الـ s
   const cleanCat = currentCategory.toLowerCase().replace(/s$/, '');
   
   return fullMenuData.filter(item => {
@@ -482,4 +471,6 @@ function renderMenuItems(menuData) {
 
     let badges = '';
     if ((currencyMode === 'both' || currencyMode === 'try') && item.price_try) {
-      badges += `<span class="price-badge">${formatNumber(item.price_tr
+      badges += `<span class="price-badge">${formatNumber(item.price_try)} TL</span>`;
+    }
+    if ((currencyMode
