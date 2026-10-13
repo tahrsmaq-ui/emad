@@ -1,644 +1,639 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مطعم عماد الدين | Emad El-Din Restaurant</title>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Tajawal -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-dark: #07120a;
-            --bg-card: rgba(14, 34, 23, 0.85);
-            --gold-primary: #d4af37;
-            --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-            --text-light: #f5f8f6;
-            --text-muted: #9bb39e;
-            --radius-xl: 20px;
-            --radius-lg: 14px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مطعم عماد الدين - شاورما وغربي ومقبلات</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --bg-dark: #0a140f;
+      --bg-card: rgba(18, 38, 28, 0.85);
+      --gold-primary: #d4af37;
+      --gold-hover: #f3e5ab;
+      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+      --text-light: #f5f7f6;
+      --text-muted: #a3b899;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
 
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            background-image: 
-                radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(11, 36, 23, 0.6) 0%, transparent 50%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding-bottom: 110px;
-        }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      direction: rtl;
+      padding-bottom: 120px;
+      background-image: 
+          radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+          radial-gradient(circle at 90% 80%, rgba(13, 43, 29, 0.6) 0%, transparent 50%);
+      background-attachment: fixed;
+    }
 
-        .header {
-            background: rgba(7, 18, 10, 0.92);
-            backdrop-filter: blur(15px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.25);
-            padding: 15px 20px;
-        }
+    .header {
+      position: relative;
+      background: linear-gradient(135deg, rgba(22, 66, 45, 0.9), rgba(10, 20, 15, 0.95));
+      text-align: center;
+      padding: 35px 20px;
+      border-radius: 0 0 25px 25px;
+      border-bottom: 2px solid var(--gold-primary);
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
 
-        .header-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 20, 15, 0.75);
+      z-index: 1;
+    }
 
-        .brand-box {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+    .header .logo-wrapper,
+    .header .banner-content {
+      position: relative;
+      z-index: 2;
+    }
 
-        .brand-icon {
-            width: 46px;
-            height: 46px;
-            background: var(--gold-gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bg-dark);
-            font-size: 20px;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
-        }
+    .logo-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+    }
 
-        .brand-text h1 {
-            font-size: 20px;
-            font-weight: 900;
-            background: var(--gold-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    .main-logo {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      border: 3px solid var(--gold-primary);
+      object-fit: cover;
+      background-color: var(--bg-dark);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    }
 
-        .brand-text p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+    .header h1 {
+      color: var(--gold-primary);
+      font-size: 2rem;
+      margin-bottom: 8px;
+      font-weight: 900;
+    }
 
-        .controls-area {
-            max-width: 1000px;
-            margin: 20px auto 10px;
-            padding: 0 20px;
-        }
+    .header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
 
-        .search-box-wrapper {
-            position: relative;
-        }
+    .categories-wrapper {
+      padding: 15px 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
 
-        .search-box-wrapper i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gold-primary);
-        }
+    @media (min-width: 992px) {
+      .categories-wrapper {
+        justify-content: center;
+      }
+    }
 
-        .search-input {
-            width: 100%;
-            padding: 14px 45px 14px 15px;
-            background: rgba(14, 34, 23, 0.65);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: var(--radius-lg);
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.3s;
-        }
+    .categories {
+      display: inline-flex;
+      gap: 8px;
+      padding: 5px;
+    }
 
-        .search-input:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
-        }
+    .cat-btn {
+      background-color: rgba(18, 38, 28, 0.8);
+      color: var(--text-muted);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
 
-        .cat-scroll-bar {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            margin-top: 15px;
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
+    .cat-btn.active, .cat-btn:hover {
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
 
-        .cat-btn {
-            padding: 9px 20px;
-            background: rgba(14, 34, 23, 0.85);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 25px;
-            color: var(--text-muted);
-            font-size: 13px;
-            font-weight: 600;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      min-height: 250px;
+    }
 
-        .cat-btn.active, .cat-btn:hover {
-            background: var(--gold-gradient);
-            color: var(--bg-dark);
-            font-weight: 800;
-            border-color: transparent;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        }
+    .loading-status {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
 
-        .menu-grid {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 20px;
-        }
+    .loading-status button {
+      margin-top: 15px;
+      padding: 8px 18px;
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-        .food-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(212, 175, 55, 0.18);
-            border-radius: var(--radius-xl);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.3s, border-color 0.3s;
-            backdrop-filter: blur(8px);
-        }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
 
-        .food-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--gold-primary);
-        }
+    .card {
+      background-color: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s;
+    }
 
-        .food-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-primary);
+    }
 
-        .food-name {
-            font-size: 18px;
-            font-weight: 800;
-            color: #fff;
-        }
+    .card-img-container {
+      position: relative;
+      width: 100%;
+      background-color: #0f172a;
+    }
 
-        .food-cat-badge {
-            background: rgba(212, 175, 55, 0.15);
-            color: var(--gold-primary);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 3px 8px;
-            border-radius: 8px;
-            font-size: 11px;
-        }
+    .card-img {
+      width: 100%;
+      height: 180px;
+      display: block;
+      object-fit: cover;
+    }
 
-        .food-desc {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 15px;
-            flex-grow: 1;
-        }
+    .price-badges {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
 
-        .food-foot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 12px;
-            border-top: 1px dashed rgba(255, 255, 255, 0.1);
-        }
+    .badge-try {
+      background-color: var(--gold-primary);
+      color: var(--bg-dark);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
 
-        .price-box {
-            display: flex;
-            flex-direction: column;
-        }
+    .badge-syp {
+      background-color: #15452d;
+      color: #fff;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
 
-        .food-price-syr {
-            font-size: 16px;
-            font-weight: 900;
-            color: var(--gold-primary);
-        }
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
 
-        .food-price-try {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+    .card-title {
+      color: #fff;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
 
-        .add-cart-btn {
-            background: var(--gold-gradient);
-            color: var(--bg-dark);
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius-lg);
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
+    .card-description {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
 
-        .add-cart-btn:active {
-            transform: scale(0.95);
-        }
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      transition: opacity 0.2s ease;
+    }
 
-        .cart-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 30px);
-            max-width: 550px;
-            background: rgba(11, 36, 23, 0.96);
-            border: 1px solid var(--gold-primary);
-            backdrop-filter: blur(20px);
-            border-radius: 35px;
-            padding: 12px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.8);
-            z-index: 150;
-            cursor: pointer;
-            display: none;
-        }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #07120a;
+      border: 1px solid var(--gold-primary);
+      border-radius: 8px;
+      padding: 4px;
+    }
 
-        .cart-bar-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+    .qty-btn {
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        .cart-badge {
-            background: var(--gold-primary);
-            color: var(--bg-dark);
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            font-size: 15px;
-        }
+    .qty-count {
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.1rem;
+    }
 
-        .cart-bar-text {
-            display: flex;
-            flex-direction: column;
-        }
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(13, 43, 29, 0.95);
+      border-top: 2px solid var(--gold-primary);
+      backdrop-filter: blur(15px);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+    }
 
-        .cart-bar-label {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
+    .cart-bar.active {
+      transform: translateY(0);
+    }
 
-        .cart-bar-total {
-            font-size: 15px;
-            font-weight: 800;
-            color: #fff;
-        }
+    .cart-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
 
-        .open-cart-btn {
-            background: var(--gold-gradient);
-            color: var(--bg-dark);
-            border: none;
-            padding: 9px 18px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .cart-count {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
 
-        .cart-modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
-            z-index: 200;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+    .cart-total {
+      color: var(--gold-primary);
+      font-weight: bold;
+      font-size: 1rem;
+    }
 
-        .cart-modal-overlay.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .cart-drawer {
-            position: fixed;
-            bottom: -100%;
-            left: 0;
-            right: 0;
-            max-width: 600px;
-            margin: 0 auto;
-            background: #0b1f14;
-            border-top: 2px solid var(--gold-primary);
-            border-radius: 25px 25px 0 0;
-            padding: 20px;
-            z-index: 201;
-            transition: bottom 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-modal-overlay.active .cart-drawer {
-            bottom: 0;
-        }
-
-        .drawer-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .drawer-title {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--gold-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .close-drawer-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        .cart-items-list {
-            overflow-y: auto;
-            margin: 15px 0;
-            max-height: 250px;
-            padding-left: 5px;
-        }
-
-        .cart-item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(14, 34, 23, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 12px 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-
-        .item-details h4 {
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .item-details span {
-            font-size: 13px;
-            color: var(--gold-primary);
-            font-weight: 800;
-        }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(7, 18, 10, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 20px;
-            padding: 3px 8px;
-        }
-
-        .qty-btn {
-            background: transparent;
-            border: none;
-            color: var(--gold-primary);
-            font-size: 16px;
-            font-weight: bold;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-
-        .cart-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .option-select, .note-input {
-            width: 100%;
-            padding: 10px 14px;
-            background: rgba(14, 34, 23, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.25);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-        }
-
-        .send-whatsapp-btn {
-            width: 100%;
-            background: #25d366;
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 30px;
-            font-size: 16px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-        }
-
-        .status-msg {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            color: var(--text-muted);
-        }
-    </style>
+    .send-whatsapp-btn {
+      background-color: #25d366;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+    }
+  </style>
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-container">
-            <div class="brand-box">
-                <div class="brand-icon"><i class="fa-solid fa-utensils"></i></div>
-                <div class="brand-text">
-                    <h1>مطعم عماد الدين</h1>
-                    <p>أشهى الوجبات والمأكولات الغربية والشرقية</p>
-                </div>
-            </div>
-            <i class="fa-solid fa-crown" style="color: var(--gold-primary); font-size: 20px;"></i>
-        </div>
-    </header>
-
-    <div class="controls-area">
-        <div class="search-box-wrapper">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن وجبة..." oninput="renderMenu()">
-        </div>
-        <div class="cat-scroll-bar" id="categoriesBar"></div>
+  <header class="header">
+    <div class="logo-wrapper">
+      <!-- استبدل الرابط بصورة الشعار الخاصة بك أو اتركها كما هي -->
+      <i class="fa-solid fa-utensils" style="color: var(--bg-dark); font-size: 38px;"></i>
     </div>
-
-    <main class="menu-grid" id="menuContainer">
-        <div class="status-msg"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
-    </main>
-
-    <div class="cart-bar" id="cartBar" onclick="toggleCartDrawer(true)">
-        <div class="cart-bar-info">
-            <div class="cart-badge" id="cartBadgeCount">0</div>
-            <div class="cart-bar-text">
-                <span class="cart-bar-label">سلة الطلبات</span>
-                <span class="cart-bar-total" id="cartBarTotal">0 ل.س</span>
-            </div>
-        </div>
-        <button class="open-cart-btn">
-            عرض السلة <i class="fa-solid fa-basket-shopping"></i>
-        </button>
+    <div class="banner-content">
+      <h1>مطعم عماد الدين</h1>
+      <p>أطيب الوجبات الغربية والشاورما والمقبلات - اختر وجباتك وأرسل الطلب عبر الواتساب</p>
     </div>
+  </header>
 
-    <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
-        <div class="cart-drawer" onclick="event.stopPropagation()">
-            <div class="drawer-header">
-                <div class="drawer-title">
-                    <i class="fa-solid fa-bag-shopping"></i> قائمة الطلبات المختارة
-                </div>
-                <button class="close-drawer-btn" onclick="toggleCartDrawer(false)">&times;</button>
-            </div>
+  <div class="categories-wrapper">
+    <nav class="categories">
+      <button class="cat-btn active" onclick="filterMenu('all')">الكل</button>
+      <button class="cat-btn" onclick="filterMenu('shawarma-sand')">سندويش شاورما</button>
+      <button class="cat-btn" onclick="filterMenu('western-sand')">سندويش غربي</button>
+      <button class="cat-btn" onclick="filterMenu('shawarma-meals')">وجبات شاورما</button>
+      <button class="cat-btn" onclick="filterMenu('western-meals')">وجبات غربي</button>
+      <button class="cat-btn" onclick="filterMenu('appetizers')">مقبلات</button>
+      <button class="cat-btn" onclick="filterMenu('drinks')">مشروبات</button>
+    </nav>
+  </div>
 
-            <div class="cart-items-list" id="cartItemsList"></div>
-
-            <div class="cart-options">
-                <select id="orderType" class="option-select">
-                    <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
-                    <option value="استلام من المطعم">🏪 الاستلام من المطعم</option>
-                    <option value="سفري">📦 طعام سفري</option>
-                    <option value="صالة">🍽️ طلب صالة</option>
-                </select>
-                <input type="text" id="orderNotes" class="note-input" placeholder="عنوان التوصيل / ملاحظات إضافية على الطلب...">
-            </div>
-
-            <button class="send-whatsapp-btn" onclick="sendOrderToWhatsApp()">
-                إرسال الطلب عبر الواتساب <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i>
-            </button>
-        </div>
+  <main class="container">
+    <div id="menu-container">
+      <div class="loading-status">
+        <i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة...
+      </div>
     </div>
+  </main>
 
-    <script>
-        const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-        const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-        const WHATSAPP_NUMBER = '963948893053';
+  <div id="cart-bar" class="cart-bar">
+    <div class="cart-info">
+      <span id="cart-count-text" class="cart-count">الطلب: 0 عنصر</span>
+      <span id="cart-total-text" class="cart-total">المجموع: 0 TL / 0 SYR</span>
+    </div>
+    <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn" target="_blank">
+      <i class="fab fa-whatsapp"></i> إرسال الطلب
+    </a>
+  </div>
 
-        const categoryNames = {
-            'shawarma-meals': 'وجبات شاورما',
-            'shawarma-sand': 'سندويش شاورما',
-            'western-meals': 'وجبات غربية',
-            'western-sand': 'سندويش غربي',
-            'appetizers': 'مقبلات وبطاطا',
-            'drinks': 'مشروبات'
-        };
+  <script>
+    let fullMenuData = [];
+    let cart = {}; 
+    // رابط شيت عماد الدين الذي أرسلته
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI/gviz/tq?tqx=out:csv';
+    const restaurantPhoneNumber = "963948893053";
 
-        let menuData = [];
-        let cart = {};
-        let currentCategory = 'الكل';
+    async function loadMenu() {
+      const cachedData = localStorage.getItem('emadMenuData');
+      
+      if (cachedData) {
+        try {
+          fullMenuData = JSON.parse(cachedData);
+          renderMenuItems(fullMenuData);
+        } catch(e) {}
+      }
 
-        async function loadMenu() {
-            try {
-                let response = await fetch(GVIZ_URL);
-                let text = await response.text();
-                
-                let jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                let json = JSON.parse(jsonText);
-                let rows = json.table.rows;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-                let parsed = [];
-                rows.forEach(row => {
-                    let cells = row.c;
-                    if (cells && cells[0] && cells[0].v && cells[0].v !== 'title') {
-                        let name = cells[0] ? cells[0].v.toString().trim() : '';
-                        let priceTry = (cells[1] && cells[1].v !== null) ? parseFloat(cells[1].v) : 0;
-                        let priceSyr = (cells[2] && cells[2].v !== null) ? parseFloat(cells[2].v) : 0;
-                        let rawCat = (cells[3] && cells[3].v) ? cells[3].v.toString().trim() : 'عام';
-                        let desc = (cells[4] && cells[4].v) ? cells[4].v.toString().trim() : 'وجبة طازجة ومجهزة يومياً';
+      try {
+        const response = await fetch(sheetUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
 
-                        let category = categoryNames[rawCat] || rawCat;
+        if (!response.ok) throw new Error('فشل جلب البيانات');
 
-                        if (name) {
-                            parsed.push({
-                                name: name,
-                                priceSyr: priceSyr,
-                                priceTry: priceTry,
-                                category: category,
-                                desc: desc
-                            });
-                        }
-                    }
-                });
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
 
-                if (parsed.length > 0) {
-                    menuData = parsed;
-                }
-            } catch (e) {
-                console.error("خطأ في جلب غوغل شيتس:", e);
+        if (parsedData && parsedData.length > 0) {
+          fullMenuData = parsedData;
+          localStorage.setItem('emadMenuData', JSON.stringify(fullMenuData));
+          renderMenuItems(fullMenuData);
+        }
+      } catch (error) {
+        if (!cachedData || fullMenuData.length === 0) {
+          const container = document.getElementById('menu-container');
+          container.innerHTML = `
+            <div class="loading-status">
+              عذراً، تعذر تحميل القائمة حالياً. يرجى التأكد من الاتصال بالإنترنت.<br>
+              <button onclick="loadMenu()"><i class="fas fa-sync"></i> إعادة المحاولة</button>
+            </div>
+          `;
+        }
+      }
+    }
+
+    function parseCSV(csvText) {
+      try {
+        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
+        if (lines.length < 2) return [];
+
+        const delimiter = lines[0].includes(';') ? ';' : ',';
+        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+
+        return lines.slice(1).map(line => {
+          if (!line.trim()) return null;
+          
+          let values = [];
+          let insideQuote = false;
+          let currentValue = '';
+
+          for (let i = 0; i < line.length; i++) {
+            let char = line[i];
+            if (char === '"') {
+              insideQuote = !insideQuote;
+            } else if (char === delimiter && !insideQuote) {
+              values.push(currentValue.replace(/^"|"$/g, '').trim());
+              currentValue = '';
+            } else {
+              currentValue += char;
             }
+          }
+          values.push(currentValue.replace(/^"|"$/g, '').trim());
 
-            buildCategories();
-            renderMenu();
-        }
+          let item = {};
+          headers.forEach((h, idx) => {
+            item[h] = values[idx] || '';
+          });
 
-        function buildCategories() {
-            const catsNav = document.getElementById('categoriesBar');
-            const categories = ['الكل', ...new Set(menuData.map(item => item.category))];
-            
-            catsNav.innerHTML = categories.map((cat, idx) => `
-                <button class="cat-btn ${idx === 0 ? 'active' : ''}" onclick="selectCategory('${cat}', this)">${cat}</button>
-            `).join('');
-        }
+          const priceTryNum = parseFloat((item.price_try || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+          const priceSNum = parseFloat((item.price_syr || item.price_s || item.price_syp || '0').toString().replace(/[^0-9.]/g, '')) || 0;
 
-        function selectCategory(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentCategory = cat;
-            renderMenu();
-        }
+          return {
+            title: item.title || item['عنوان'] || '',
+            price_try: priceTryNum,
+            price_s: priceSNum,
+            category: item.category || 'shawarma-meals',
+            description: item.description || item['وصف'] || '',
+            image: item.image || ''
+          };
+        }).filter(item => item && item.title);
+      } catch (e) {
+        return [];
+      }
+    }
 
-        function renderMenu() {
-            const container = document.getElementById('menuContainer');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+    function renderMenuItems(menuData) {
+      const container = document.getElementById('menu-container');
+      if (!container) return;
 
-            const filtered = menuData.filter(item => {
-                const matchesCat = currentCategory === 'الكل' || item.category === currentCategory;
-                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
-                return matchesCat && matchesSearch;
-            });
+      if (menuData.length === 0) {
+        container.innerHTML = '<div class="loading-status">لا توجد عناصر مضافة بعد.</div>';
+        return;
+      }
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="status-msg">لا توجد وجبات متوفرة حالياً</div>`;
-                return;
-            }
+      container.className = 'menu-grid';
+      container.innerHTML = menuData.map(item => {
+        const imageName = item.image ? item.image.trim() : '';
+        const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
+        const qty = cart[item.title] ? cart[item.title].qty : 0;
 
-            container.innerHTML = filtered.map(item => `
+        return `
+          <div class="card">
+            <div class="card-img-container">
+              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80'">
+              <div class="price-badges">
+                ${item.price_try ? `<span class="badge-try">${item.price_try} TL</span>` : ''}
+                ${item.price_s ? `<span class="badge-syp">${item.price_s} SYR</span>` : ''}
+              </div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">${item.title}</h3>
+              <p class="card-description">${item.description}</p>
+              <div id="btn-container-${encodeURIComponent(item.title)}">
+                ${renderCartButton(item, qty)}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCartButton(item, qty) {
+      const titleEsc = encodeURIComponent(item.title);
+      if (qty === 0) {
+        return `
+          <button class="add-to-cart-btn" onclick="updateQty('${titleEsc}', 1)">
+            <i class="fas fa-cart-plus"></i> إضافة إلى السلة
+          </button>
+        `;
+      } else {
+        return `
+          <div class="quantity-controls">
+            <button class="qty-btn" onclick="updateQty('${titleEsc}', ${qty - 1})">-</button>
+            <span class="qty-count">${qty}</span>
+            <button class="qty-btn" onclick="updateQty('${titleEsc}', ${qty + 1})">+</button>
+          </div>
+        `;
+      }
+    }
+
+    function updateQty(titleEsc, newQty) {
+      const title = decodeURIComponent(titleEsc);
+      const item = fullMenuData.find(i => i.title === title);
+      if (!item) return;
+
+      if (newQty <= 0) {
+        delete cart[title];
+      } else {
+        cart[title] = { item: item, qty: newQty };
+      }
+
+      const btnContainer = document.getElementById(`btn-container-${titleEsc}`);
+      if (btnContainer) {
+        btnContainer.innerHTML = renderCartButton(item, newQty <= 0 ? 0 : newQty);
+      }
+
+      updateCartBar();
+    }
+
+    function updateCartBar() {
+      const cartBar = document.getElementById('cart-bar');
+      const cartCountText = document.getElementById('cart-count-text');
+      const cartTotalText = document.getElementById('cart-total-text');
+      const whatsappBtn = document.getElementById('whatsapp-order-btn');
+
+      const cartItems = Object.values(cart);
+      if (cartItems.length === 0) {
+        cartBar.classList.remove('active');
+        return;
+      }
+
+      cartBar.classList.add('active');
+
+      let totalItems = 0;
+      let totalTry = 0;
+      let totalSyp = 0;
+      let messageLines = ["مرحبا، أرغب بتسجيل الطلب التالي لمطعم عماد الدين:\n"];
+
+      cartItems.forEach(cartItem => {
+        const { item, qty } = cartItem;
+        totalItems += qty;
+        totalTry += item.price_try * qty;
+        totalSyp += item.price_s * qty;
+        messageLines.push(`• ${item.title} (العدد: ${qty}) - ${item.price_try * qty} TL / ${item.price_s * qty} SYR`);
+      });
+
+      messageLines.push(`\n📌 الإجمالي الكلي: ${totalTry} TL / ${totalSyp} SYR`);
+
+      cartCountText.innerText = `الطلب: ${totalItems} عناصر`;
+      cartTotalText.innerText = `المجموع: ${totalTry} TL / ${totalSyp} SYR`;
+
+      const whatsappText = encodeURIComponent(messageLines.join('\n'));
+      whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${whatsappText}`;
+    }
+
+    function filterMenu(category) {
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+
+      if (category === 'all') {
+        renderMenuItems(fullMenuData);
+      } else {
+        const filtered = fullMenuData.filter(item => {
+          if (!item.category) return false;
+          const cat = item.category.trim().toLowerCase();
+
+          if (category === 'shawarma-sand') {
+            return cat.includes('shawarma-sand') || (cat.includes('shawarma') && cat.includes('sand'));
+          } else if (category === 'western-sand') {
+            return cat.includes('western-sand') || (cat.includes('west') && cat.includes('sand'));
+          } else if (category === 'shawarma-meals') {
+            return cat.includes('shawarma-meal') || (cat.includes('shawarma') && cat.includes('meal'));
+          } else if (category === `western-meals`) {
+            return cat.includes('western-meal') || (cat.includes('west') && cat.includes('meal'));
+          } else if (category === 'appetizers') {
+            return cat.includes('appetizer') || cat.includes('مقبلات') || cat.includes('بطاطا');
+          } else if (category === 'drinks') {
+            return cat.includes('drink') || cat.includes('مشروب');
+          }
+          return cat === category.toLowerCase();
+        });
+        renderMenuItems(filtered);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMenu);
+  </script>
+</body>
+</html>
