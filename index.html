@@ -302,9 +302,13 @@ let currentCategory = 'all';
 let currencyMode = 'both';
 
 const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-const restaurantPhoneNumber = '963948893053';
+// استخدام روابط بديلة في حال حجب المتصفح للرابط المباشر
+const sheetUrls = [
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`,
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`
+];
 
+const restaurantPhoneNumber = '963948893053';
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
 
 function escapeHTML(value) {
@@ -338,22 +342,37 @@ window.setCurrency = function(mode) {
 };
 
 async function loadMenu() {
-  try {
-    const response = await fetch(sheetUrl);
-    if (!response.ok) throw new Error('تعذر جلب بيانات القائمة');
-
-    const csvText = await response.text();
-    const parsedData = parseCSV(csvText);
-    if (!parsedData.length) throw new Error('لم يتم العثور على أصناف');
-
-    fullMenuData = parsedData;
-    renderMenuItems(getFilteredMenu());
-    updateCartBar();
-  } catch (error) {
-    console.error('خطأ في جلب البيانات:', error);
-    const container = document.getElementById('menu-container');
-    container.innerHTML = '<div class="loading-status">حدث خطأ أثناء جلب القائمة من Google Sheets. يرجى التحقق من الاتصال.</div>';
+  let csvText = '';
+  
+  // محاولة الجلب من أكثر من مسار لضمان النجاح
+  for (const url of sheetUrls) {
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        csvText = await response.text();
+        if (csvText && csvText.length > 20) break;
+      }
+    } catch (e) {
+      console.warn('فشل الرابط الأول، محاولة الرابط البديل...', e);
+    }
   }
+
+  if (csvText) {
+    const parsedData = parseCSV(csvText);
+    if (parsedData.length > 0) {
+      fullMenuData = parsedData;
+      renderMenuItems(getFilteredMenu());
+      updateCartBar();
+      return;
+    }
+  }
+
+  // في حال تعثر الشبكة تماماً
+  document.getElementById('menu-container').innerHTML = `
+    <div class="loading-status">
+      تعذر تحميل القائمة المباشرة.<br>
+      <button onclick="loadMenu()" style="margin-top:10px;padding:8px 16px;border-radius:8px;background:var(--gold);border:0;color:#111;font-weight:bold;">إعادة المحاولة 🔄</button>
+    </div>`;
 }
 
 function parseCSV(csvText) {
@@ -412,9 +431,14 @@ function parseCSV(csvText) {
 
 function getFilteredMenu() {
   if (currentCategory === 'all') return fullMenuData;
-  return fullMenuData.filter(item =>
-    String(item.category || '').trim().toLowerCase() === currentCategory.toLowerCase()
-  );
+  
+  // مطابقة مرنة تتجاهل الفروقات البسيطة وحرف الـ s
+  const cleanCat = currentCategory.toLowerCase().replace(/s$/, '');
+  
+  return fullMenuData.filter(item => {
+    const itemCat = String(item.category || '').trim().toLowerCase().replace(/s$/, '');
+    return itemCat === cleanCat;
+  });
 }
 
 window.filterMenu = function(category) {
@@ -428,6 +452,7 @@ window.filterMenu = function(category) {
     'shawarma-sand': 'سندويش شاورما',
     'western-sand': 'سندويش غربي',
     'shawarma-meal': 'وجبات شاورما',
+    'shawarma-meals': 'وجبات شاورما',
     'western-meals': 'وجبات غربية',
     'appetizers': 'المقبلات',
     'drinks': 'المشروبات'
@@ -457,20 +482,4 @@ function renderMenuItems(menuData) {
 
     let badges = '';
     if ((currencyMode === 'both' || currencyMode === 'try') && item.price_try) {
-      badges += `<span class="price-badge">${formatNumber(item.price_try)} TL</span>`;
-    }
-    if ((currencyMode === 'both' || currencyMode === 'syp') && item.price_s) {
-      badges += `<span class="price-badge">${formatNumber(item.price_s)} ل.س</span>`;
-    }
-
-    const encodedTitle = encodeURIComponent(item.title);
-
-    return `
-      <article class="card">
-        <div class="card-img-container">
-          <img src="${escapeHTML(imagePath)}" alt="${escapeHTML(item.title)}" class="card-img"
-               loading="lazy" onerror="this.onerror=null;this.src='${defaultImage}'">
-          <div class="price-badges">${badges}</div>
-        </div>
-        <div class="card-body">
-          <h3 class="card-title"
+      badges += `<span class="price-badge">${formatNumber(item.price_tr
