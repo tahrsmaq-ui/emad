@@ -539,7 +539,7 @@
             <div class="cart-options">
                 <select id="orderType" class="option-select">
                     <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
-                    <option value="استلام من المطعم">ج الاستلام من المطعم</option>
+                    <option value="استلام من المطعم">🏪 الاستلام من المطعم</option>
                     <option value="سفري">📦 طعام سفري</option>
                     <option value="صالة">🍽️ طلب صالة</option>
                 </select>
@@ -553,63 +553,71 @@
     </div>
 
     <script>
-        // ================= Global Configurations =================
+        // ================= Configuration =================
         const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-        const GOOGLE_SHEET_CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+        const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
         const WHATSAPP_NUMBER = '963948893053';
 
-        // Fallback Data
+        // ترجمة وتجميل أسماء الأقسام
+        const categoryNames = {
+            'shawarma-meals': 'وجبات شاورما',
+            'shawarma-sand': 'سندويش شاورما',
+            'western-meals': 'وجبات غربية',
+            'western-sand': 'سندويش غربي',
+            'appetizers': 'مقبلات وبطاطا',
+            'drinks': 'مشروبات'
+        };
+
+        // بيانات احتياطية فورية لمنع أي تعليق
         const fallbackMenu = [
-            { name: "شاورما دبل عماد الدين", price: 35000, category: "شاورما", desc: "وجبة شاورما عربي دبل مع الثومية المتميزة والبطاطا والمخلل" },
-            { name: "وجبة كريسبي فاخرة", price: 45000, category: "وجبات حادقة", desc: "5 قطع كريسبي مقرمشة مع البطاطا وسلطة ملفوف وصوص خاص" },
-            { name: "وجبة فاهيتا دجاج", price: 48000, category: "وجبات حادقة", desc: "صدور دجاج مطبوخة مع الفلفل الرومي والأجبان الذائبة" },
-            { name: "برغر لحم سوبر", price: 38000, category: "برغر", desc: "شريحة لحم صافي مع صوص الجبن والخص والمخلل" },
-            { name: "كوكا كولا بارد", price: 8000, category: "مشروبات", desc: "عبوة باردة 330 مل" }
+            { name: "شاورما دبل عماد الدين", price: 720, category: "وجبات شاورما", desc: "وجبة شاورما عربي دبل مع الثومية والبطاطا" },
+            { name: "وجبة كريسبي فاخرة", price: 810, category: "وجبات غربية", desc: "قطع كريسبي مقرمشة مع البطاطا وسلطة ملفوف" },
+            { name: "كوكا كولا بارد", price: 210, category: "مشروبات", desc: "عبوة باردة 330 مل" }
         ];
 
         let menuData = [];
-        let cart = {}; // { item_name: { price, qty } }
+        let cart = {};
         let currentCategory = 'الكل';
 
-        // Fetch Data with Instant Timeout
         async function loadMenu() {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 2500); // 2.5 Sec Timeout
-
-                const res = await fetch(GOOGLE_SHEET_CSV_URL, { signal: controller.signal });
-                clearTimeout(timeoutId);
-
-                if (!res.ok) throw new Error("Network error");
+                const res = await fetch(GVIZ_URL);
                 const text = await res.text();
-                const parsed = parseCSV(text);
+                
+                const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+                const json = JSON.parse(jsonText);
+                
+                const rows = json.table.rows;
+                const parsed = [];
 
-                menuData = (parsed && parsed.length > 0) ? parsed : fallbackMenu;
+                rows.forEach(row => {
+                    const cells = row.c;
+                    // تخطي صف العناوين أو الصفوف الفارغة
+                    if (cells && cells[0] && cells[0].v && cells[0].v !== 'title') {
+                        const rawCat = (cells[3] && cells[3].v) ? cells[3].v.toString().trim() : 'عام';
+                        const readableCat = categoryNames[rawCat] || rawCat;
+                        
+                        // العمود C (index 2) هو السعر بالسوري، وفي حال لم يوجد نأخذ العمود B (index 1)
+                        const priceVal = (cells[2] && cells[2].v !== null) ? parseFloat(cells[2].v) : 
+                                         ((cells[1] && cells[1].v !== null) ? parseFloat(cells[1].v) : 0);
+
+                        parsed.push({
+                            name: cells[0].v.toString().trim(),
+                            price: priceVal,
+                            category: readableCat,
+                            desc: (cells[4] && cells[4].v) ? cells[4].v.toString().trim() : 'وجبة طازجة ومجهزة يومياً بأعلى جودة'
+                        });
+                    }
+                });
+
+                menuData = (parsed.length > 0) ? parsed : fallbackMenu;
             } catch (e) {
-                console.warn("استخدام القائمة السريعة لمنع التعليق:", e);
+                console.warn("استخدام القائمة الاحتياطية:", e);
                 menuData = fallbackMenu;
             }
+
             buildCategories();
             renderMenu();
-        }
-
-        function parseCSV(text) {
-            const lines = text.split('\n').filter(l => l.trim() !== '');
-            if (lines.length < 2) return null;
-
-            const items = [];
-            for (let i = 1; i < lines.length; i++) {
-                const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
-                if (cols[0]) {
-                    items.push({
-                        name: cols[0],
-                        price: parseFloat(cols[1]) || 0,
-                        category: cols[2] || 'عام',
-                        desc: cols[3] || 'وجبة طازجة ومجهزة يومياً بأعلى جودة'
-                    });
-                }
-            }
-            return items;
         }
 
         function buildCategories() {
@@ -627,10 +635,3 @@
             currentCategory = cat;
             renderMenu();
         }
-
-        function renderMenu() {
-            const container = document.getElementById('menuContainer');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-
-            const filtered = menuData.filter(item => {
-                const matchesCat = currentCatego
