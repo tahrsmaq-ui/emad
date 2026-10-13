@@ -81,32 +81,54 @@ body.no-scroll{overflow:hidden}
 .section-heading h2{font-size:20px}
 .section-heading span{font-size:13px;color:var(--muted)}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px}
+
+/* تصميم البطاقات المطور */
 .card{
-  min-width:0;background:linear-gradient(145deg,rgba(20,43,30,.98),rgba(12,25,17,.98));
-  border:1px solid var(--border);border-radius:15px;overflow:hidden;
-  display:flex;flex-direction:column;transition:transform .2s,border-color .2s
+  min-width:0;background:linear-gradient(145deg,rgba(18,38,28,0.95),rgba(10,20,15,0.98));
+  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  display:flex;flex-direction:column;transition:all .3s ease;
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
 }
-.card:hover{transform:translateY(-3px);border-color:var(--gold)}
-.card-img-container{height:175px;position:relative;background:#101a12}
-.card-img{width:100%;height:100%;object-fit:cover;display:block}
-.price-badges{position:absolute;top:10px;right:10px;display:flex;flex-wrap:wrap;gap:6px}
-.price-badge{padding:6px 9px;border-radius:7px;background:var(--gold);color:#11180f;font-size:12px;font-weight:800}
-.card-body{padding:15px;display:flex;flex-direction:column;flex:1}
-.card-title{font-size:17px;margin-bottom:8px}
+.card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 12px 30px rgba(212,175,55,0.15)}
+.card-img-container{height:175px;position:relative;background:#101a12;overflow:hidden}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.card:hover .card-img{transform:scale(1.05)}
+.price-badges{position:absolute;top:10px;right:10px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
+.price-badge{
+  padding:6px 12px;border-radius:10px;
+  background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
+  color:#11180f;font-size:12px;font-weight:900;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3)
+}
+.card-body{padding:16px;display:flex;flex-direction:column;flex:1}
+.card-title{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
 .card-description{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:15px;flex:1}
-.card-price{font-size:14px;color:var(--gold-light);margin-bottom:13px;font-weight:800}
-.add-to-cart-btn,.primary-btn{
+.card-price{font-size:14px;color:var(--gold-light);margin-bottom:14px;font-weight:800;letter-spacing:0.5px}
+
+/* زر إضافة للسلة الجديد */
+.add-to-cart-btn{
   display:flex;justify-content:center;align-items:center;gap:8px;width:100%;
-  padding:11px;border:0;border-radius:9px;background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
-  color:#10170f;font-weight:900
+  padding:12px;border:1px solid rgba(212,175,55,0.4);border-radius:12px;
+  background:linear-gradient(135deg, rgba(212,175,55,0.15), rgba(18,38,28,0.6));
+  backdrop-filter:blur(5px);
+  color:var(--gold-light);font-weight:800;font-size:13px;
+  transition:all 0.3s ease;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
-.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px;background:#07120a;border:1px solid var(--gold);border-radius:9px}
-.qty-btn{width:35px;height:34px;border:0;border-radius:7px;background:var(--gold);color:#10170f;font-weight:900}
-.qty-count{font-weight:900}
+.add-to-cart-btn:hover{
+  background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
+  color:#10170f;border-color:transparent;
+  box-shadow:0 6px 20px rgba(212,175,55,0.3);
+  transform:translateY(-2px);
+}
+
+.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px;background:#07120a;border:1px solid var(--gold);border-radius:12px}
+.qty-btn{width:35px;height:34px;border:0;border-radius:8px;background:var(--gold);color:#10170f;font-weight:900;transition:transform 0.1s}
+.qty-btn:active{transform:scale(0.92)}
+.qty-count{font-weight:900;color:var(--gold-light)}
 
 /* حالات التحميل */
 .loading-status{text-align:center;padding:45px 15px;color:var(--muted);line-height:2}
-.loading-status button{margin-top:10px;padding:9px 15px;border:0;border-radius:8px;background:var(--gold);color:#111}
 
 /* طبقة القائمة الجانبية على الهاتف */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1050;display:none}
@@ -171,7 +193,7 @@ body.no-scroll{overflow:hidden}
   .card-title{font-size:14px}
   .card-description{font-size:12px}
   .price-badge{font-size:10px;padding:5px 6px}
-  .add-to-cart-btn{font-size:12px;padding:10px 5px}
+  .add-to-cart-btn{font-size:12px;padding:10px 6px}
   .qty-btn{width:30px;height:30px}
 }
 @media(prefers-reduced-motion:reduce){
@@ -194,12 +216,12 @@ body.no-scroll{overflow:hidden}
   <p class="side-label">أقسام القائمة</p>
   <nav id="categories" class="categories">
     <button class="cat-btn active" data-category="all" onclick="filterMenu('all')"><i class="fa-solid fa-border-all"></i> الكل</button>
-    <button class="cat-btn" data-category="سندويش شاورما" onclick="filterMenu('سندويش شاورما')"><i class="fa-solid fa-burger"></i> سندويش شاورما</button>
-    <button class="cat-btn" data-category="سندويش غربي" onclick="filterMenu('سندويش غربي')"><i class="fa-solid fa-hotdog"></i> سندويش غربي</button>
-    <button class="cat-btn" data-category="وجبات شاورما" onclick="filterMenu('وجبات شاورما')"><i class="fa-solid fa-drumstick-bite"></i> وجبات شاورما</button>
-    <button class="cat-btn" data-category="وجبات غربية" onclick="filterMenu('وجبات غربية')"><i class="fa-solid fa-utensils"></i> وجبات غربية</button>
-    <button class="cat-btn" data-category="مقبلات" onclick="filterMenu('مقبلات')"><i class="fa-solid fa-bowl-food"></i> مقبلات</button>
-    <button class="cat-btn" data-category="مشروبات" onclick="filterMenu('مشروبات')"><i class="fa-solid fa-glass-water"></i> مشروبات</button>
+    <button class="cat-btn" data-category="shawarma-sand" onclick="filterMenu('shawarma-sand')"><i class="fa-solid fa-burger"></i> سندويش شاورما</button>
+    <button class="cat-btn" data-category="western-sand" onclick="filterMenu('western-sand')"><i class="fa-solid fa-hotdog"></i> سندويش غربي</button>
+    <button class="cat-btn" data-category="shawarma-meal" onclick="filterMenu('shawarma-meal')"><i class="fa-solid fa-drumstick-bite"></i> وجبات شاورما</button>
+    <button class="cat-btn" data-category="western-meals" onclick="filterMenu('western-meals')"><i class="fa-solid fa-utensils"></i> وجبات غربية</button>
+    <button class="cat-btn" data-category="appetizers" onclick="filterMenu('appetizers')"><i class="fa-solid fa-bowl-food"></i> مقبلات</button>
+    <button class="cat-btn" data-category="drinks" onclick="filterMenu('drinks')"><i class="fa-solid fa-glass-water"></i> مشروبات</button>
   </nav>
 
   <div class="sidebar-note">
@@ -287,9 +309,9 @@ const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx
 const restaurantPhoneNumber = '963948893053';
 
 const fallbackMenu = [
-  {title:'وجبة شاورما دبل',price_try:240,price_s:72000,category:'وجبات شاورما',description:'شاورما دجاج 220غ مع البطاطا والثومية',image:''},
-  {title:'سندويش صاج دجاج',price_try:120,price_s:36000,category:'سندويش شاورما',description:'خبز صاج مقرمش مع دجاج متبل',image:''},
-  {title:'كوكا كولا',price_try:50,price_s:15000,category:'مشروبات',description:'عبوة باردة منعشة',image:''}
+  {title:'وجبة شاورما دبل',price_try:240,price_s:720,category:'shawarma-meal',description:'شاورما دجاج 220غ مع البطاطا والثومية',image:'sha.jpg'},
+  {title:'سندويش شاورما عادي',price_try:90,price_s:270,category:'shawarma-sand',description:'شاورما + ثوم + مخلل 110غ',image:'sh.jpg'},
+  {title:'كوكولا 2',price_try:70,price_s:210,category:'drinks',description:'',image:'cola.jpg'}
 ];
 
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
@@ -400,8 +422,8 @@ function parseCSV(csvText) {
         title: item.title || item['عنوان'] || '',
         price_try: priceTry,
         price_s: priceSyp,
-        category: item.category || item['قسم'] || 'وجبات عامة',
-        description: item.description || item['وصف'] || 'مجهّزة طازجة يومياً بأعلى جودة',
+        category: String(item.category || item['قسم'] || 'general').trim().toLowerCase(),
+        description: item.description || item['وصف'] || '',
         image: item.image || ''
       };
     }).filter(item => item.title);
@@ -424,14 +446,15 @@ window.filterMenu = function(category) {
   });
 
   const titles = {
-    all:'كل الوجبات',
-    'سندويش شاورما':'سندويش شاورما',
-    'سندويش غربي':'سندويش غربي',
-    'وجبات شاورما':'وجبات شاورما',
-    'وجبات غربية':'وجبات غربية',
-    'مقبلات':'المقبلات',
-    'مشروبات':'المشروبات'
+    'all': 'كل الوجبات',
+    'shawarma-sand': 'سندويش شاورما',
+    'western-sand': 'سندويش غربي',
+    'shawarma-meal': 'وجبات شاورما',
+    'western-meals': 'وجبات غربية',
+    'appetizers': 'المقبلات',
+    'drinks': 'المشروبات'
   };
+  
   document.getElementById('section-title').textContent = titles[category] || category;
   renderMenuItems(getFilteredMenu());
 
@@ -452,183 +475,4 @@ function renderMenuItems(menuData) {
   container.innerHTML = menuData.map(item => {
     const qty = cart[item.title]?.qty || 0;
     const imageName = String(item.image || '').trim();
-    const imagePath = imageName ? `images/${encodeURIComponent(imageName)}` : defaultImage;
-
-    let badges = '';
-    if ((currencyMode === 'both' || currencyMode === 'try') && item.price_try) {
-      badges += `<span class="price-badge">${formatNumber(item.price_try)} TL</span>`;
-    }
-    if ((currencyMode === 'both' || currencyMode === 'syp') && item.price_s) {
-      badges += `<span class="price-badge">${formatNumber(item.price_s)} ل.س</span>`;
-    }
-
-    const encodedTitle = encodeURIComponent(item.title);
-
-    return `
-      <article class="card">
-        <div class="card-img-container">
-          <img src="${escapeHTML(imagePath)}" alt="${escapeHTML(item.title)}" class="card-img"
-               loading="lazy" onerror="this.onerror=null;this.src='${defaultImage}'">
-          <div class="price-badges">${badges}</div>
-        </div>
-        <div class="card-body">
-          <h3 class="card-title">${escapeHTML(item.title)}</h3>
-          <p class="card-description">${escapeHTML(item.description)}</p>
-          <div class="card-price">${formatPrice(item)}</div>
-          ${qty === 0 ? `
-            <button class="add-to-cart-btn" onclick="addToCart('${encodedTitle}')">
-              <i class="fa-solid fa-cart-plus"></i> إضافة للسلة
-            </button>
-          ` : `
-            <div class="quantity-controls">
-              <button class="qty-btn" onclick="changeQty('${encodedTitle}', -1)">-</button>
-              <span class="qty-count">${qty}</span>
-              <button class="qty-btn" onclick="changeQty('${encodedTitle}', 1)">+</button>
-            </div>
-          `}
-        </div>
-      </article>
-    `;
-  }).join('');
-}
-
-window.addToCart = function(encodedTitle) {
-  const title = decodeURIComponent(encodedTitle);
-  const item = fullMenuData.find(i => i.title === title);
-  if (!item) return;
-
-  if (!cart[title]) {
-    cart[title] = { item, qty: 1 };
-  } else {
-    cart[title].qty++;
-  }
-  renderMenuItems(getFilteredMenu());
-  updateCartBar();
-};
-
-window.changeQty = function(encodedTitle, delta) {
-  const title = decodeURIComponent(encodedTitle);
-  if (cart[title]) {
-    cart[title].qty += delta;
-    if (cart[title].qty <= 0) {
-      delete cart[title];
-    }
-  }
-  renderMenuItems(getFilteredMenu());
-  updateCartBar();
-};
-
-function updateCartBar() {
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartTotalsContainer = document.getElementById('cart-totals');
-  const whatsappBtn = document.getElementById('whatsapp-order-btn');
-  const topCartCount = document.getElementById('top-cart-count');
-
-  const cartKeys = Object.keys(cart);
-  const totalCount = cartKeys.reduce((acc, k) => acc + cart[k].qty, 0);
-
-  if (totalCount > 0) {
-    topCartCount.textContent = totalCount;
-    topCartCount.hidden = false;
-  } else {
-    topCartCount.hidden = true;
-  }
-
-  if (cartKeys.length === 0) {
-    cartItemsContainer.innerHTML = `
-      <div class="empty-cart">
-        <i class="fa-solid fa-cart-flatbed-suitcases"></i>
-        سلتك فارغة حالياً.<br>أضف بعض الوجبات الشهية لبدء الطلب!
-      </div>`;
-    cartTotalsContainer.innerHTML = '';
-    whatsappBtn.classList.add('disabled');
-    whatsappBtn.href = '#';
-    return;
-  }
-
-  let totalTry = 0;
-  let totalSyp = 0;
-
-  cartItemsContainer.innerHTML = cartKeys.map(key => {
-    const { item, qty } = cart[key];
-    totalTry += item.price_try * qty;
-    totalSyp += item.price_s * qty;
-
-    const encodedTitle = encodeURIComponent(item.title);
-
-    return `
-      <div class="cart-item">
-        <div>
-          <h3>${escapeHTML(item.title)}</h3>
-          <div class="cart-item-price">${formatPrice(item, 1)}</div>
-          <div class="cart-item-controls">
-            <button onclick="changeQty('${encodedTitle}', -1)">-</button>
-            <span>${qty}</span>
-            <button onclick="changeQty('${encodedTitle}', 1)">+</button>
-            <button class="remove-item" onclick="changeQty('${encodedTitle}', -${qty})"><i class="fa-solid fa-trash-can"></i></button>
-          </div>
-        </div>
-        <div class="cart-item-subtotal">${formatPrice(item, qty)}</div>
-      </div>
-    `;
-  }).join('');
-
-  let totalTextParts = [];
-  if (currencyMode === 'both' || currencyMode === 'try') totalTextParts.push(`${formatNumber(totalTry)} TL`);
-  if (currencyMode === 'both' || currencyMode === 'syp') totalTextParts.push(`${formatNumber(totalSyp)} ل.س`);
-
-  cartTotalsContainer.innerHTML = `
-    <div class="total-line">
-      <span>المجموع الكلي:</span>
-      <strong>${totalTextParts.join(' / ')}</strong>
-    </div>
-  `;
-
-  const orderType = document.getElementById('orderType').value;
-  const orderNotes = document.getElementById('orderNotes').value.trim();
-
-  let message = `*طلب جديد من مطعم عماد الدين* 🍽️\n\n`;
-  cartKeys.forEach(key => {
-    const { item, qty } = cart[key];
-    message += `• ${item.title} (عدد ${qty}) - ${formatPrice(item, qty)}\n`;
-  });
-
-  message += `\n*طريقة الطلب:* ${orderType}\n`;
-  if (orderNotes) message += `*ملاحظات/العنوان:* ${orderNotes}\n`;
-  message += `*المجموع الكلي:* ${totalTextParts.join(' / ')}\n`;
-
-  whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${encodeURIComponent(message)}`;
-  whatsappBtn.classList.remove('disabled');
-}
-
-window.toggleSidebar = function() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('show');
-};
-
-window.closeSidebar = function() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-};
-
-window.openCart = function() {
-  document.getElementById('cart-drawer').classList.add('open');
-  document.getElementById('overlay').classList.show ? null : document.getElementById('overlay').classList.add('show');
-  document.body.classList.add('no-scroll');
-};
-
-window.closeCart = function() {
-  document.getElementById('cart-drawer').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-  document.body.classList.remove('no-scroll');
-};
-
-window.closePanels = function() {
-  closeSidebar();
-  closeCart();
-};
-
-document.addEventListener('DOMContentLoaded', loadMenu);
-</script>
-</body>
-</html>
+    const imagePath = imageName ? `i
