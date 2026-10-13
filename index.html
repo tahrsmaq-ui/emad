@@ -4,22 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مطعم عماد الدين | Imad Al-Din Restaurant</title>
-  
-  <!-- Google Fonts: Cairo -->
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      /* اللون الأخضر الزيتي الداكن من خلفية الصورة */
-      --bg-green: #0a2118; 
-      --card-bg: #0f2c21;
-      /* اللون الأصفر الخردلي المطفي من عناوين وإطارات الصورة */
-      --primary-mustard: #E5A84B; 
+      --bg-green: #071912;
+      --card-bg: #0d261c;
+      --primary-mustard: #E5A84B;
       --mustard-dark: #c48b36;
       --text-main: #ffffff;
-      --text-muted: #d0dcd7;
+      --text-muted: #c2d6ce;
       --border-color: #E5A84B;
     }
 
@@ -32,6 +33,10 @@
 
     body {
       background-color: var(--bg-green);
+      /* خلفية دمشقية زيتية مزخرفة بالذهبي لمسة راقية للمواقع السورية */
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(229, 168, 75, 0.15) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e5a84b' fill-opacity='0.05'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Cpath d='M40 0l40 40-40 40L0 40zM40 10l30 30-30 30-30-30z'/%3E%3C/g%3E%3C/svg%3E");
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -40,25 +45,30 @@
 
     /* Header Navigation */
     header {
-      background: #061711;
+      background: rgba(6, 23, 17, 0.95);
       border-bottom: 2px solid var(--border-color);
-      padding: 18px 40px;
+      padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 1000;
+      backdrop-filter: blur(8px);
     }
 
     .logo {
       font-size: 26px;
       font-weight: 900;
       color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .logo span {
       color: var(--primary-mustard);
+      font-family: 'Amiri', serif;
     }
 
     .currency-selector {
@@ -67,7 +77,7 @@
       gap: 10px;
       background: #0f2c21;
       padding: 6px 14px;
-      border-radius: 8px;
+      border-radius: 30px;
       border: 1px solid var(--border-color);
     }
 
@@ -82,59 +92,103 @@
       color: #ffffff;
       border: 1px solid var(--border-color);
       padding: 5px 12px;
-      border-radius: 5px;
+      border-radius: 20px;
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       outline: none;
     }
 
-    /* Hero Banner */
+    /* Hero Banner مع الزخرفة الذهبية */
     .hero {
       text-align: center;
-      padding: 60px 20px 30px 20px;
-      background: radial-gradient(circle, #123829 0%, #0a2118 100%);
+      padding: 50px 20px 30px 20px;
+      position: relative;
+      background: radial-gradient(circle, rgba(18, 56, 41, 0.8) 0%, rgba(7, 25, 18, 0.95) 100%),
+                  url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0L120 60L60 120L0 60Z' fill='none' stroke='%23e5a84b' stroke-opacity='0.12' stroke-width='2'/%3E%3Ccircle cx='60' cy='60' r='30' fill='none' stroke='%23e5a84b' stroke-opacity='0.12' stroke-width='1.5'/%3E%3C/svg%3E");
+      border-bottom: 1px solid rgba(229, 168, 75, 0.3);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      width: 70px;
+      height: 70px;
+      margin-bottom: 15px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5 L63 25 L88 25 L73 45 L80 70 L50 55 L20 70 L27 45 L12 25 L37 25 Z' fill='%23E5A84B'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
     }
 
     .hero h1 {
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 900;
       color: var(--text-main);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      font-family: 'Amiri', serif;
     }
 
     .hero h1 span {
       color: var(--primary-mustard);
+      text-shadow: 0 0 10px rgba(229, 168, 75, 0.3);
     }
 
     .hero p {
-      font-size: 17px;
+      font-size: 18px;
       color: var(--text-muted);
     }
 
-    .divider {
-      width: 90px;
-      height: 3px;
-      background-color: var(--primary-mustard);
-      margin: 20px auto 0 auto;
-      border-radius: 2px;
+    .ornament-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+      color: var(--primary-mustard);
     }
 
-    /* Container & Section */
+    .ornament-line::before, .ornament-line::after {
+      content: '';
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-mustard), transparent);
+    }
+
+    /* Container & Filters */
     .container {
-      max-width: 1150px;
+      max-width: 1200px;
       margin: 30px auto 60px auto;
-      padding: 0 25px;
+      padding: 0 20px;
       flex: 1;
     }
 
-    .section-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary-mustard);
-      border-right: 4px solid var(--primary-mustard);
-      padding-right: 12px;
+    .category-tabs {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 15px;
       margin-bottom: 30px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary-mustard) transparent;
+    }
+
+    .tab-btn {
+      background: #0f2c21;
+      color: var(--text-main);
+      border: 1px solid rgba(229, 168, 75, 0.4);
+      padding: 8px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--primary-mustard);
+      color: #000;
+      border-color: var(--primary-mustard);
+      box-shadow: 0 4px 12px rgba(229, 168, 75, 0.3);
     }
 
     /* Grid & Cards */
@@ -147,28 +201,36 @@
     .card {
       background: var(--card-bg);
       border: 1px solid rgba(229, 168, 75, 0.3);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
     .card:hover {
       transform: translateY(-6px);
       border-color: var(--primary-mustard);
-      box-shadow: 0 6px 20px rgba(229, 168, 75, 0.25);
+      box-shadow: 0 8px 25px rgba(229, 168, 75, 0.25);
+    }
+
+    .card-img-wrapper {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      background-color: #061711;
     }
 
     .card img {
       width: 100%;
-      height: 190px;
+      height: 100%;
       object-fit: cover;
       border-bottom: 2px solid var(--primary-mustard);
     }
 
     .card-content {
-      padding: 20px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -203,31 +265,41 @@
       color: var(--primary-mustard);
       background: rgba(229, 168, 75, 0.15);
       padding: 6px 14px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid var(--primary-mustard);
     }
 
-    .btn-order {
-      background-color: var(--primary-mustard);
-      color: #000000;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 6px;
-      cursor: pointer;
+    .btn-whatsapp {
+      background-color: #25D366;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
       font-weight: 700;
       font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: background-color 0.3s ease;
     }
 
-    .btn-order:hover {
-      background-color: var(--mustard-dark);
+    .btn-whatsapp:hover {
+      background-color: #1eb956;
+    }
+
+    /* Loading Spinner */
+    .loading {
+      text-align: center;
+      padding: 50px;
+      font-size: 20px;
+      color: var(--primary-mustard);
     }
 
     /* Footer */
     footer {
-      background: #061711;
+      background: #04120d;
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       border-top: 1px solid var(--primary-mustard);
       color: #90a49c;
       font-size: 14px;
@@ -241,7 +313,10 @@
     @media (max-width: 600px) {
       header {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
+      }
+      .hero h1 {
+        font-size: 32px;
       }
     }
   </style>
@@ -250,11 +325,14 @@
 
   <!-- Navigation Bar -->
   <header>
-    <div class="logo">مطعم <span>عماد الدين</span></div>
+    <div class="logo">
+      <i class="fa-solid fa-utensils" style="color: var(--primary-mustard)"></i>
+      مطعم <span>عماد الدين</span>
+    </div>
     
     <div class="currency-selector">
-      <label for="currency">اختر العملة:</label>
-      <select id="currency" onchange="updatePrices()">
+      <label for="currency">العملة:</label>
+      <select id="currency" onchange="updateView()">
         <option value="TRY">ليرة تركية (TL)</option>
         <option value="SYP">ليرة سورية (SYP)</option>
       </select>
@@ -263,112 +341,153 @@
 
   <!-- Hero Section -->
   <section class="hero">
+    <div class="hero-badge"></div>
     <h1>أهلاً بكم في مطعم <span>عماد الدين</span></h1>
-    <p>أطيب المأكولات السريعة والغربية بأعلى جودة وأفضل طعم</p>
-    <div class="divider"></div>
+    <p>أطيب المأكولات السريعة والشاورما والمناسف والغربيات بأفضل مذاق وأعلى جودة</p>
+    <div class="ornament-line">
+      <i class="fa-solid fa-star"></i>
+      <i class="fa-solid fa-crown"></i>
+      <i class="fa-solid fa-star"></i>
+    </div>
   </section>
 
-  <!-- Main Content Area -->
+  <!-- Main Container -->
   <main class="container">
-    <h2 class="section-title">قائمة الوجبات</h2>
+    <!-- Category Tabs Filter -->
+    <div class="category-tabs" id="category-tabs">
+      <button class="tab-btn active" onclick="filterCategory('all', this)">الكل</button>
+    </div>
     
+    <!-- Meals Grid -->
     <div class="grid" id="meals-grid">
-      <!-- Cards rendered by JS -->
+      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
     </div>
   </main>
 
   <!-- Footer -->
   <footer>
     <p>&copy; 2026 جميع الحقوق محفوظة | <span>مطعم عماد الدين</span></p>
+    <p style="margin-top: 5px; font-size: 12px; color: #666;">للطلبات والاستفسار: 0948893053</p>
   </footer>
 
-  <!-- JavaScript -->
+  <!-- JavaScript Code -->
   <script>
-    const meals = [
-      {
-        id: 1,
-        title: "وجبة شاورما اكسترا",
-        desc: "شاورما دجاج ممتازة مع جبنة موزاريلا + فطر + بطاطا + ثوم + مخلل + دبس رمان",
-        priceTRY: 200,
-        priceSYP: 600,
-        image: "https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: 2,
-        title: "وجبة كريسبي",
-        desc: "قطع دجاج كريسبي مقرمشة + بطاطا + صوص ثوم + كولسلو + مخلل",
-        priceTRY: 220,
-        priceSYP: 660,
-        image: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: 3,
-        title: "وجبة زنجر حار",
-        desc: "صدر دجاج زنجر مقرمش مع الصوص الحار + جبنة شيدر + بطاطا + كولسلو",
-        priceTRY: 230,
-        priceSYP: 690,
-        image: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: 4,
-        title: "وجبة فاهيتا",
-        desc: "صدر دجاج مشوي مع الذرة والفلفل الرومي والبصل والجبنة الذائبة",
-        priceTRY: 250,
-        priceSYP: 750,
-        image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: 5,
-        title: "وجبة مكسيكانو",
-        desc: "قطع دجاج حارة على الطريقة المكسيكية مع الفطر والبصل والصوص الخاص",
-        priceTRY: 210,
-        priceSYP: 630,
-        image: "https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80"
-      },
-      {
-        id: 6,
-        title: "برغر دجاج دبل",
-        desc: "شريحتا دجاج مع الجبنة والشريحة الذهبية والصوص الخاص مع البطاطا",
-        priceTRY: 190,
-        priceSYP: 570,
-        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+    const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+    const WHATSAPP_NUMBER = "963948893053";
+
+    let allMeals = [];
+    let activeCategory = 'all';
+
+    async function fetchMealsFromSheet() {
+      try {
+        const response = await fetch(CSV_URL);
+        const data = await response.text();
+        allMeals = parseCSV(data);
+        renderCategories();
+        updateView();
+      } catch (error) {
+        console.error('Error fetching sheet:', error);
+        document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تعذر تحميل البيانات حالياً!</div>';
       }
-    ];
+    }
 
-    function renderMeals(selectedCurrency) {
-      const grid = document.getElementById("meals-grid");
-      grid.innerHTML = "";
+    function parseCSV(csvText) {
+      const lines = csvText.split('\n').filter(line => line.trim() !== '');
+      const result = [];
 
-      meals.forEach(meal => {
-        const price = selectedCurrency === "TRY" 
-          ? `${meal.priceTRY} TL` 
-          : `${meal.priceSYP} ل.س`;
+      for (let i = 1; i < lines.length; i++) {
+        const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (currentline.length >= 5) {
+          result.push({
+            title: currentline[0]?.replace(/"/g, '').trim() || '',
+            priceTRY: currentline[1]?.trim() || '0',
+            priceSYP: currentline[2]?.trim() || '0',
+            category: currentline[3]?.replace(/"/g, '').trim() || 'عام',
+            desc: currentline[4]?.replace(/"/g, '').trim() || '',
+            image: currentline[5]?.replace(/"/g, '').trim() || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'
+          });
+        }
+      }
+      return result;
+    }
 
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="${meal.image}" alt="${meal.title}">
-          <div class="card-content">
-            <h3 class="card-title">${meal.title}</h3>
-            <p class="card-desc">${meal.desc}</p>
-            <div class="card-footer">
-              <span class="price-tag">${price}</span>
-              <button class="btn-order">اطلب الآن</button>
+    function renderCategories() {
+      const categories = ['all', ...new Set(allMeals.map(m => m.category).filter(Boolean))];
+      const tabsContainer = document.getElementById('category-tabs');
+      
+      // تبديل أسماء الأقسام وتعويض قسم الفروج المشوي بالمناسف
+      const categoryNames = {
+        'all': 'الكل',
+        'shawarma-meals': 'وجبات الشاورما',
+        'western-meals': 'الوجبات الغربية',
+        'shawarma-sand': 'سندويش شاورما',
+        'western-sand': 'سندويش غريب',
+        'appetizers': 'مقبلات وبطاطا',
+        'grilled-ch...': 'قسم المناسف',
+        'manasif': 'قسم المناسف'
+      };
+
+      tabsContainer.innerHTML = categories.map(cat => `
+        <button class="tab-btn ${cat === 'all' ? 'active' : ''}" onclick="filterCategory('${cat}', this)">
+          ${categoryNames[cat] || cat}
+        </button>
+      `).join('');
+    }
+
+    function filterCategory(cat, btn) {
+      activeCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateView();
+    }
+
+    function updateView() {
+      const currency = document.getElementById('currency').value;
+      const grid = document.getElementById('meals-grid');
+      
+      const filtered = activeCategory === 'all' 
+        ? allMeals 
+        : allMeals.filter(m => m.category === activeCategory);
+
+      if(filtered.length === 0) {
+        grid.innerHTML = '<div class="loading">لا توجد وجبات متوفرة في هذا القسم.</div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(meal => {
+        const isTRY = currency === 'TRY';
+        const priceVal = isTRY ? meal.priceTRY : meal.priceSYP;
+        const priceFormatted = isTRY ? `${priceVal} TL` : `${priceVal} ل.س`;
+        
+        const waText = encodeURIComponent(`مرحباً مطعم عماد الدين، أرغب بطلب:\n- ${meal.title}\n- السعر: ${priceFormatted}`);
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+        const imgSrc = meal.image.startsWith('http') 
+          ? meal.image 
+          : 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80';
+
+        return `
+          <div class="card">
+            <div class="card-img-wrapper">
+              <img src="${imgSrc}" alt="${meal.title}" onerror="this.src='https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'">
+            </div>
+            <div class="card-content">
+              <h3 class="card-title">${meal.title}</h3>
+              <p class="card-desc">${meal.desc}</p>
+              <div class="card-footer">
+                <span class="price-tag">${priceFormatted}</span>
+                <a href="${waLink}" target="_blank" class="btn-whatsapp">
+                  <i class="fa-brands fa-whatsapp"></i> طلب
+                </a>
+              </div>
             </div>
           </div>
         `;
-        grid.appendChild(card);
-      });
+      }).join('');
     }
 
-    function updatePrices() {
-      const currencySelect = document.getElementById("currency");
-      renderMeals(currencySelect.value);
-    }
-
-    window.onload = function() {
-      renderMeals("TRY");
-    };
+    window.onload = fetchMealsFromSheet;
   </script>
 </body>
 </html>
