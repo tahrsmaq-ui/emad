@@ -416,22 +416,36 @@ function getFilteredMenu() {
     String(item.category || '').trim().toLowerCase() === currentCategory.toLowerCase()
   );
 }
-
 function filterMenu(category) {
   currentCategory = category;
+
   document.querySelectorAll('.cat-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.category === category);
+    btn.classList.toggle(
+      'active',
+      btn.dataset.category === category
+    );
   });
 
   const titles = {
-    all:'كل الوجبات',
-    'سندويش شاورما':'سندويش شاورما',
-    'سندويش غربي':'سندويش غربي',
-    'وجبات شاورما':'وجبات شاورما',
-    'وجبات غربية':'وجبات غربية',
-    'مقبلات':'المقبلات',
-    'مشروبات':'المشروبات'
+    all: 'كل الوجبات',
+    'shawarma-sand': 'سندويش شاورما',
+    'western-sand': 'سندويش غربي',
+    'shawarma-meals': 'وجبات شاورما',
+    'western-meals': 'وجبات غربية',
+    appetizers: 'المقبلات',
+    drinks: 'المشروبات'
   };
+
+  document.getElementById('section-title').textContent =
+    titles[category] || category;
+
+  renderMenuItems(getFilteredMenu());
+
+  if (window.innerWidth <= 991) {
+    closeSidebar();
+  }
+}
+
   document.getElementById('section-title').textContent = titles[category] || category;
   renderMenuItems(getFilteredMenu());
 
