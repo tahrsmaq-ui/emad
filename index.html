@@ -13,9 +13,12 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- PapaParse لحل مشكلة قراءة Google Sheets -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
     :root {
-      --bg-green: #071912;
+      --bg-green: #061c14;
       --card-bg: #0d261c;
       --primary-mustard: #E5A84B;
       --mustard-dark: #c48b36;
@@ -33,10 +36,6 @@
 
     body {
       background-color: var(--bg-green);
-      /* خلفية دمشقية زيتية مزخرفة بالذهبي لمسة راقية للمواقع السورية */
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(229, 168, 75, 0.15) 0%, transparent 50%),
-        url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23e5a84b' fill-opacity='0.05'%3E%3Cpath d='M0 0h80v80H0z' fill='none'/%3E%3Cpath d='M40 0l40 40-40 40L0 40zM40 10l30 30-30 30-30-30z'/%3E%3C/g%3E%3C/svg%3E");
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
@@ -99,59 +98,52 @@
       outline: none;
     }
 
-    /* Hero Banner مع الزخرفة الذهبية */
+    /* Hero Section مع الزخرفة الإسلامية العلوية تماماً كالصورة المطلوبة */
     .hero {
       text-align: center;
-      padding: 50px 20px 30px 20px;
+      padding: 70px 20px 50px 20px;
       position: relative;
-      background: radial-gradient(circle, rgba(18, 56, 41, 0.8) 0%, rgba(7, 25, 18, 0.95) 100%),
-                  url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0L120 60L60 120L0 60Z' fill='none' stroke='%23e5a84b' stroke-opacity='0.12' stroke-width='2'/%3E%3Ccircle cx='60' cy='60' r='30' fill='none' stroke='%23e5a84b' stroke-opacity='0.12' stroke-width='1.5'/%3E%3C/svg%3E");
-      border-bottom: 1px solid rgba(229, 168, 75, 0.3);
+      background-color: #051610;
+      background-image: 
+        /* الزخرفة الهندسية الإسلامية المتكررة في الأعلى */
+        url("data:image/svg+xml,%3Csvg width='160' height='80' viewBox='0 0 160 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23E5A84B' stroke-width='1.2' stroke-opacity='0.6'%3E%3Cpath d='M80 0 L100 20 L120 0 L140 20 L160 0 L160 40 L140 20 L120 40 L100 20 L80 40 L60 20 L40 40 L20 20 L0 40 L0 0 L20 20 L40 0 L60 20 Z'/%3E%3Cpath d='M0 40 L20 60 L40 40 L60 60 L80 40 L100 60 L120 40 L140 60 L160 40 L160 80 L140 60 L120 80 L100 60 L80 80 L60 60 L40 80 L20 60 L0 80 Z'/%3E%3Ccircle cx='80' cy='40' r='15'/%3E%3Ccircle cx='0' cy='40' r='15'/%3E%3Ccircle cx='160' cy='40' r='15'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(180deg, #09261b 0%, #061711 100%);
+      background-repeat: repeat-x, no-repeat;
+      background-position: top center, center;
+      border-bottom: 2px solid var(--primary-mustard);
+      box-shadow: inset 0 -15px 25px rgba(0,0,0,0.5);
     }
 
-    .hero-badge {
-      display: inline-block;
-      width: 70px;
-      height: 70px;
-      margin-bottom: 15px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 5 L63 25 L88 25 L73 45 L80 70 L50 55 L20 70 L27 45 L12 25 L37 25 Z' fill='%23E5A84B'/%3E%3C/svg%3E");
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+    /* خط ذهبي فاصل تحت الزخرفة العلوية */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 80px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary-mustard), transparent);
     }
 
     .hero h1 {
       font-size: 42px;
       font-weight: 900;
       color: var(--text-main);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       font-family: 'Amiri', serif;
+      margin-top: 10px;
     }
 
     .hero h1 span {
       color: var(--primary-mustard);
-      text-shadow: 0 0 10px rgba(229, 168, 75, 0.3);
+      text-shadow: 0 0 12px rgba(229, 168, 75, 0.4);
     }
 
     .hero p {
       font-size: 18px;
       color: var(--text-muted);
-    }
-
-    .ornament-line {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 20px;
-      color: var(--primary-mustard);
-    }
-
-    .ornament-line::before, .ornament-line::after {
-      content: '';
-      width: 100px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--primary-mustard), transparent);
+      max-width: 700px;
+      margin: 0 auto;
     }
 
     /* Container & Filters */
@@ -316,7 +308,7 @@
         gap: 12px;
       }
       .hero h1 {
-        font-size: 32px;
+        font-size: 30px;
       }
     }
   </style>
@@ -339,26 +331,18 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- Hero Section مع الزخرفة الهندسية العلوية المطابقة لصورتك -->
   <section class="hero">
-    <div class="hero-badge"></div>
     <h1>أهلاً بكم في مطعم <span>عماد الدين</span></h1>
     <p>أطيب المأكولات السريعة والشاورما والمناسف والغربيات بأفضل مذاق وأعلى جودة</p>
-    <div class="ornament-line">
-      <i class="fa-solid fa-star"></i>
-      <i class="fa-solid fa-crown"></i>
-      <i class="fa-solid fa-star"></i>
-    </div>
   </section>
 
   <!-- Main Container -->
   <main class="container">
-    <!-- Category Tabs Filter -->
     <div class="category-tabs" id="category-tabs">
       <button class="tab-btn active" onclick="filterCategory('all', this)">الكل</button>
     </div>
     
-    <!-- Meals Grid -->
     <div class="grid" id="meals-grid">
       <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
     </div>
@@ -373,50 +357,43 @@
   <!-- JavaScript Code -->
   <script>
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const WHATSAPP_NUMBER = "963948893053";
 
     let allMeals = [];
     let activeCategory = 'all';
 
-    async function fetchMealsFromSheet() {
-      try {
-        const response = await fetch(CSV_URL);
-        const data = await response.text();
-        allMeals = parseCSV(data);
-        renderCategories();
-        updateView();
-      } catch (error) {
-        console.error('Error fetching sheet:', error);
-        document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تعذر تحميل البيانات حالياً!</div>';
-      }
-    }
+    function fetchMealsFromSheet() {
+      Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results && results.data) {
+            allMeals = results.data.map(row => ({
+              title: row['title'] || row['اسم الوجبة'] || '',
+              priceTRY: row['price_try'] || row['السعر تركية'] || '0',
+              priceSYP: row['price_syr'] || row['السعر سورية'] || '0',
+              category: row['category'] || row['القسم'] || 'عام',
+              desc: row['description'] || row['الوصف'] || '',
+              image: row['image'] || row['الصورة'] || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'
+            })).filter(item => item.title.trim() !== '');
 
-    function parseCSV(csvText) {
-      const lines = csvText.split('\n').filter(line => line.trim() !== '');
-      const result = [];
-
-      for (let i = 1; i < lines.length; i++) {
-        const currentline = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        if (currentline.length >= 5) {
-          result.push({
-            title: currentline[0]?.replace(/"/g, '').trim() || '',
-            priceTRY: currentline[1]?.trim() || '0',
-            priceSYP: currentline[2]?.trim() || '0',
-            category: currentline[3]?.replace(/"/g, '').trim() || 'عام',
-            desc: currentline[4]?.replace(/"/g, '').trim() || '',
-            image: currentline[5]?.replace(/"/g, '').trim() || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'
-          });
+            renderCategories();
+            updateView();
+          }
+        },
+        error: function(err) {
+          console.error('Error fetching sheet:', err);
+          document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تعذر تحميل البيانات حالياً!</div>';
         }
-      }
-      return result;
+      });
     }
 
     function renderCategories() {
       const categories = ['all', ...new Set(allMeals.map(m => m.category).filter(Boolean))];
       const tabsContainer = document.getElementById('category-tabs');
       
-      // تبديل أسماء الأقسام وتعويض قسم الفروج المشوي بالمناسف
       const categoryNames = {
         'all': 'الكل',
         'shawarma-meals': 'وجبات الشاورما',
