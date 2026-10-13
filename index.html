@@ -188,7 +188,7 @@
       gap: 8px;
     }
 
-    .cat-item-btn {
+    .cat-btn {
       background: rgba(18, 38, 28, 0.6);
       color: var(--text-muted);
       border: 1px solid rgba(212, 175, 55, 0.1);
@@ -201,7 +201,7 @@
       transition: all 0.3s;
     }
 
-    .cat-item-btn.active, .cat-item-btn:hover {
+    .cat-btn.active, .cat-btn:hover {
       background: var(--gold-gradient);
       color: var(--bg-dark);
       border-color: transparent;
@@ -256,16 +256,33 @@
       object-fit: cover;
     }
 
-    .price-badge {
+    .price-badges {
       position: absolute;
       top: 10px;
       right: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .badge-try {
       background-color: var(--gold-primary);
       color: var(--bg-dark);
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .badge-syp {
+      background-color: #15452d;
+      color: #fff;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
@@ -339,6 +356,7 @@
       font-size: 1.1rem;
     }
 
+    /* نافذة السلة المنسدلة */
     .cart-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -488,14 +506,13 @@
         gap: 8px;
         padding: 10px;
       }
-      .cat-list {
+      .categories {
         flex-direction: row;
+        display: flex;
+        gap: 8px;
       }
       .sidebar-title {
         display: none;
-      }
-      .cat-item-btn {
-        white-space: nowrap;
       }
     }
   </style>
@@ -535,8 +552,8 @@
       <div class="sidebar-title">
         <i class="fa-solid fa-bars-staggered"></i> الأقسام
       </div>
-      <div class="cat-list" id="categoriesBar">
-        <button class="cat-item-btn active" onclick="filterMenu('all')">الكل</button>
+      <div class="categories" id="categoriesBar">
+        <button class="cat-btn active" onclick="filterMenu('all')">الكل</button>
       </div>
     </aside>
 
@@ -588,13 +605,11 @@
     let fullMenuData = [];
     let cart = {}; 
     let currentCurrency = 'syr';
-    let currentCategory = 'all';
-
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
-    // خريطة لترجمة التصنيفات الإنجليزية في جدولك إلى أسماء عربية واضحة في القائمة الجانبية
+    // ترجمة تصنيفات جدولك الإنجليزية إلى أسماء عربية نظيفة في القائمة الجانبية
     const categoryNamesMap = {
       'shawarma-meals': 'وجبات الشاورما',
       'western-meals': 'وجبات غربية',
@@ -602,35 +617,33 @@
       'drinks': 'مشروبات'
     };
 
-    function getArabicCategoryName(catKey) {
-      if (!catKey) return 'أخرى';
-      let cleanKey = catKey.trim().toLowerCase();
-      return categoryNamesMap[cleanKey] || catKey.trim();
-    }
+    const fallbackMenu = [
+      { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "shawarma-meals", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
+      { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "drinks", description: "عبوة باردة منعشة", image: "" }
+    ];
 
     async function loadMenu() {
       try {
-        const response = await fetch(sheetUrl);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        const response = await fetch(sheetUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error('فشل الجلب');
+
         const csvText = await response.text();
         const parsedData = parseCSV(csvText);
 
         if (parsedData && parsedData.length > 0) {
           fullMenuData = parsedData;
-          buildCategoriesNav(fullMenuData);
-          renderMenuItems(fullMenuData);
         } else {
-          showFallback();
+          fullMenuData = fallbackMenu;
         }
       } catch (error) {
-        showFallback();
+        fullMenuData = fallbackMenu;
       }
-    }
 
-    function showFallback() {
-      fullMenuData = [
-        { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "shawarma-meals", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
-        { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "drinks", description: "عبوة باردة منعشة", image: "" }
-      ];
       buildCategoriesNav(fullMenuData);
       renderMenuItems(fullMenuData);
     }
@@ -675,8 +688,8 @@
             title: item.title || item['عنوان'] || '',
             price_try: priceTryNum,
             price_s: priceSNum,
-            category: item.category || item['قسم'] || 'عام',
-            description: item.description || item['وصف'] || '',
+            category: item.category || item['قسم'] || 'وجبات عامة',
+            description: item.description || item['وصف'] || 'مجهّزة طازجة يومياً بأعلى جودة',
             image: item.image || ''
           };
         }).filter(item => item && item.title);
@@ -689,39 +702,21 @@
       currentCurrency = curr;
       document.getElementById('btn-syr').classList.toggle('active', curr === 'syr');
       document.getElementById('btn-try').classList.toggle('active', curr === 'try');
-      filterMenu(currentCategory);
+      renderMenuItems(fullMenuData);
       updateCartUI();
     }
 
     function buildCategoriesNav(menuData) {
       const container = document.getElementById('categoriesBar');
-      const rawCats = [...new Set(menuData.map(i => i.category))];
+      const cats = [...new Set(menuData.map(i => i.category))];
       
-      let html = `<button class="cat-item-btn ${currentCategory === 'all' ? 'active' : ''}" onclick="filterMenu('all')">الكل</button>`;
-      rawCats.forEach(catKey => {
-        let arabicLabel = getArabicCategoryName(catKey);
-        html += `<button class="cat-item-btn ${currentCategory === catKey ? 'active' : ''}" onclick="filterMenu('${catKey}')">${arabicLabel}</button>`;
+      let html = `<button class="cat-btn active" onclick="filterMenu('all')">الكل</button>`;
+      cats.forEach(catKey => {
+        let cleanKey = catKey.trim();
+        let arabicName = categoryNamesMap[cleanKey.toLowerCase()] || cleanKey;
+        html += `<button class="cat-btn" onclick="filterMenu('${cleanKey}')">${arabicName}</button>`;
       });
       container.innerHTML = html;
-    }
-
-    function filterMenu(categoryKey) {
-      currentCategory = categoryKey;
-      document.querySelectorAll('.cat-item-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (categoryKey === 'all' && btn.textContent.trim() === 'الكل') {
-          btn.classList.add('active');
-        } else if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(categoryKey)) {
-          btn.classList.add('active');
-        }
-      });
-
-      if (categoryKey === 'all') {
-        renderMenuItems(fullMenuData);
-      } else {
-        const filtered = fullMenuData.filter(item => item.category && item.category.trim().toLowerCase() === categoryKey.trim().toLowerCase());
-        renderMenuItems(filtered);
-      }
     }
 
     function renderMenuItems(menuData) {
@@ -729,9 +724,15 @@
       if (!container) return;
 
       if (menuData.length === 0) {
-        container.innerHTML = '<div class="loading-status">لا توجد عناصر في هذا القسم.</div>';
+        container.innerHTML = '<div class="loading-status">لا توجد عناصر مضافة بعد.</div>';
         return;
       }
 
       container.className = 'menu-grid';
-      container.innerHTM
+      container.innerHTML = menuData.map(item => {
+        const imageName = item.image ? item.image.trim() : '';
+        const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
+        const qty = cart[item.title] ? cart[item.title].qty : 0;
+        const encodedTitle = encodeURIComponent(item.title);
+
+        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLoc
