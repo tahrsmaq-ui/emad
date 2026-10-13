@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مطعم عماد الدين - شاورما وغربي ومقبلات</title>
+  <title>مطعم عماد الدين - القائمة الرقمية</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root {
       --bg-dark: #0a140f;
+      --bg-surface: #0d1f14;
       --bg-card: rgba(18, 38, 28, 0.85);
       --gold-primary: #d4af37;
       --gold-hover: #f3e5ab;
@@ -35,100 +36,151 @@
       background-attachment: fixed;
     }
 
-    .header {
-      position: relative;
+    .top-header {
       background: linear-gradient(135deg, rgba(22, 66, 45, 0.9), rgba(10, 20, 15, 0.95));
-      text-align: center;
-      padding: 35px 20px;
-      border-radius: 0 0 25px 25px;
+      padding: 15px 20px;
       border-bottom: 2px solid var(--gold-primary);
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .header::before {
-      content: '';
-      position: absolute;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(10, 20, 15, 0.75);
-      z-index: 1;
+      z-index: 100;
+      backdrop-filter: blur(10px);
     }
 
-    .header .logo-wrapper,
-    .header .banner-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .logo-wrapper {
+    .header-content {
+      max-width: 1250px;
+      margin: 0 auto;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
-    .header h1 {
-      color: var(--gold-primary);
-      font-size: 2rem;
-      margin-bottom: 8px;
-      font-weight: 900;
-    }
-
-    .header p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .categories-wrapper {
-      padding: 15px 10px;
-      overflow-x: auto;
-      white-space: nowrap;
+    .brand-area {
       display: flex;
-      justify-content: flex-start;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      align-items: center;
+      gap: 15px;
     }
 
-    @media (min-width: 992px) {
-      .categories-wrapper {
-        justify-content: center;
-      }
+    .brand-icon-box {
+      width: 45px;
+      height: 45px;
+      background: var(--gold-gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-dark);
+      font-size: 20px;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
 
-    .categories {
-      display: inline-flex;
-      gap: 8px;
-      padding: 5px;
+    .brand-titles h1 {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--gold-primary);
     }
 
-    .cat-btn {
-      background-color: rgba(18, 38, 28, 0.8);
+    .brand-titles p {
+      font-size: 0.75rem;
       color: var(--text-muted);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      padding: 8px 18px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
-      white-space: nowrap;
     }
 
-    .cat-btn.active, .cat-btn:hover {
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .currency-switcher {
+      display: flex;
+      background: rgba(5, 13, 8, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 30px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .curr-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .curr-btn.active {
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+    }
+
+    /* تخطيط الصفحة: القائمة الجانبية (Sidebar) مع المحتوى */
+    .layout-container {
+      max-width: 1250px;
+      margin: 20px auto;
+      padding: 0 15px;
+      display: flex;
+      gap: 25px;
+      align-items: flex-start;
+    }
+
+    .sidebar-categories {
+      width: 240px;
+      background: var(--bg-surface);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 18px;
+      padding: 15px;
+      position: sticky;
+      top: 85px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+
+    .sidebar-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cat-item-btn {
+      background: rgba(18, 38, 28, 0.6);
+      color: var(--text-muted);
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      padding: 10px 14px;
+      border-radius: 12px;
+      text-align: right;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .cat-item-btn.active, .cat-item-btn:hover {
       background: var(--gold-gradient);
       color: var(--bg-dark);
       border-color: transparent;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+      transform: translateX(-4px);
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 15px;
-      min-height: 250px;
+    .main-content-area {
+      flex-grow: 1;
     }
 
     .loading-status {
@@ -136,23 +188,13 @@
       padding: 40px 20px;
       color: var(--text-muted);
       font-size: 1.05rem;
-    }
-
-    .loading-status button {
-      margin-top: 15px;
-      padding: 8px 18px;
-      background: var(--gold-gradient);
-      color: var(--bg-dark);
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
+      grid-column: 1 / -1;
     }
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
     }
 
     .card {
@@ -181,38 +223,21 @@
 
     .card-img {
       width: 100%;
-      height: 180px;
+      height: 170px;
       display: block;
       object-fit: cover;
     }
 
-    .price-badges {
+    .price-badge {
       position: absolute;
       top: 10px;
       right: 10px;
-      display: flex;
-      gap: 6px;
-      z-index: 2;
-    }
-
-    .badge-try {
       background-color: var(--gold-primary);
       color: var(--bg-dark);
       padding: 4px 10px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    .badge-syp {
-      background-color: #15452d;
-      color: #fff;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
@@ -269,8 +294,8 @@
       background: var(--gold-gradient);
       color: var(--bg-dark);
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       border-radius: 6px;
       font-weight: bold;
       font-size: 1.1rem;
@@ -286,7 +311,7 @@
       font-size: 1.1rem;
     }
 
-    /* شريط السلة المتقدم والخيارات الإضافية */
+    /* شريط السلة المتقدم مع خيارات الطلب */
     .cart-bar {
       position: fixed;
       bottom: 0;
@@ -303,7 +328,7 @@
       z-index: 1000;
       transform: translateY(100%);
       transition: transform 0.3s ease-in-out;
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
       border-radius: 20px 20px 0 0;
     }
@@ -342,7 +367,7 @@
 
     .select-order-type, .input-notes {
       flex: 1;
-      padding: 8px 12px;
+      padding: 9px 12px;
       background: rgba(18, 38, 28, 0.9);
       border: 1px solid rgba(212, 175, 55, 0.3);
       border-radius: 8px;
@@ -366,72 +391,112 @@
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
       flex-shrink: 0;
     }
+
+    @media (max-width: 768px) {
+      .layout-container {
+        flex-direction: column;
+      }
+      .sidebar-categories {
+        width: 100%;
+        position: static;
+        overflow-x: auto;
+        white-space: nowrap;
+        display: flex;
+        gap: 8px;
+        padding: 10px;
+      }
+      .cat-list {
+        flex-direction: row;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .cat-item-btn {
+        white-space: nowrap;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="logo-wrapper">
-      <i class="fa-solid fa-utensils" style="color: var(--gold-primary); font-size: 38px;"></i>
-    </div>
-    <div class="banner-content">
-      <h1>مطعم عماد الدين</h1>
-      <p>أطيب الوجبات الغربية والشاورما والمقبلات - اختر وجباتك وأرسل الطلب عبر الواتساب</p>
+  <header class="top-header">
+    <div class="header-content">
+      <div class="brand-area">
+        <div class="brand-icon-box"><i class="fa-solid fa-crown"></i></div>
+        <div class="brand-titles">
+          <h1>مطعم عماد الدين</h1>
+          <p>أطيب الوجبات الغربية والشاورما والمقبلات</p>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <!-- زر تبديل العملة العلوي -->
+        <div class="currency-switcher">
+          <button class="curr-btn active" id="btn-syr" onclick="switchCurrency('syr')">ل.س</button>
+          <button class="curr-btn" id="btn-try" onclick="switchCurrency('try')">TL</button>
+        </div>
+      </div>
     </div>
   </header>
 
-  <div class="categories-wrapper">
-    <nav class="categories">
-      <button class="cat-btn active" onclick="filterMenu('all')">الكل</button>
-      <button class="cat-btn" onclick="filterMenu('سندويش شاورما')">سندويش شاورما</button>
-      <button class="cat-btn" onclick="filterMenu('سندويش غربي')">سندويش غربي</button>
-      <button class="cat-btn" onclick="filterMenu('وجبات شاورما')">وجبات شاورما</button>
-      <button class="cat-btn" onclick="filterMenu('وجبات غربية')">وجبات غربي</button>
-      <button class="cat-btn" onclick="filterMenu('مقبلات')">مقبلات</button>
-      <button class="cat-btn" onclick="filterMenu('مشروبات')">مشروبات</button>
-    </nav>
+  <!-- تخطيط الصفحة: القائمة الجانبية (Sidebar) مع المحتوى -->
+  <div class="layout-container">
+    
+    <!-- الشريط الجانبي للتصنيفات -->
+    <aside class="sidebar-categories">
+      <div class="sidebar-title">
+        <i class="fa-solid fa-bars-staggered"></i> الأقسام
+      </div>
+      <div class="cat-list" id="categoriesBar">
+        <button class="cat-item-btn active" onclick="filterCategory('الكل', this)">الكل</button>
+      </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي للوجبات -->
+    <div class="main-content-area">
+      <main id="menu-container" class="menu-grid">
+        <div class="loading-status">
+          <i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة...
+        </div>
+      </main>
+    </div>
+
   </div>
 
-  <main class="container">
-    <div id="menu-container">
-      <div class="loading-status">
-        <i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة...
-      </div>
-    </div>
-  </main>
-
-  <!-- شريط السلة المتقدم والخيارات الإضافية -->
+  <!-- شريط السلة المتقدم مع خيارات الطلب -->
   <div id="cart-bar" class="cart-bar">
     <div class="cart-top-row">
       <div class="cart-info">
         <span id="cart-count-text" class="cart-count">الطلب: 0 عنصر</span>
-        <span id="cart-total-text" class="cart-total">المجموع: 0 TL / 0 SYR</span>
+        <span id="cart-total-text" class="cart-total">المجموع: 0 ل.س</span>
       </div>
       <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn" target="_blank">
         <i class="fab fa-whatsapp"></i> إرسال الطلب
       </a>
     </div>
     <div class="cart-options-row">
-      <select id="orderType" class="select-order-type">
+      <select id="orderType" class="select-order-type" onchange="updateCartBar()">
         <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
         <option value="استلام من المطعم">🏪 استلام من المطعم</option>
         <option value="سفري">📦 طعام سفري</option>
         <option value="صالة">🍽️ طلب داخل الصالة</option>
       </select>
-      <input type="text" id="orderNotes" class="input-notes" placeholder="عنوان التوصيل أو ملاحظات إضافية...">
+      <input type="text" id="orderNotes" class="input-notes" placeholder="عنوان التوصيل أو ملاحظات إضافية..." oninput="updateCartBar()">
     </div>
   </div>
 
   <script>
     let fullMenuData = [];
     let cart = {}; 
+    let currentCategory = 'الكل';
+    let currentCurrency = 'syr';
+
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
     const fallbackMenu = [
       { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "وجبات شاورما", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
-      { title: "سندويش صاج دجاج", price_try: 120, price_s: 36000, category: "سندويش شاورما", description: "خبز صاج مقرمش مع دجاج متبل", image: "" },
       { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "مشروبات", description: "عبوة باردة منعشة", image: "" }
     ];
 
@@ -457,7 +522,8 @@
         fullMenuData = fallbackMenu;
       }
 
-      renderMenuItems(fullMenuData);
+      buildCategoriesNav();
+      renderMenuItems();
     }
 
     function parseCSV(csvText) {
@@ -510,30 +576,57 @@
       }
     }
 
-    function renderMenuItems(menuData) {
+    function switchCurrency(curr) {
+      currentCurrency = curr;
+      document.getElementById('btn-syr').classList.toggle('active', curr === 'syr');
+      document.getElementById('btn-try').classList.toggle('active', curr === 'try');
+      renderMenuItems();
+      updateCartBar();
+    }
+
+    function buildCategoriesNav() {
+      const container = document.getElementById('categoriesBar');
+      const cats = ['الكل', ...new Set(fullMenuData.map(i => i.category))];
+      
+      container.innerHTML = cats.map(cat => `
+        <button class="cat-item-btn ${cat === currentCategory ? 'active' : ''}" onclick="filterCategory('${cat}', this)">${cat}</button>
+      `).join('');
+    }
+
+    function filterCategory(cat, btn) {
+      document.querySelectorAll('.cat-item-btn').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      currentCategory = cat;
+      renderMenuItems();
+    }
+
+    function renderMenuItems() {
       const container = document.getElementById('menu-container');
       if (!container) return;
 
-      if (menuData.length === 0) {
-        container.innerHTML = '<div class="loading-status">لا توجد عناصر مضافة بعد.</div>';
+      const filtered = fullMenuData.filter(item => {
+        if (currentCategory === 'الكل') return true;
+        return item.category && item.category.trim().toLowerCase() === currentCategory.toLowerCase();
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="loading-status">لا توجد وجبات مطابقة في هذا القسم.</div>';
         return;
       }
 
-      container.className = 'menu-grid';
-      container.innerHTML = menuData.map(item => {
+      container.innerHTML = filtered.map(item => {
         const imageName = item.image ? item.image.trim() : '';
         const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
         const qty = cart[item.title] ? cart[item.title].qty : 0;
         const encodedTitle = encodeURIComponent(item.title);
+        
+        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLocaleString()} TL`;
 
         return `
           <div class="card">
             <div class="card-img-container">
               <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80'">
-              <div class="price-badges">
-                ${item.price_try ? `<span class="badge-try">${item.price_try} TL</span>` : ''}
-                ${item.price_s ? `<span class="badge-syp">${item.price_s.toLocaleString()} SYR</span>` : ''}
-              </div>
+              <div class="price-badge">${priceVal}</div>
             </div>
             <div class="card-body">
               <h3 class="card-title">${item.title}</h3>
@@ -600,8 +693,8 @@
       cartBar.classList.add('active');
 
       let totalItems = 0;
-      let totalTry = 0;
-      let totalSyp = 0;
+      let sumSyr = 0;
+      let sumTry = 0;
       
       let orderType = document.getElementById('orderType').value;
       let notes = document.getElementById('orderNotes').value.trim();
@@ -619,39 +712,20 @@
       cartItems.forEach(cartItem => {
         const { item, qty } = cartItem;
         totalItems += qty;
-        totalTry += item.price_try * qty;
-        totalSyp += item.price_s * qty;
-        messageLines.push(`▪️ ${item.title} (العدد: ${qty}) - ${item.price_try * qty} TL / ${(item.price_s * qty).toLocaleString()} SYR`);
+        let subSyr = item.price_s * qty;
+        let subTry = item.price_try * qty;
+        sumSyr += subSyr;
+        sumTry += subTry;
+        messageLines.push(`▪️ ${item.title} (العدد: ${qty}) - ${subSyr.toLocaleString()} ل.س (${subTry.toLocaleString()} TL)`);
       });
 
-      messageLines.push(`\n💰 *الإجمالي الكلي:* ${totalTry} TL / ${totalSyp.toLocaleString()} SYR`);
+      messageLines.push(`\n💰 *الإجمالي الكلي:* ${sumSyr.toLocaleString()} ل.س / ${sumTry.toLocaleString()} TL`);
 
       cartCountText.innerText = `الطلب: ${totalItems} عناصر`;
-      cartTotalText.innerText = `المجموع: ${totalTry} TL / ${totalSyp.toLocaleString()} SYR`;
+      cartTotalText.innerText = currentCurrency === 'syr' ? `المجموع: ${sumSyr.toLocaleString()} ل.س` : `المجموع: ${sumTry.toLocaleString()} TL`;
 
       const whatsappText = encodeURIComponent(messageLines.join('\n'));
       whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${whatsappText}`;
-    }
-
-    // تحديث رابط الواتساب فورا لو غير الزبون نوع الطلب أو كتب ملاحظة
-    document.getElementById('orderType').addEventListener('change', updateCartBar);
-    document.getElementById('orderNotes').addEventListener('input', updateCartBar);
-
-    function filterMenu(category) {
-      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-      if (window.event && window.event.target) {
-        window.event.target.classList.add('active');
-      }
-
-      if (category === 'all') {
-        renderMenuItems(fullMenuData);
-      } else {
-        const filtered = fullMenuData.filter(item => {
-          if (!item.category) return false;
-          return item.category.trim().toLowerCase() === category.toLowerCase();
-        });
-        renderMenuItems(filtered);
-      }
     }
 
     document.addEventListener('DOMContentLoaded', loadMenu);
