@@ -13,9 +13,6 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <!-- PapaParse لحل مشكلة قراءة Google Sheets -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
   <style>
     :root {
       --bg-green: #061c14;
@@ -98,14 +95,13 @@
       outline: none;
     }
 
-    /* Hero Section مع الزخرفة الإسلامية العلوية تماماً كالصورة المطلوبة */
+    /* Hero Section مع الزخرفة الهندسية الإسلامية العلوية */
     .hero {
       text-align: center;
       padding: 70px 20px 50px 20px;
       position: relative;
       background-color: #051610;
       background-image: 
-        /* الزخرفة الهندسية الإسلامية المتكررة في الأعلى */
         url("data:image/svg+xml,%3Csvg width='160' height='80' viewBox='0 0 160 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23E5A84B' stroke-width='1.2' stroke-opacity='0.6'%3E%3Cpath d='M80 0 L100 20 L120 0 L140 20 L160 0 L160 40 L140 20 L120 40 L100 20 L80 40 L60 20 L40 40 L20 20 L0 40 L0 0 L20 20 L40 0 L60 20 Z'/%3E%3Cpath d='M0 40 L20 60 L40 40 L60 60 L80 40 L100 60 L120 40 L140 60 L160 40 L160 80 L140 60 L120 80 L100 60 L80 80 L60 60 L40 80 L20 60 L0 80 Z'/%3E%3Ccircle cx='80' cy='40' r='15'/%3E%3Ccircle cx='0' cy='40' r='15'/%3E%3Ccircle cx='160' cy='40' r='15'/%3E%3C/g%3E%3C/svg%3E"),
         linear-gradient(180deg, #09261b 0%, #061711 100%);
       background-repeat: repeat-x, no-repeat;
@@ -114,7 +110,6 @@
       box-shadow: inset 0 -15px 25px rgba(0,0,0,0.5);
     }
 
-    /* خط ذهبي فاصل تحت الزخرفة العلوية */
     .hero::after {
       content: '';
       position: absolute;
@@ -146,7 +141,7 @@
       margin: 0 auto;
     }
 
-    /* Container & Filters */
+    /* Container & Tabs */
     .container {
       max-width: 1200px;
       margin: 30px auto 60px auto;
@@ -279,12 +274,12 @@
       background-color: #1eb956;
     }
 
-    /* Loading Spinner */
     .loading {
       text-align: center;
       padding: 50px;
       font-size: 20px;
       color: var(--primary-mustard);
+      grid-column: 1 / -1;
     }
 
     /* Footer */
@@ -331,7 +326,7 @@
     </div>
   </header>
 
-  <!-- Hero Section مع الزخرفة الهندسية العلوية المطابقة لصورتك -->
+  <!-- Hero Section -->
   <section class="hero">
     <h1>أهلاً بكم في مطعم <span>عماد الدين</span></h1>
     <p>أطيب المأكولات السريعة والشاورما والمناسف والغربيات بأفضل مذاق وأعلى جودة</p>
@@ -354,40 +349,55 @@
     <p style="margin-top: 5px; font-size: 12px; color: #666;">للطلبات والاستفسار: 0948893053</p>
   </footer>
 
-  <!-- JavaScript Code -->
+  <!-- JavaScript Code (طريقة مطعم الزين المباشرة والآمنة) -->
   <script>
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
     const WHATSAPP_NUMBER = "963948893053";
 
     let allMeals = [];
     let activeCategory = 'all';
 
-    function fetchMealsFromSheet() {
-      Papa.parse(CSV_URL, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          if (results && results.data) {
-            allMeals = results.data.map(row => ({
-              title: row['title'] || row['اسم الوجبة'] || '',
-              priceTRY: row['price_try'] || row['السعر تركية'] || '0',
-              priceSYP: row['price_syr'] || row['السعر سورية'] || '0',
-              category: row['category'] || row['القسم'] || 'عام',
-              desc: row['description'] || row['الوصف'] || '',
-              image: row['image'] || row['الصورة'] || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'
-            })).filter(item => item.title.trim() !== '');
+    async function fetchMeals() {
+      try {
+        const response = await fetch(CSV_URL);
+        const data = await response.text();
+        parseCSV(data);
+      } catch (error) {
+        console.error('Error fetching sheet:', error);
+        document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تعذر الاتصال بملف البيانات! تأكد من إعدادات النشر بملف الشيت.</div>';
+      }
+    }
 
-            renderCategories();
-            updateView();
+    function parseCSV(text) {
+      const lines = text.split('\n');
+      allMeals = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const row = lines[i].trim();
+        if (!row) continue;
+        
+        // تقسيم البيانات مع مراعاة الفواصل داخل النصوص
+        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        if (cols.length >= 5) {
+          let cat = cols[3]?.replace(/"/g, '').trim() || 'عام';
+          if (cat === 'grilled-ch...' || cat.includes('grilled')) {
+            cat = 'manasif';
           }
-        },
-        error: function(err) {
-          console.error('Error fetching sheet:', err);
-          document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تعذر تحميل البيانات حالياً!</div>';
+
+          allMeals.push({
+            title: cols[0]?.replace(/"/g, '').trim() || '',
+            priceTRY: cols[1]?.replace(/"/g, '').trim() || '0',
+            priceSYP: cols[2]?.replace(/"/g, '').trim() || '0',
+            category: cat,
+            desc: cols[4]?.replace(/"/g, '').trim() || '',
+            image: cols[5]?.replace(/"/g, '').trim() || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600'
+          });
         }
-      });
+      }
+
+      renderCategories();
+      updateView();
     }
 
     function renderCategories() {
@@ -401,7 +411,6 @@
         'shawarma-sand': 'سندويش شاورما',
         'western-sand': 'سندويش غريب',
         'appetizers': 'مقبلات وبطاطا',
-        'grilled-ch...': 'قسم المناسف',
         'manasif': 'قسم المناسف'
       };
 
@@ -427,8 +436,8 @@
         ? allMeals 
         : allMeals.filter(m => m.category === activeCategory);
 
-      if(filtered.length === 0) {
-        grid.innerHTML = '<div class="loading">لا توجد وجبات متوفرة في هذا القسم.</div>';
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="loading">لا توجد وجبات في هذا القسم.</div>';
         return;
       }
 
@@ -464,7 +473,7 @@
       }).join('');
     }
 
-    window.onload = fetchMealsFromSheet;
+    window.onload = fetchMeals;
   </script>
 </body>
 </html>
