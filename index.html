@@ -5,42 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مطعم عماد الدين - القائمة الرقمية</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      --bg-dark: #0a140f;
+      --bg-dark: #050d08;
       --bg-surface: #0d1f14;
-      --bg-card: rgba(18, 38, 28, 0.85);
+      --bg-card: rgba(15, 36, 24, 0.9);
       --gold-primary: #d4af37;
-      --gold-hover: #f3e5ab;
-      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
-      --text-light: #f5f7f6;
-      --text-muted: #a3b899;
+      --gold-light: #f3e5ab;
+      --gold-gradient: linear-gradient(135deg, #d4af37, #f3e5ab, #aa771c);
+      --text-light: #f0fdf4;
+      --text-muted: #86efac;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Tajawal', sans-serif;
     }
 
     body {
       background-color: var(--bg-dark);
       color: var(--text-light);
       direction: rtl;
-      padding-bottom: 140px;
+      padding-bottom: 50px;
+      min-height: 100vh;
       background-image: 
-          radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
-          radial-gradient(circle at 90% 80%, rgba(13, 43, 29, 0.6) 0%, transparent 50%);
+        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(212, 175, 55, 0.07) 0%, transparent 40%);
       background-attachment: fixed;
     }
 
+    /* الهيدر العلوي المطور (يضم الشعار، تبديل العملة، والسلة العلوية) */
     .top-header {
-      background: linear-gradient(135deg, rgba(22, 66, 45, 0.9), rgba(10, 20, 15, 0.95));
+      background: linear-gradient(180deg, #081a10 0%, var(--bg-surface) 100%);
       padding: 15px 20px;
-      border-bottom: 2px solid var(--gold-primary);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
       position: sticky;
       top: 0;
       z-index: 100;
@@ -64,26 +67,28 @@
     }
 
     .brand-icon-box {
-      width: 45px;
-      height: 45px;
+      width: 48px;
+      height: 48px;
       background: var(--gold-gradient);
-      border-radius: 12px;
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--bg-dark);
-      font-size: 20px;
+      font-size: 22px;
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
 
     .brand-titles h1 {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 900;
-      color: var(--gold-primary);
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .brand-titles p {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
 
@@ -106,10 +111,10 @@
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 5px 12px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       cursor: pointer;
       transition: all 0.3s ease;
     }
@@ -119,10 +124,45 @@
       color: var(--bg-dark);
     }
 
-    /* تخطيط الصفحة: القائمة الجانبية (Sidebar) مع المحتوى */
+    /* زر السلة العلوي المبتكر */
+    .top-cart-btn {
+      position: relative;
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border: none;
+      padding: 8px 16px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .top-cart-btn:active {
+      transform: scale(0.95);
+    }
+
+    .cart-badge-count {
+      background: #ef4444;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 900;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* تخطيط الصفحة: القائمة الجانبية والمحتوى */
     .layout-container {
       max-width: 1250px;
-      margin: 20px auto;
+      margin: 25px auto;
       padding: 0 15px;
       display: flex;
       gap: 25px;
@@ -130,13 +170,13 @@
     }
 
     .sidebar-categories {
-      width: 240px;
+      width: 250px;
       background: var(--bg-surface);
       border: 1px solid rgba(212, 175, 55, 0.2);
       border-radius: 18px;
       padding: 15px;
       position: sticky;
-      top: 85px;
+      top: 95px;
       box-shadow: 0 8px 25px rgba(0,0,0,0.5);
       flex-shrink: 0;
     }
@@ -160,7 +200,7 @@
     }
 
     .cat-item-btn {
-      background: rgba(18, 38, 28, 0.6);
+      background: rgba(15, 36, 24, 0.6);
       color: var(--text-muted);
       border: 1px solid rgba(212, 175, 55, 0.1);
       padding: 10px 14px;
@@ -185,16 +225,16 @@
 
     .loading-status {
       text-align: center;
-      padding: 40px 20px;
+      padding: 50px;
       color: var(--text-muted);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       grid-column: 1 / -1;
     }
 
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     .card {
@@ -205,9 +245,9 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
       backdrop-filter: blur(8px);
-      transition: transform 0.3s;
+      transition: transform 0.3s, border-color 0.3s;
     }
 
     .card:hover {
@@ -223,7 +263,7 @@
 
     .card-img {
       width: 100%;
-      height: 170px;
+      height: 180px;
       display: block;
       object-fit: cover;
     }
@@ -232,13 +272,14 @@
       position: absolute;
       top: 10px;
       right: 10px;
-      background-color: var(--gold-primary);
-      color: var(--bg-dark);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: bold;
+      background: rgba(5, 13, 8, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-primary);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-weight: 900;
       font-size: 0.9rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     }
 
     .card-body {
@@ -258,7 +299,7 @@
 
     .card-description {
       color: var(--text-muted);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       line-height: 1.5;
       margin-bottom: 16px;
       flex-grow: 1;
@@ -270,14 +311,14 @@
       background: var(--gold-gradient);
       color: var(--bg-dark);
       border: none;
-      border-radius: 8px;
-      font-weight: bold;
+      border-radius: 10px;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 8px;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
 
     .quantity-controls {
@@ -286,7 +327,7 @@
       justify-content: space-between;
       background-color: #07120a;
       border: 1px solid var(--gold-primary);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 4px;
     }
 
@@ -296,7 +337,7 @@
       border: none;
       width: 30px;
       height: 30px;
-      border-radius: 6px;
+      border-radius: 7px;
       font-weight: bold;
       font-size: 1.1rem;
       cursor: pointer;
@@ -306,90 +347,159 @@
     }
 
     .qty-count {
-      font-weight: bold;
+      font-weight: 900;
       color: #fff;
       font-size: 1.1rem;
     }
 
-    /* شريط السلة المتقدم مع خيارات الطلب */
-    .cart-bar {
+    /* نافذة السلة العلوية المنسدلة (Drawer / Modal) */
+    .cart-overlay {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: rgba(10, 24, 17, 0.98);
-      border-top: 2px solid var(--gold-primary);
-      backdrop-filter: blur(15px);
-      padding: 15px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      box-shadow: 0 -6px 25px rgba(0, 0, 0, 0.8);
-      z-index: 1000;
-      transform: translateY(100%);
-      transition: transform 0.3s ease-in-out;
-      max-width: 850px;
-      margin: 0 auto;
-      border-radius: 20px 20px 0 0;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
     }
 
-    .cart-bar.active {
+    .cart-overlay.open {
+      display: block;
+      opacity: 1;
+    }
+
+    .cart-drawer-panel {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #091c12;
+      border-top: 2px solid var(--gold-primary);
+      border-radius: 25px 25px 0 0;
+      padding: 25px;
+      z-index: 2001;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .cart-overlay.open .cart-drawer-panel {
       transform: translateY(0);
     }
 
-    .cart-top-row {
+    .drawer-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
-    .cart-info {
+    .drawer-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--gold-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-drawer {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .cart-items-container {
+      overflow-y: auto;
+      margin: 15px 0;
+      max-height: 200px;
       display: flex;
       flex-direction: column;
-      gap: 3px;
-    }
-
-    .cart-count {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .cart-total {
-      color: var(--gold-primary);
-      font-weight: bold;
-      font-size: 1.1rem;
-    }
-
-    .cart-options-row {
-      display: flex;
       gap: 10px;
+      padding-left: 5px;
     }
 
-    .select-order-type, .input-notes {
-      flex: 1;
-      padding: 9px 12px;
-      background: rgba(18, 38, 28, 0.9);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      border-radius: 8px;
-      color: #fff;
+    .cart-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 36, 24, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      padding: 10px 14px;
+      border-radius: 12px;
+    }
+
+    .cart-item-info h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .cart-item-info span {
       font-size: 0.85rem;
+      color: var(--gold-primary);
+      font-weight: 800;
+    }
+
+    .cart-options-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .select-style, .input-style {
+      width: 100%;
+      padding: 11px 15px;
+      background: rgba(15, 36, 24, 0.8);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.9rem;
       outline: none;
     }
 
-    .send-whatsapp-btn {
-      background-color: #25d366;
-      color: white;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
+    .cart-total-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .cart-total-footer span {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .cart-total-footer strong {
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+      font-weight: 900;
+    }
+
+    .whatsapp-send-btn {
+      width: 100%;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 800;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      font-size: 0.95rem;
+      gap: 10px;
+      cursor: pointer;
       box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-      flex-shrink: 0;
+      text-decoration: none;
     }
 
     @media (max-width: 768px) {
@@ -419,13 +529,14 @@
 </head>
 <body>
 
+  <!-- الهيدر العلوي يضم اسم المطعم، زر العملات، وزر السلة -->
   <header class="top-header">
     <div class="header-content">
       <div class="brand-area">
         <div class="brand-icon-box"><i class="fa-solid fa-crown"></i></div>
         <div class="brand-titles">
           <h1>مطعم عماد الدين</h1>
-          <p>أطيب الوجبات الغربية والشاورما والمقبلات</p>
+          <p>أطيب المأكولات الغربية والشاورما والمقبلات</p>
         </div>
       </div>
       
@@ -435,6 +546,13 @@
           <button class="curr-btn active" id="btn-syr" onclick="switchCurrency('syr')">ل.س</button>
           <button class="curr-btn" id="btn-try" onclick="switchCurrency('try')">TL</button>
         </div>
+
+        <!-- زر السلة المتقدم في الأعلى -->
+        <button class="top-cart-btn" onclick="toggleCartDrawer(true)">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <span>السلة</span>
+          <span class="cart-badge-count" id="badgeCount">0</span>
+        </button>
       </div>
     </div>
   </header>
@@ -442,7 +560,7 @@
   <!-- تخطيط الصفحة: القائمة الجانبية (Sidebar) مع المحتوى -->
   <div class="layout-container">
     
-    <!-- الشريط الجانبي للتصنيفات -->
+    <!-- الشريط الجانبي للأقسام بالعربي -->
     <aside class="sidebar-categories">
       <div class="sidebar-title">
         <i class="fa-solid fa-bars-staggered"></i> الأقسام
@@ -463,25 +581,38 @@
 
   </div>
 
-  <!-- شريط السلة المتقدم مع خيارات الطلب -->
-  <div id="cart-bar" class="cart-bar">
-    <div class="cart-top-row">
-      <div class="cart-info">
-        <span id="cart-count-text" class="cart-count">الطلب: 0 عنصر</span>
-        <span id="cart-total-text" class="cart-total">المجموع: 0 ل.س</span>
+  <!-- نافذة السلة الجانبية المنسدلة (Drawer) -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
+    <div class="cart-drawer-panel" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <i class="fa-solid fa-bag-shopping"></i> حقيبة الطلبات المختارة
+        </div>
+        <button class="close-drawer" onclick="toggleCartDrawer(false)">&times;</button>
       </div>
-      <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn" target="_blank">
-        <i class="fab fa-whatsapp"></i> إرسال الطلب
+
+      <div class="cart-items-container" id="cartItemsList">
+        <div style="text-align: center; color: #86efac; padding: 20px;">السلة فارغة حالياً</div>
+      </div>
+
+      <div class="cart-options-area">
+        <select id="orderType" class="select-style">
+          <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
+          <option value="استلام من المطعم">🏪 استلام من المطعم</option>
+          <option value="سفري">📦 طعام سفري</option>
+          <option value="صالة">🍽️ طلب داخل الصالة</option>
+        </select>
+        <input type="text" id="orderNotes" class="input-style" placeholder="عنوان التوصيل أو ملاحظات إضافية...">
+      </div>
+
+      <div class="cart-total-footer">
+        <span>المجموع الكلي:</span>
+        <strong id="drawerTotalSum">0 ل.س</strong>
+      </div>
+
+      <a href="#" id="whatsappSendBtn" class="whatsapp-send-btn" target="_blank" onclick="sendWhatsAppOrder()">
+        <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> إرسال الطلب عبر الواتساب
       </a>
-    </div>
-    <div class="cart-options-row">
-      <select id="orderType" class="select-order-type" onchange="updateCartBar()">
-        <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
-        <option value="استلام من المطعم">🏪 استلام من المطعم</option>
-        <option value="سفري">📦 طعام سفري</option>
-        <option value="صالة">🍽️ طلب داخل الصالة</option>
-      </select>
-      <input type="text" id="orderNotes" class="input-notes" placeholder="عنوان التوصيل أو ملاحظات إضافية..." oninput="updateCartBar()">
     </div>
   </div>
 
@@ -581,7 +712,7 @@
       document.getElementById('btn-syr').classList.toggle('active', curr === 'syr');
       document.getElementById('btn-try').classList.toggle('active', curr === 'try');
       renderMenuItems();
-      updateCartBar();
+      updateCartUI();
     }
 
     function buildCategoriesNav() {
@@ -610,125 +741,4 @@
       });
 
       if (filtered.length === 0) {
-        container.innerHTML = '<div class="loading-status">لا توجد وجبات مطابقة في هذا القسم.</div>';
-        return;
-      }
-
-      container.innerHTML = filtered.map(item => {
-        const imageName = item.image ? item.image.trim() : '';
-        const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
-        const qty = cart[item.title] ? cart[item.title].qty : 0;
-        const encodedTitle = encodeURIComponent(item.title);
-        
-        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLocaleString()} TL`;
-
-        return `
-          <div class="card">
-            <div class="card-img-container">
-              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80'">
-              <div class="price-badge">${priceVal}</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">${item.title}</h3>
-              <p class="card-description">${item.description}</p>
-              <div id="btn-container-${encodedTitle}">
-                ${renderCartButton(item, qty)}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderCartButton(item, qty) {
-      const encodedTitle = encodeURIComponent(item.title);
-      if (qty === 0) {
-        return `
-          <button class="add-to-cart-btn" onclick="updateQty('${encodedTitle}', 1)">
-            <i class="fas fa-cart-plus"></i> إضافة إلى السلة
-          </button>
-        `;
-      } else {
-        return `
-          <div class="quantity-controls">
-            <button class="qty-btn" onclick="updateQty('${encodedTitle}', ${qty - 1})">-</button>
-            <span class="qty-count">${qty}</span>
-            <button class="qty-btn" onclick="updateQty('${encodedTitle}', ${qty + 1})">+</button>
-          </div>
-        `;
-      }
-    }
-
-    function updateQty(encodedTitle, newQty) {
-      const title = decodeURIComponent(encodedTitle);
-      const item = fullMenuData.find(i => i.title === title);
-      if (!item) return;
-
-      if (newQty <= 0) {
-        delete cart[title];
-      } else {
-        cart[title] = { item: item, qty: newQty };
-      }
-
-      const btnContainer = document.getElementById(`btn-container-${encodedTitle}`);
-      if (btnContainer) {
-        btnContainer.innerHTML = renderCartButton(item, newQty <= 0 ? 0 : newQty);
-      }
-
-      updateCartBar();
-    }
-
-    function updateCartBar() {
-      const cartBar = document.getElementById('cart-bar');
-      const cartCountText = document.getElementById('cart-count-text');
-      const cartTotalText = document.getElementById('cart-total-text');
-      const whatsappBtn = document.getElementById('whatsapp-order-btn');
-
-      const cartItems = Object.values(cart);
-      if (cartItems.length === 0) {
-        cartBar.classList.remove('active');
-        return;
-      }
-
-      cartBar.classList.add('active');
-
-      let totalItems = 0;
-      let sumSyr = 0;
-      let sumTry = 0;
-      
-      let orderType = document.getElementById('orderType').value;
-      let notes = document.getElementById('orderNotes').value.trim();
-
-      let messageLines = [
-        `*طلب جديد - مطعم عماد الدين* 🍽️`,
-        `📌 *نوع الطلب:* ${orderType}`
-      ];
-      
-      if (notes) {
-        messageLines.push(`📝 *الملاحظات/العنوان:* ${notes}`);
-      }
-      messageLines.push(`-----------------------------------`);
-
-      cartItems.forEach(cartItem => {
-        const { item, qty } = cartItem;
-        totalItems += qty;
-        let subSyr = item.price_s * qty;
-        let subTry = item.price_try * qty;
-        sumSyr += subSyr;
-        sumTry += subTry;
-        messageLines.push(`▪️ ${item.title} (العدد: ${qty}) - ${subSyr.toLocaleString()} ل.س (${subTry.toLocaleString()} TL)`);
-      });
-
-      messageLines.push(`\n💰 *الإجمالي الكلي:* ${sumSyr.toLocaleString()} ل.س / ${sumTry.toLocaleString()} TL`);
-
-      cartCountText.innerText = `الطلب: ${totalItems} عناصر`;
-      cartTotalText.innerText = currentCurrency === 'syr' ? `المجموع: ${sumSyr.toLocaleString()} ل.س` : `المجموع: ${sumTry.toLocaleString()} TL`;
-
-      const whatsappText = encodeURIComponent(messageLines.join('\n'));
-      whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${whatsappText}`;
-    }
-
-    document.addEventListener('DOMContentLoaded', loadMenu);
-  </script>
-</body>
-</html>
+        container.innerHTML = '<div
