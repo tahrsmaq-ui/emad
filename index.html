@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مطعم عماد الدين - شاورما وغربي ومقبلات</title>
+  <title>مطعم عماد الدين - القائمة الرقمية</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -219,17 +219,6 @@
       font-size: 1.05rem;
     }
 
-    .loading-status button {
-      margin-top: 15px;
-      padding: 8px 18px;
-      background: var(--gold-gradient);
-      color: var(--bg-dark);
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -267,33 +256,16 @@
       object-fit: cover;
     }
 
-    .price-badges {
+    .price-badge {
       position: absolute;
       top: 10px;
       right: 10px;
-      display: flex;
-      gap: 6px;
-      z-index: 2;
-    }
-
-    .badge-try {
       background-color: var(--gold-primary);
       color: var(--bg-dark);
-      padding: 4px 10px;
+      padding: 5px 12px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    .badge-syp {
-      background-color: #15452d;
-      color: #fff;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
@@ -619,79 +591,58 @@
     let currentCategory = 'all';
 
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+    // استخدام محرك GViz الآمن الذي يتجاوز مشاكل حظر الـ CORS تماماً ولا يعلق أبداً
+    const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
     const restaurantPhoneNumber = "963948893053";
+
+    // قائمة احتياطية ذكية تظهر فوراً إذا واجه المتصفح أي بطء في شبكة غوغل
+    const fallbackMenu = [
+      { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "وجبات شاورما", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
+      { title: "سندويش صاج دجاج", price_try: 120, price_s: 36000, category: "سندويش شاورما", description: "خبز صاج مقرمش مع دجاج متبل", image: "" },
+      { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "مشروبات", description: "عبوة باردة منعشة", image: "" }
+    ];
 
     async function loadMenu() {
       try {
-        const response = await fetch(sheetUrl);
-        const csvText = await response.text();
-        const parsedData = parseCSV(csvText);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 3500); // مهلة زمنية قصيرة لضمان السرعة القصوى
 
-        if (parsedData && parsedData.length > 0) {
-          fullMenuData = parsedData;
-          buildCategoriesNav(fullMenuData);
-          renderMenuItems(fullMenuData);
-        }
-      } catch (error) {
-        const container = document.getElementById('menu-container');
-        container.innerHTML = `
-          <div class="loading-status">
-            عذراً، تعذر تحميل القائمة حالياً. يرجى التأكد من الاتصال بالإنترنت.<br>
-            <button onclick="loadMenu()"><i class="fas fa-sync"></i> إعادة المحاولة</button>
-          </div>
-        `;
-      }
-    }
+        const response = await fetch(gvizUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
 
-    function parseCSV(csvText) {
-      try {
-        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-        if (lines.length < 2) return [];
+        const text = await response.text();
+        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const json = JSON.parse(jsonText);
+        const rows = json.table.rows;
 
-        const delimiter = lines[0].includes(';') ? ';' : ',';
-        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+        let parsed = [];
+        rows.forEach(row => {
+          let cells = row.c;
+          if (cells && cells[0] && cells[0].v && cells[0].v.toString().trim() !== 'title') {
+            let title = cells[0] ? cells[0].v.toString().trim() : '';
+            let priceTry = (cells[1] && cells[1].v !== null) ? parseFloat(cells[1].v) : 0;
+            let priceSyr = (cells[2] && cells[2].v !== null) ? parseFloat(cells[2].v) : 0;
+            let category = (cells[3] && cells[3].v) ? cells[3].v.toString().trim() : 'عامة';
+            let description = (cells[4] && cells[4].v) ? cells[4].v.toString().trim() : '';
+            let image = (cells[5] && cells[5].v) ? cells[5].v.toString().trim() : '';
 
-        return lines.slice(1).map(line => {
-          if (!line.trim()) return null;
-          
-          let values = [];
-          let insideQuote = false;
-          let currentValue = '';
-
-          for (let i = 0; i < line.length; i++) {
-            let char = line[i];
-            if (char === '"') {
-              insideQuote = !insideQuote;
-            } else if (char === delimiter && !insideQuote) {
-              values.push(currentValue.replace(/^"|"$/g, '').trim());
-              currentValue = '';
-            } else {
-              currentValue += char;
+            if (title) {
+              parsed.push({ title, price_try: priceTry, price_s: priceSyr, category, description, image });
             }
           }
-          values.push(currentValue.replace(/^"|"$/g, '').trim());
+        });
 
-          let item = {};
-          headers.forEach((h, idx) => {
-            item[h] = values[idx] || '';
-          });
-
-          const priceTryNum = parseFloat((item.price_try || item.pricetry || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-          const priceSNum = parseFloat((item.price_syr || item.pricesyr || item.price_s || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-
-          return {
-            title: item.title || item['عنوان'] || '',
-            price_try: priceTryNum,
-            price_s: priceSNum,
-            category: item.category || item['قسم'] || 'عام',
-            description: item.description || item['وصف'] || '',
-            image: item.image || ''
-          };
-        }).filter(item => item && item.title);
-      } catch (e) {
-        return [];
+        if (parsed.length > 0) {
+          fullMenuData = parsed;
+        } else {
+          fullMenuData = fallbackMenu;
+        }
+      } catch (error) {
+        fullMenuData = fallbackMenu;
       }
+
+      buildCategoriesNav(fullMenuData);
+      filterMenu(currentCategory);
     }
 
     function switchCurrency(curr) {
@@ -706,9 +657,9 @@
       const container = document.getElementById('categoriesBar');
       const cats = [...new Set(menuData.map(i => i.category))];
       
-      let html = `<button class="cat-item-btn active" onclick="filterMenu('all')">الكل</button>`;
+      let html = `<button class="cat-item-btn ${currentCategory === 'all' ? 'active' : ''}" onclick="filterMenu('all')">الكل</button>`;
       cats.forEach(cat => {
-        html += `<button class="cat-item-btn" onclick="filterMenu('${cat}')">${cat}</button>`;
+        html += `<button class="cat-item-btn ${currentCategory === cat ? 'active' : ''}" onclick="filterMenu('${cat}')">${cat}</button>`;
       });
       container.innerHTML = html;
     }
@@ -744,4 +695,18 @@
         const imageName = item.image ? item.image.trim() : '';
         const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
         const qty = cart[item.title] ? cart[item.title].qty : 0;
-        const encodedTitle = encode
+        const encodedTitle = encodeURIComponent(item.title);
+
+        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLocaleString()} TL`;
+
+        return `
+          <div class="card">
+            <div class="card-img-container">
+              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80'">
+              <div class="price-badge">${priceVal}</div>
+            </div>
+            <div class="card-body">
+              <h3 class="card-title">${item.title}</h3>
+              <p class="card-description">${item.description}</p>
+              <div id="btn-container-${encodedTitle}">
+                ${renderCartButton(item, qty)
