@@ -82,7 +82,7 @@ body.no-scroll{overflow:hidden}
 .section-heading span{font-size:13px;color:var(--muted)}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px}
 
-/* تصميم البطاقات المطور */
+/* تصميم البطاقات */
 .card{
   min-width:0;background:linear-gradient(145deg,rgba(18,38,28,0.95),rgba(10,20,15,0.98));
   border:1px solid var(--border);border-radius:16px;overflow:hidden;
@@ -105,7 +105,7 @@ body.no-scroll{overflow:hidden}
 .card-description{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:15px;flex:1}
 .card-price{font-size:14px;color:var(--gold-light);margin-bottom:14px;font-weight:800;letter-spacing:0.5px}
 
-/* زر إضافة للسلة الجديد */
+/* زر إضافة للسلة */
 .add-to-cart-btn{
   display:flex;justify-content:center;align-items:center;gap:8px;width:100%;
   padding:12px;border:1px solid rgba(212,175,55,0.4);border-radius:12px;
@@ -196,9 +196,6 @@ body.no-scroll{overflow:hidden}
   .add-to-cart-btn{font-size:12px;padding:10px 6px}
   .qty-btn{width:30px;height:30px}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{transition:none!important;scroll-behavior:auto!important}
-}
 </style>
 </head>
 <body>
@@ -255,7 +252,7 @@ body.no-scroll{overflow:hidden}
     </div>
     <div id="cart-totals" class="cart-totals"></div>
     <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn disabled" target="_blank" rel="noopener noreferrer">
-      <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
+      <i class="fa-brands fa-whatsapp"></i> إرسال الطلب عبر واتساب
     </a>
   </div>
 </aside>
@@ -291,7 +288,7 @@ body.no-scroll{overflow:hidden}
       <span id="items-count">جاري تحميل القائمة...</span>
     </div>
     <div id="menu-container">
-      <div class="loading-status"><i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
+      <div class="loading-status"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
     </div>
   </main>
 </div>
@@ -307,12 +304,6 @@ let currencyMode = 'both';
 const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
 const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
 const restaurantPhoneNumber = '963948893053';
-
-const fallbackMenu = [
-  {title:'وجبة شاورما دبل',price_try:240,price_s:720,category:'shawarma-meal',description:'شاورما دجاج 220غ مع البطاطا والثومية',image:'sha.jpg'},
-  {title:'سندويش شاورما عادي',price_try:90,price_s:270,category:'shawarma-sand',description:'شاورما + ثوم + مخلل 110غ',image:'sh.jpg'},
-  {title:'كوكولا 2',price_try:70,price_s:210,category:'drinks',description:'',image:'cola.jpg'}
-];
 
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
 
@@ -348,15 +339,7 @@ window.setCurrency = function(mode) {
 
 async function loadMenu() {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 7000);
-    let response;
-    try {
-      response = await fetch(sheetUrl, {signal:controller.signal});
-    } finally {
-      clearTimeout(timeoutId);
-    }
-
+    const response = await fetch(sheetUrl);
     if (!response.ok) throw new Error('تعذر جلب بيانات القائمة');
 
     const csvText = await response.text();
@@ -367,14 +350,9 @@ async function loadMenu() {
     renderMenuItems(getFilteredMenu());
     updateCartBar();
   } catch (error) {
-    fullMenuData = fallbackMenu;
-    renderMenuItems(getFilteredMenu());
-    updateCartBar();
+    console.error('خطأ في جلب البيانات:', error);
     const container = document.getElementById('menu-container');
-    const notice = document.createElement('div');
-    notice.className = 'loading-status';
-    notice.innerHTML = 'تعذر تحميل القائمة من Google Sheets؛ يتم عرض قائمة تجريبية حالياً.';
-    container.prepend(notice);
+    container.innerHTML = '<div class="loading-status">حدث خطأ أثناء جلب القائمة من Google Sheets. يرجى التحقق من الاتصال.</div>';
   }
 }
 
@@ -475,4 +453,24 @@ function renderMenuItems(menuData) {
   container.innerHTML = menuData.map(item => {
     const qty = cart[item.title]?.qty || 0;
     const imageName = String(item.image || '').trim();
-    const imagePath = imageName ? `i
+    const imagePath = imageName ? `images/${encodeURIComponent(imageName)}` : defaultImage;
+
+    let badges = '';
+    if ((currencyMode === 'both' || currencyMode === 'try') && item.price_try) {
+      badges += `<span class="price-badge">${formatNumber(item.price_try)} TL</span>`;
+    }
+    if ((currencyMode === 'both' || currencyMode === 'syp') && item.price_s) {
+      badges += `<span class="price-badge">${formatNumber(item.price_s)} ل.س</span>`;
+    }
+
+    const encodedTitle = encodeURIComponent(item.title);
+
+    return `
+      <article class="card">
+        <div class="card-img-container">
+          <img src="${escapeHTML(imagePath)}" alt="${escapeHTML(item.title)}" class="card-img"
+               loading="lazy" onerror="this.onerror=null;this.src='${defaultImage}'">
+          <div class="price-badges">${badges}</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title"
