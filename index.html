@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مطعم عماد الدين - شاورما وغربي ومناسف ومقبلات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -21,7 +22,6 @@
       padding-bottom: 120px;
     }
 
-    /* الشريط العلوي لاختيار العملة */
     .top-currency-bar {
       background-color: #04140e;
       border-bottom: 1px solid rgba(229, 168, 75, 0.3);
@@ -144,17 +144,6 @@
       padding: 40px 20px;
       color: #c2d6ce;
       font-size: 1.05rem;
-    }
-
-    .loading-status button {
-      margin-top: 15px;
-      padding: 8px 18px;
-      background-color: #E5A84B;
-      color: #061c14;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
     }
 
     .menu-grid {
@@ -345,7 +334,6 @@
 </head>
 <body>
 
-  <!-- شريط العملة العلوي -->
   <div class="top-currency-bar">
     <label for="currency-select"><i class="fas fa-coins"></i> العملة:</label>
     <select id="currency-select" onchange="changeCurrency(this.value)">
@@ -405,103 +393,42 @@
     let cart = {}; 
     let selectedCurrency = "TRY"; 
 
-    // رابط ملف شيت عماد الدين ورقم الواتساب الخاص بك
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI/gviz/tq?tqx=out:csv';
+    // استخدام رابط Gviz البديل الذي يقرأ من الشيت مباشرة دون الحاجة للنشر على الويب
+    const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
-    async function loadMenu() {
-      const cachedData = localStorage.getItem('emadElDinMenuData');
-      
-      if (cachedData) {
-        try {
-          fullMenuData = JSON.parse(cachedData);
-          renderMenuItems(fullMenuData);
-        } catch(e) {}
-      }
+    function loadMenu() {
+      Papa.parse(sheetUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results && results.data && results.data.length > 0) {
+            fullMenuData = results.data.map(row => {
+              let cat = row['category'] || row['القسم'] || 'shawarma-meals';
+              if (cat.includes('grilled') || cat.includes('فروج') || cat.includes('grilled-ch...')) cat = 'manasif';
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+              return {
+                title: row['title'] || row['عنوان'] || '',
+                price_try: parseFloat((row['price_try'] || row['price'] || '0').toString().replace(/[^0-9.]/g, '')) || 0,
+                price_s: parseFloat((row['price_syr'] || row['price_s'] || row['price_syp'] || '0').toString().replace(/[^0-9.]/g, '')) || 0,
+                category: cat,
+                description: row['description'] || row['وصف'] || '',
+                image: row['image'] || row['صورة'] || ''
+              };
+            }).filter(i => i.title.trim() !== '');
 
-      try {
-        const response = await fetch(sheetUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) throw new Error('فشل جلب البيانات');
-
-        const csvText = await response.text();
-        const parsedData = parseCSV(csvText);
-
-        if (parsedData && parsedData.length > 0) {
-          fullMenuData = parsedData;
-          localStorage.setItem('emadElDinMenuData', JSON.stringify(fullMenuData));
-          renderMenuItems(fullMenuData);
-        }
-      } catch (error) {
-        if (!cachedData || fullMenuData.length === 0) {
-          const container = document.getElementById('menu-container');
-          container.innerHTML = `
-            <div class="loading-status">
-              عذراً، تعذر تحميل القائمة حالياً. يرجى التأكد من الاتصال بالإنترنت.<br>
-              <button onclick="loadMenu()"><i class="fas fa-sync"></i> إعادة المحاولة</button>
-            </div>
-          `;
-        }
-      }
-    }
-
-    function parseCSV(csvText) {
-      try {
-        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-        if (lines.length < 2) return [];
-
-        const delimiter = lines[0].includes(';') ? ';' : ',';
-        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
-
-        return lines.slice(1).map(line => {
-          if (!line.trim()) return null;
-          
-          let values = [];
-          let insideQuote = false;
-          let currentValue = '';
-
-          for (let i = 0; i < line.length; i++) {
-            let char = line[i];
-            if (char === '"') {
-              insideQuote = !insideQuote;
-            } else if (char === delimiter && !insideQuote) {
-              values.push(currentValue.replace(/^"|"$/g, '').trim());
-              currentValue = '';
-            } else {
-              currentValue += char;
-            }
+            renderMenuItems(fullMenuData);
+          } else {
+            document.getElementById('menu-container').innerHTML = '<div class="loading-status">تعذر العثور على وجبات في ملف الشيت.</div>';
           }
-          values.push(currentValue.replace(/^"|"$/g, '').trim());
-
-          let item = {};
-          headers.forEach((h, idx) => {
-            item[h] = values[idx] || '';
-          });
-
-          const priceTryNum = parseFloat((item.price_try || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-          const priceSNum = parseFloat((item.price_syr || item.price_s || item.price_syp || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-
-          let cat = item.category || 'shawarma-meals';
-          if (cat.includes('grilled') || cat.includes('فروج')) {
-            cat = 'manasif';
-          }
-
-          return {
-            title: item.title || item['عنوان'] || '',
-            price_try: priceTryNum,
-            price_s: priceSNum,
-            category: cat,
-            description: item.description || '',
-            image: item.image || ''
-          };
-        }).filter(item => item && item.title);
-      } catch (e) {
-        return [];
-      }
+        },
+        error: function(err) {
+          console.error(err);
+          document.getElementById('menu-container').innerHTML = '<div class="loading-status">خطأ في جلب البيانات، يرجى التأكد من أن ملف الشيت متاح للقراءة.</div>';
+        }
+      });
     }
 
     function changeCurrency(curr) {
@@ -522,7 +449,7 @@
       container.className = 'menu-grid';
       container.innerHTML = menuData.map(item => {
         const imageName = item.image ? item.image.trim() : '';
-        const imagePath = imageName.startsWith('http') ? imageName : (imageName ? `images/${imageName}` : 'images/default.jpg');
+        const imagePath = imageName.startsWith('http') ? imageName : (imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=500');
         const qty = cart[item.title] ? cart[item.title].qty : 0;
 
         const priceDisplay = selectedCurrency === "TRY" 
@@ -662,4 +589,6 @@
     }
 
     document.addEventListener('DOMContentLoaded', loadMenu);
-  </scri
+  </script>
+</body>
+</html>
