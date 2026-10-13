@@ -157,7 +157,6 @@
       display: none;
     }
 
-    /* تخطيط الصفحة: القائمة الجانبية (Sidebar) مع المحتوى */
     .layout-container {
       max-width: 1250px;
       margin: 20px auto;
@@ -167,7 +166,6 @@
       align-items: flex-start;
     }
 
-    /* الشريط الجانبي للتصنيفات */
     .sidebar-categories {
       width: 240px;
       background: var(--bg-surface);
@@ -221,7 +219,6 @@
       transform: translateX(-4px);
     }
 
-    /* قسم المحتوى الرئيسي والبحث */
     .main-content-area {
       flex-grow: 1;
     }
@@ -367,7 +364,6 @@
       color: #fff;
     }
 
-    /* نافذة السلة */
     .cart-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -525,7 +521,6 @@
       font-size: 1.1rem;
     }
 
-    /* للشاشات الصغيرة (الموبايل): تصبح الأقسام أفقية عائمة لتوفير المساحة */
     @media (max-width: 768px) {
       .layout-container {
         flex-direction: column;
@@ -564,13 +559,11 @@
       </div>
       
       <div class="header-actions">
-        <!-- زر تبديل العملة -->
         <div class="currency-switcher">
           <button class="curr-btn active" id="btn-syr" onclick="switchCurrency('syr')">ل.س</button>
           <button class="curr-btn" id="btn-try" onclick="switchCurrency('try')">TL</button>
         </div>
 
-        <!-- زر سلة الطلبات العائم -->
         <button class="floating-cart-btn" onclick="toggleCartDrawer(true)">
           <i class="fa-solid fa-basket-shopping"></i>
           <span class="cart-badge-count" id="badgeCount">0</span>
@@ -579,10 +572,7 @@
     </div>
   </header>
 
-  <!-- تخطيط الصفحة: القائمة الجانبية + محتوى الوجبات -->
   <div class="layout-container">
-    
-    <!-- الشريط الجانبي للتصنيفات (Sidebar) -->
     <aside class="sidebar-categories">
       <div class="sidebar-title">
         <i class="fa-solid fa-bars-staggered"></i> الأقسام
@@ -592,7 +582,6 @@
       </div>
     </aside>
 
-    <!-- المحتوى الرئيسي (البحث والوجبات) -->
     <div class="main-content-area">
       <div class="search-bar">
         <i class="fa-solid fa-magnifying-glass"></i>
@@ -603,10 +592,8 @@
         <div class="status-msg"><i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة من غوغل شيتس...</div>
       </main>
     </div>
-
   </div>
 
-  <!-- نافذة السلة الجانبية المبتكرة -->
   <div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
     <div class="cart-drawer-panel" onclick="event.stopPropagation()">
       <div class="drawer-header">
@@ -679,6 +666,7 @@
           fullMenuData = parsed;
         }
       } catch (e) {
+        console.warn("استخدام النسخة الاحتياطية", e);
         fullMenuData = [
           { title: "وجبة شاورما دبل", priceTry: 240, priceSyr: 72000, category: "وجبات شاورما", description: "شاورما دجاج 220غ + بطاطا" },
           { title: "كوكا كولا", priceTry: 70, priceSyr: 21000, category: "مشروبات", description: "عبوة باردة" }
@@ -737,4 +725,18 @@
           <div class="food-card">
             <div class="card-top-info">
               <div class="item-header-row">
-                <span class="item-name">${item.
+                <span class="item-name">${item.title}</span>
+                <span class="item-price-tag">${priceVal}</span>
+              </div>
+              <p class="item-desc">${item.description}</p>
+            </div>
+            <div class="card-footer-action" id="action-box-${encodedTitle}">
+              ${renderActionButtons(item, qty)}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderActionButtons(item, qty) {
+      let encodedTitle = encod
