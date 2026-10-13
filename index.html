@@ -13,14 +13,10 @@
         :root {
             --bg-dark: #07120a;
             --bg-card: rgba(14, 34, 23, 0.82);
-            --emerald-deep: #0b2417;
-            --emerald-light: #15452d;
             --gold-primary: #d4af37;
-            --gold-light: #fdf6ca;
             --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --text-light: #f5f8f6;
             --text-muted: #9bb39e;
-            --danger: #e74c3c;
             --radius-xl: 20px;
             --radius-lg: 14px;
         }
@@ -532,9 +528,7 @@
                 <button class="close-drawer-btn" onclick="toggleCartDrawer(false)">&times;</button>
             </div>
 
-            <div class="cart-items-list" id="cartItemsList">
-                <!-- الوجبات المحددة ستظهر هنا -->
-            </div>
+            <div class="cart-items-list" id="cartItemsList"></div>
 
             <div class="cart-options">
                 <select id="orderType" class="option-select">
@@ -553,9 +547,9 @@
     </div>
 
     <script>
-        // ================= Configuration =================
+        // ================= Configuration (طريقة مطعم الزين المباشرة) =================
         const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-        const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
         const WHATSAPP_NUMBER = '963948893053';
 
         // ترجمة وتجميل أسماء الأقسام
@@ -568,11 +562,10 @@
             'drinks': 'مشروبات'
         };
 
-        // بيانات احتياطية فورية لمنع أي تعليق
         const fallbackMenu = [
-            { name: "شاورما دبل عماد الدين", price: 720, category: "وجبات شاورما", desc: "وجبة شاورما عربي دبل مع الثومية والبطاطا" },
-            { name: "وجبة كريسبي فاخرة", price: 810, category: "وجبات غربية", desc: "قطع كريسبي مقرمشة مع البطاطا وسلطة ملفوف" },
-            { name: "كوكا كولا بارد", price: 210, category: "مشروبات", desc: "عبوة باردة 330 مل" }
+            { name: "وجبة شاورما دبل", price: 720, category: "وجبات شاورما", desc: "شاورما دجاج 220غ + بطاطا" },
+            { name: "وجبة كريسبي عادي", price: 660, category: "وجبات غربية", desc: "فتيلة صدر + بطاطا" },
+            { name: "كولا", price: 210, category: "مشروبات", desc: "مشروب بارد" }
         ];
 
         let menuData = [];
@@ -581,43 +574,40 @@
 
         async function loadMenu() {
             try {
-                const res = await fetch(GVIZ_URL);
+                const res = await fetch(CSV_URL);
                 const text = await res.text();
-                
-                const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-                const json = JSON.parse(jsonText);
-                
-                const rows = json.table.rows;
-                const parsed = [];
-
-                rows.forEach(row => {
-                    const cells = row.c;
-                    // تخطي صف العناوين أو الصفوف الفارغة
-                    if (cells && cells[0] && cells[0].v && cells[0].v !== 'title') {
-                        const rawCat = (cells[3] && cells[3].v) ? cells[3].v.toString().trim() : 'عام';
-                        const readableCat = categoryNames[rawCat] || rawCat;
-                        
-                        // العمود C (index 2) هو السعر بالسوري، وفي حال لم يوجد نأخذ العمود B (index 1)
-                        const priceVal = (cells[2] && cells[2].v !== null) ? parseFloat(cells[2].v) : 
-                                         ((cells[1] && cells[1].v !== null) ? parseFloat(cells[1].v) : 0);
-
-                        parsed.push({
-                            name: cells[0].v.toString().trim(),
-                            price: priceVal,
-                            category: readableCat,
-                            desc: (cells[4] && cells[4].v) ? cells[4].v.toString().trim() : 'وجبة طازجة ومجهزة يومياً بأعلى جودة'
-                        });
-                    }
-                });
-
-                menuData = (parsed.length > 0) ? parsed : fallbackMenu;
+                const parsed = parseCSV(text);
+                menuData = (parsed && parsed.length > 0) ? parsed : fallbackMenu;
             } catch (e) {
-                console.warn("استخدام القائمة الاحتياطية:", e);
+                console.warn("استخدام البيانات الاحتياطية:", e);
                 menuData = fallbackMenu;
             }
-
             buildCategories();
             renderMenu();
+        }
+
+        // محلل CSV بسيط ومباشر
+        function parseCSV(text) {
+            const lines = text.split('\n').filter(l => l.trim() !== '');
+            if (lines.length < 2) return null;
+
+            const items = [];
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                if (cols[0]) {
+                    const rawCat = cols[3] || 'عام';
+                    const readableCat = categoryNames[rawCat] || rawCat;
+                    const priceVal = parseFloat(cols[2]) || parseFloat(cols[1]) || 0;
+
+                    items.push({
+                        name: cols[0],
+                        price: priceVal,
+                        category: readableCat,
+                        desc: cols[4] || 'وجبة طازجة ومجهزة يومياً'
+                    });
+                }
+            }
+            return items;
         }
 
         function buildCategories() {
@@ -635,3 +625,17 @@
             currentCategory = cat;
             renderMenu();
         }
+
+        function renderMenu() {
+            const container = document.getElementById('menuContainer');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = menuData.filter(item => {
+                const matchesCat = currentCategory === 'الكل' || item.category === currentCategory;
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="status-msg">لا توجد وجبات تطابق البحث حالياً</div>`;
+                retur
