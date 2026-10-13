@@ -13,7 +13,7 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- PapaParse CDN -->
+  <!-- PapaParse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
@@ -45,6 +45,34 @@
       padding-bottom: 110px;
     }
 
+    /* Top Currency Bar */
+    .top-currency-bar {
+      background-color: #04140e;
+      border-bottom: 1px solid rgba(229, 168, 75, 0.3);
+      padding: 8px 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-currency-bar label {
+      color: var(--gold-primary);
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .top-currency-bar select {
+      background-color: #0d261c;
+      color: #ffffff;
+      border: 1px solid var(--gold-primary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      outline: none;
+      cursor: pointer;
+    }
+
     /* Header Nav */
     header {
       background: rgba(4, 18, 13, 0.92);
@@ -73,42 +101,18 @@
       font-size: 26px;
     }
 
-    .currency-pill {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(229, 168, 75, 0.12);
-      padding: 4px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--gold-primary);
-    }
-
-    .currency-pill label {
-      font-size: 13px;
-      color: var(--gold-primary);
-      font-weight: 700;
-    }
-
-    .currency-pill select {
-      background: #051811;
-      color: #ffffff;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 700;
-      outline: none;
-      cursor: pointer;
-    }
-
-    /* Hero Banner */
+    /* Hero Banner مع الزخرفة الهندسية */
     .hero-banner {
       text-align: center;
-      padding: 35px 15px 25px 15px;
+      padding: 40px 15px 30px 15px;
       position: relative;
-      background: radial-gradient(circle, rgba(14, 46, 34, 0.8) 0%, rgba(5, 24, 17, 0.95) 100%),
-                  url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M60 0L120 60L60 120L0 60Z' fill='none' stroke='%23e5a84b' stroke-opacity='0.15' stroke-width='1.5'/%3E%3C/svg%3E");
-      border-bottom: 1px solid var(--border-gold);
+      background-color: #051610;
+      background-image: 
+        url("data:image/svg+xml,%3Csvg width='160' height='80' viewBox='0 0 160 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23E5A84B' stroke-width='1.2' stroke-opacity='0.6'%3E%3Cpath d='M80 0 L100 20 L120 0 L140 20 L160 0 L160 40 L140 20 L120 40 L100 20 L80 40 L60 20 L40 40 L20 20 L0 40 L0 0 L20 20 L40 0 L60 20 Z'/%3E%3Cpath d='M0 40 L20 60 L40 40 L60 60 L80 40 L100 60 L120 40 L140 60 L160 40 L160 80 L140 60 L120 80 L100 60 L80 80 L60 60 L40 80 L20 60 L0 80 Z'/%3E%3Ccircle cx='80' cy='40' r='15'/%3E%3Ccircle cx='0' cy='40' r='15'/%3E%3Ccircle cx='160' cy='40' r='15'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(180deg, #09261b 0%, #061711 100%);
+      background-repeat: repeat-x, no-repeat;
+      background-position: top center, center;
+      border-bottom: 2px solid var(--gold-primary);
     }
 
     .hero-banner h1 {
@@ -379,7 +383,6 @@
       background: #1eb956;
     }
 
-    /* Status Load */
     .status-msg {
       text-align: center;
       padding: 50px 20px;
@@ -407,19 +410,20 @@
 </head>
 <body>
 
+  <!-- Top Currency Bar -->
+  <div class="top-currency-bar">
+    <label for="currency-select"><i class="fas fa-coins"></i> العملة:</label>
+    <select id="currency-select" onchange="switchCurrency(this.value)">
+      <option value="TRY">ليرة تركية (TL)</option>
+      <option value="SYP">ليرة سورية (SYP)</option>
+    </select>
+  </div>
+
   <!-- Header -->
   <header>
     <div class="brand-title">
       <i class="fa-solid fa-utensils" style="color: var(--gold-primary)"></i>
       مطعم <span>عماد الدين</span>
-    </div>
-    
-    <div class="currency-pill">
-      <label for="currency-select"><i class="fa-solid fa-coins"></i> العملة:</label>
-      <select id="currency-select" onchange="switchCurrency(this.value)">
-        <option value="TRY">ليرة تركية (TL)</option>
-        <option value="SYP">ليرة سورية (SYP)</option>
-      </select>
     </div>
   </header>
 
@@ -653,11 +657,4 @@
           } else if (category === 'western-sand') {
             return cat.includes('western-sand') || (cat.includes('west') && cat.includes('sand'));
           } else if (category === 'shawarma-meals') {
-            return cat.includes('shawarma-meal') || (cat.includes('shawarma') && cat.includes('meal'));
-          } else if (category === 'western-meals') {
-            return cat.includes('western-meal') || (cat.includes('west') && cat.includes('meal'));
-          } else if (category === 'manasif') {
-            return cat.includes('manasif') || cat.includes('grilled') || cat.includes('مناسف') || cat.includes('فروج');
-          } else if (category === 'appetizers') {
-            return cat.includes('appetizer') || cat.includes('مقبلات') || cat.includes('بطاطا');
-          }
+            return cat.includes('shawarma-meal'
