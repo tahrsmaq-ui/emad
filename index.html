@@ -591,58 +591,98 @@
     let currentCategory = 'all';
 
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    // استخدام محرك GViz الآمن الذي يتجاوز مشاكل حظر الـ CORS تماماً ولا يعلق أبداً
-    const gvizUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
-    // قائمة احتياطية ذكية تظهر فوراً إذا واجه المتصفح أي بطء في شبكة غوغل
-    const fallbackMenu = [
-      { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "وجبات شاورما", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
-      { title: "سندويش صاج دجاج", price_try: 120, price_s: 36000, category: "سندويش شاورما", description: "خبز صاج مقرمش مع دجاج متبل", image: "" },
-      { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "مشروبات", description: "عبوة باردة منعشة", image: "" }
-    ];
+    // خريطة لترجمة التصنيفات الإنجليزية في جدولك إلى أسماء عربية واضحة في القائمة الجانبية
+    const categoryNamesMap = {
+      'shawarma-meals': 'وجبات الشاورما',
+      'western-meals': 'وجبات غربية',
+      'appetizers': 'مقبلات',
+      'drinks': 'مشروبات'
+    };
+
+    function getArabicCategoryName(catKey) {
+      if (!catKey) return 'أخرى';
+      let cleanKey = catKey.trim().toLowerCase();
+      return categoryNamesMap[cleanKey] || catKey.trim();
+    }
 
     async function loadMenu() {
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3500); // مهلة زمنية قصيرة لضمان السرعة القصوى
+        const response = await fetch(sheetUrl);
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
 
-        const response = await fetch(gvizUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        const text = await response.text();
-        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-        const json = JSON.parse(jsonText);
-        const rows = json.table.rows;
-
-        let parsed = [];
-        rows.forEach(row => {
-          let cells = row.c;
-          if (cells && cells[0] && cells[0].v && cells[0].v.toString().trim() !== 'title') {
-            let title = cells[0] ? cells[0].v.toString().trim() : '';
-            let priceTry = (cells[1] && cells[1].v !== null) ? parseFloat(cells[1].v) : 0;
-            let priceSyr = (cells[2] && cells[2].v !== null) ? parseFloat(cells[2].v) : 0;
-            let category = (cells[3] && cells[3].v) ? cells[3].v.toString().trim() : 'عامة';
-            let description = (cells[4] && cells[4].v) ? cells[4].v.toString().trim() : '';
-            let image = (cells[5] && cells[5].v) ? cells[5].v.toString().trim() : '';
-
-            if (title) {
-              parsed.push({ title, price_try: priceTry, price_s: priceSyr, category, description, image });
-            }
-          }
-        });
-
-        if (parsed.length > 0) {
-          fullMenuData = parsed;
+        if (parsedData && parsedData.length > 0) {
+          fullMenuData = parsedData;
+          buildCategoriesNav(fullMenuData);
+          renderMenuItems(fullMenuData);
         } else {
-          fullMenuData = fallbackMenu;
+          showFallback();
         }
       } catch (error) {
-        fullMenuData = fallbackMenu;
+        showFallback();
       }
+    }
 
+    function showFallback() {
+      fullMenuData = [
+        { title: "وجبة شاورما دبل", price_try: 240, price_s: 72000, category: "shawarma-meals", description: "شاورما دجاج 220غ مع البطاطا والثومية", image: "" },
+        { title: "كوكا كولا", price_try: 50, price_s: 15000, category: "drinks", description: "عبوة باردة منعشة", image: "" }
+      ];
       buildCategoriesNav(fullMenuData);
-      filterMenu(currentCategory);
+      renderMenuItems(fullMenuData);
+    }
+
+    function parseCSV(csvText) {
+      try {
+        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
+        if (lines.length < 2) return [];
+
+        const delimiter = lines[0].includes(';') ? ';' : ',';
+        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+
+        return lines.slice(1).map(line => {
+          if (!line.trim()) return null;
+          
+          let values = [];
+          let insideQuote = false;
+          let currentValue = '';
+
+          for (let i = 0; i < line.length; i++) {
+            let char = line[i];
+            if (char === '"') {
+              insideQuote = !insideQuote;
+            } else if (char === delimiter && !insideQuote) {
+              values.push(currentValue.replace(/^"|"$/g, '').trim());
+              currentValue = '';
+            } else {
+              currentValue += char;
+            }
+          }
+          values.push(currentValue.replace(/^"|"$/g, '').trim());
+
+          let item = {};
+          headers.forEach((h, idx) => {
+            item[h] = values[idx] || '';
+          });
+
+          const priceTryNum = parseFloat((item.price_try || item.pricetry || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+          const priceSNum = parseFloat((item.price_syr || item.pricesyr || item.price_s || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+
+          return {
+            title: item.title || item['عنوان'] || '',
+            price_try: priceTryNum,
+            price_s: priceSNum,
+            category: item.category || item['قسم'] || 'عام',
+            description: item.description || item['وصف'] || '',
+            image: item.image || ''
+          };
+        }).filter(item => item && item.title);
+      } catch (e) {
+        return [];
+      }
     }
 
     function switchCurrency(curr) {
@@ -655,28 +695,31 @@
 
     function buildCategoriesNav(menuData) {
       const container = document.getElementById('categoriesBar');
-      const cats = [...new Set(menuData.map(i => i.category))];
+      const rawCats = [...new Set(menuData.map(i => i.category))];
       
       let html = `<button class="cat-item-btn ${currentCategory === 'all' ? 'active' : ''}" onclick="filterMenu('all')">الكل</button>`;
-      cats.forEach(cat => {
-        html += `<button class="cat-item-btn ${currentCategory === cat ? 'active' : ''}" onclick="filterMenu('${cat}')">${cat}</button>`;
+      rawCats.forEach(catKey => {
+        let arabicLabel = getArabicCategoryName(catKey);
+        html += `<button class="cat-item-btn ${currentCategory === catKey ? 'active' : ''}" onclick="filterMenu('${catKey}')">${arabicLabel}</button>`;
       });
       container.innerHTML = html;
     }
 
-    function filterMenu(category) {
-      currentCategory = category;
+    function filterMenu(categoryKey) {
+      currentCategory = categoryKey;
       document.querySelectorAll('.cat-item-btn').forEach(btn => {
         btn.classList.remove('active');
-        if (btn.textContent.trim() === (category === 'all' ? 'الكل' : category)) {
+        if (categoryKey === 'all' && btn.textContent.trim() === 'الكل') {
+          btn.classList.add('active');
+        } else if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(categoryKey)) {
           btn.classList.add('active');
         }
       });
 
-      if (category === 'all') {
+      if (categoryKey === 'all') {
         renderMenuItems(fullMenuData);
       } else {
-        const filtered = fullMenuData.filter(item => item.category && item.category.trim() === category.trim());
+        const filtered = fullMenuData.filter(item => item.category && item.category.trim().toLowerCase() === categoryKey.trim().toLowerCase());
         renderMenuItems(filtered);
       }
     }
@@ -691,22 +734,4 @@
       }
 
       container.className = 'menu-grid';
-      container.innerHTML = menuData.map(item => {
-        const imageName = item.image ? item.image.trim() : '';
-        const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
-        const qty = cart[item.title] ? cart[item.title].qty : 0;
-        const encodedTitle = encodeURIComponent(item.title);
-
-        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLocaleString()} TL`;
-
-        return `
-          <div class="card">
-            <div class="card-img-container">
-              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80'">
-              <div class="price-badge">${priceVal}</div>
-            </div>
-            <div class="card-body">
-              <h3 class="card-title">${item.title}</h3>
-              <p class="card-description">${item.description}</p>
-              <div id="btn-container-${encodedTitle}">
-                ${renderCartButton(item, qty)
+      container.innerHTM
