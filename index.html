@@ -3,102 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مطعم عماد الدين | Imad Al-Din Restaurant</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
-
-  <!-- FontAwesome Icons -->
+  <title>مطعم عماد الدين - شاورما وغربي ومناسف ومقبلات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  
   <style>
-    :root {
-      --bg-green: #061c14;
-      --card-bg: #0d261c;
-      --primary-mustard: #E5A84B;
-      --mustard-dark: #c48b36;
-      --text-main: #ffffff;
-      --text-muted: #c2d6ce;
-      --border-color: #E5A84B;
-    }
-
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Cairo', sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
 
     body {
-      background-color: var(--bg-green);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      background-color: #061c14;
+      color: #f8fafc;
+      direction: rtl;
+      padding-bottom: 120px;
     }
 
-    /* Header Navigation */
-    header {
-      background: rgba(6, 23, 17, 0.95);
-      border-bottom: 2px solid var(--border-color);
-      padding: 15px 30px;
+    /* الشريط العلوي لاختيار العملة */
+    .top-currency-bar {
+      background-color: #04140e;
+      border-bottom: 1px solid rgba(229, 168, 75, 0.3);
+      padding: 8px 20px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      backdrop-filter: blur(8px);
-    }
-
-    .logo {
-      font-size: 26px;
-      font-weight: 900;
-      color: var(--text-main);
-      display: flex;
+      justify-content: flex-end;
       align-items: center;
       gap: 10px;
     }
 
-    .logo span {
-      color: var(--primary-mustard);
-      font-family: 'Amiri', serif;
+    .top-currency-bar label {
+      color: #E5A84B;
+      font-size: 0.9rem;
+      font-weight: bold;
     }
 
-    .currency-selector {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #0f2c21;
-      padding: 6px 14px;
-      border-radius: 30px;
-      border: 1px solid var(--border-color);
-    }
-
-    .currency-selector label {
-      font-size: 14px;
-      color: var(--primary-mustard);
-      font-weight: 700;
-    }
-
-    .currency-selector select {
-      background: #061711;
+    .top-currency-bar select {
+      background-color: #0d261c;
       color: #ffffff;
-      border: 1px solid var(--border-color);
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
+      border: 1px solid #E5A84B;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.88rem;
       outline: none;
+      cursor: pointer;
     }
 
-    /* Hero Section مع الزخرفة الهندسية الإسلامية العلوية الفخمة */
-    .hero {
-      text-align: center;
-      padding: 70px 20px 50px 20px;
+    .header {
       position: relative;
       background-color: #051610;
       background-image: 
@@ -106,365 +57,491 @@
         linear-gradient(180deg, #09261b 0%, #061711 100%);
       background-repeat: repeat-x, no-repeat;
       background-position: top center, center;
-      border-bottom: 2px solid var(--primary-mustard);
-      box-shadow: inset 0 -15px 25px rgba(0,0,0,0.5);
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      top: 80px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--primary-mustard), transparent);
-    }
-
-    .hero h1 {
-      font-size: 42px;
-      font-weight: 900;
-      color: var(--text-main);
-      margin-bottom: 12px;
-      font-family: 'Amiri', serif;
-      margin-top: 10px;
-    }
-
-    .hero h1 span {
-      color: var(--primary-mustard);
-      text-shadow: 0 0 12px rgba(229, 168, 75, 0.4);
-    }
-
-    .hero p {
-      font-size: 18px;
-      color: var(--text-muted);
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    /* Container & Tabs */
-    .container {
-      max-width: 1200px;
-      margin: 30px auto 60px auto;
-      padding: 0 20px;
-      flex: 1;
-    }
-
-    .category-tabs {
-      display: flex;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      margin-bottom: 30px;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary-mustard) transparent;
-    }
-
-    .tab-btn {
-      background: #0f2c21;
-      color: var(--text-main);
-      border: 1px solid rgba(229, 168, 75, 0.4);
-      padding: 8px 20px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: 600;
-      white-space: nowrap;
-      transition: all 0.3s ease;
-    }
-
-    .tab-btn.active, .tab-btn:hover {
-      background: var(--primary-mustard);
-      color: #000;
-      border-color: var(--primary-mustard);
-      box-shadow: 0 4px 12px rgba(229, 168, 75, 0.3);
-    }
-
-    /* Grid & Cards */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 25px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(229, 168, 75, 0.3);
-      border-radius: 14px;
+      text-align: center;
+      padding: 35px 20px;
+      border-radius: 0 0 25px 25px;
+      border-bottom: 2px solid #E5A84B;
       overflow: hidden;
-      transition: all 0.3s ease;
+    }
+
+    .logo-wrapper {
       display: flex;
-      flex-direction: column;
-      position: relative;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: var(--primary-mustard);
-      box-shadow: 0 8px 25px rgba(229, 168, 75, 0.25);
-    }
-
-    .card-img-wrapper {
-      position: relative;
-      width: 100%;
-      height: 190px;
-      background-color: #061711;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
+    .main-logo {
+      width: 95px;
+      height: 95px;
+      border-radius: 50%;
+      border: 3px solid #E5A84B;
       object-fit: cover;
-      border-bottom: 2px solid var(--primary-mustard);
+      background-color: #061c14;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
     }
 
-    .card-content {
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .card-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #ffffff;
+    .header h1 {
+      color: #E5A84B;
+      font-size: 2rem;
       margin-bottom: 8px;
     }
 
-    .card-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.5;
-      margin-bottom: 18px;
-      flex: 1;
+    .header p {
+      color: #c2d6ce;
+      font-size: 0.95rem;
     }
 
-    .card-footer {
+    .categories-wrapper {
+      padding: 15px 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (min-width: 992px) {
+      .categories-wrapper {
+        justify-content: center;
+      }
+    }
+
+    .categories {
+      display: inline-flex;
+      gap: 8px;
+      padding: 5px;
+    }
+
+    .cat-btn {
+      background-color: #0d261c;
+      color: #c2d6ce;
+      border: 1px solid rgba(229, 168, 75, 0.4);
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .cat-btn.active, .cat-btn:hover {
+      background-color: #E5A84B;
+      color: #061c14;
+      border-color: #E5A84B;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+      min-height: 250px;
+    }
+
+    .loading-status {
+      text-align: center;
+      padding: 40px 20px;
+      color: #c2d6ce;
+      font-size: 1.05rem;
+    }
+
+    .loading-status button {
+      margin-top: 15px;
+      padding: 8px 18px;
+      background-color: #E5A84B;
+      color: #061c14;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #0d261c;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(229, 168, 75, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+
+    .card-img-container {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      background-color: #061c14;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .price-badges {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .badge-price {
+      background-color: #E5A84B;
+      color: #061c14;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .card-title {
+      color: #f8fafc;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .card-description {
+      color: #c2d6ce;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .add-to-cart-btn {
+      width: 100%;
+      padding: 10px;
+      background-color: #E5A84B;
+      color: #061c14;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      transition: background 0.2s ease;
+    }
+
+    .add-to-cart-btn:hover {
+      background-color: #c48b36;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #061c14;
+      border: 1px solid #E5A84B;
+      border-radius: 8px;
+      padding: 4px;
+    }
+
+    .qty-btn {
+      background-color: #E5A84B;
+      color: #061c14;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-count {
+      font-weight: bold;
+      color: #f8fafc;
+      font-size: 1.1rem;
+    }
+
+    .developer-footer {
+      text-align: center;
+      padding: 25px 15px;
+      margin-top: 40px;
+      background-color: #04140e;
+      border-top: 1px solid rgba(229, 168, 75, 0.3);
+      color: #90a49c;
+      font-size: 0.88rem;
+    }
+
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #0d261c;
+      border-top: 2px solid #25d366;
+      padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
     }
 
-    .price-tag {
-      font-size: 17px;
-      font-weight: 800;
-      color: var(--primary-mustard);
-      background: rgba(229, 168, 75, 0.15);
-      padding: 6px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--primary-mustard);
+    .cart-bar.active {
+      transform: translateY(0);
     }
 
-    .btn-whatsapp {
-      background-color: #25D366;
-      color: #ffffff;
+    .cart-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .cart-count {
+      color: #c2d6ce;
+      font-size: 0.85rem;
+    }
+
+    .cart-total {
+      color: #E5A84B;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .send-whatsapp-btn {
+      background-color: #25d366;
+      color: white;
       text-decoration: none;
-      padding: 8px 14px;
+      padding: 10px 20px;
       border-radius: 8px;
-      font-weight: 700;
-      font-size: 14px;
+      font-weight: bold;
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-whatsapp:hover {
-      background-color: #1eb956;
-    }
-
-    .loading {
-      text-align: center;
-      padding: 50px;
-      font-size: 20px;
-      color: var(--primary-mustard);
-      grid-column: 1 / -1;
-    }
-
-    /* Footer */
-    footer {
-      background: #04120d;
-      text-align: center;
-      padding: 25px;
-      border-top: 1px solid var(--primary-mustard);
-      color: #90a49c;
-      font-size: 14px;
-      margin-top: auto;
-    }
-
-    footer p span {
-      color: var(--primary-mustard);
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        gap: 12px;
-      }
-      .hero h1 {
-        font-size: 30px;
-      }
+      gap: 8px;
+      font-size: 0.95rem;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation Bar -->
-  <header>
-    <div class="logo">
-      <i class="fa-solid fa-utensils" style="color: var(--primary-mustard)"></i>
-      مطعم <span>عماد الدين</span>
+  <!-- شريط العملة العلوي -->
+  <div class="top-currency-bar">
+    <label for="currency-select"><i class="fas fa-coins"></i> العملة:</label>
+    <select id="currency-select" onchange="changeCurrency(this.value)">
+      <option value="TRY">ليرة تركية (TL)</option>
+      <option value="SYP">ليرة سورية (SYP)</option>
+    </select>
+  </div>
+
+  <header class="header">
+    <div class="logo-wrapper">
+      <img src="images/logo.jpg" alt="مطعم عماد الدين" class="main-logo" onerror="this.src='https://images.unsplash.com/photo-1561651823-34feb02250e4?w=200'">
     </div>
-    
-    <div class="currency-selector">
-      <label for="currency">العملة:</label>
-      <select id="currency" onchange="updateView()">
-        <option value="TRY">ليرة تركية (TL)</option>
-        <option value="SYP">ليرة سورية (SYP)</option>
-      </select>
+    <div class="banner-content">
+      <h1>مطعم عماد الدين</h1>
+      <p>أطيب الوجبات الغربية والشاورما والمناسف والمقبلات - اختر وجباتك وأرسل الطلب عبر الواتساب</p>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>أهلاً بكم في مطعم <span>عماد الدين</span></h1>
-    <p>أطيب المأكولات السريعة والشاورما والمناسف والغربيات بأفضل مذاق وأعلى جودة</p>
-  </section>
+  <div class="categories-wrapper">
+    <nav class="categories">
+      <button class="cat-btn active" onclick="filterMenu('all')">الكل</button>
+      <button class="cat-btn" onclick="filterMenu('shawarma-sand')">سندويش شاورما</button>
+      <button class="cat-btn" onclick="filterMenu('western-sand')">سندويش غربي</button>
+      <button class="cat-btn" onclick="filterMenu('shawarma-meals')">وجبات شاورما</button>
+      <button class="cat-btn" onclick="filterMenu('western-meals')">وجبات غربي</button>
+      <button class="cat-btn" onclick="filterMenu('manasif')">مناسف</button>
+      <button class="cat-btn" onclick="filterMenu('appetizers')">مقبلات</button>
+      <button class="cat-btn" onclick="filterMenu('drinks')">مشروبات</button>
+    </nav>
+  </div>
 
-  <!-- Main Container -->
   <main class="container">
-    <div class="category-tabs" id="category-tabs">
-      <button class="tab-btn active" onclick="filterCategory('all', this)">الكل</button>
-    </div>
-    
-    <div class="grid" id="meals-grid">
-      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة من الشيت...</div>
+    <div id="menu-container">
+      <div class="loading-status">
+        <i class="fas fa-spinner fa-spin"></i> جاري تحميل القائمة...
+      </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2026 جميع الحقوق محفوظة | <span>مطعم عماد الدين</span></p>
-    <p style="margin-top: 5px; font-size: 12px; color: #666;">للطلبات والاستفسار: 0948893053</p>
+  <footer class="developer-footer">
+    <p>&copy; 2026 جميع الحقوق محفوظة | <strong style="color: #E5A84B;">مطعم عماد الدين</strong></p>
+    <p style="margin-top: 6px;">للطلبات والاستفسار: 0948893053</p>
   </footer>
 
-  <!-- JavaScript Code (قراءة الرابط المباشر بدقة) -->
+  <div id="cart-bar" class="cart-bar">
+    <div class="cart-info">
+      <span id="cart-count-text" class="cart-count">الطلب: 0 عنصر</span>
+      <span id="cart-total-text" class="cart-total">المجموع: 0 TL</span>
+    </div>
+    <a href="#" id="whatsapp-order-btn" class="send-whatsapp-btn" target="_blank">
+      <i class="fab fa-whatsapp"></i> إرسال الطلب
+    </a>
+  </div>
+
   <script>
-    const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
-    const WHATSAPP_NUMBER = "963948893053";
+    let fullMenuData = [];
+    let cart = {}; 
+    let selectedCurrency = "TRY"; 
 
-    let allMeals = [];
-    let activeCategory = 'all';
+    // رابط ملف شيت عماد الدين ورقم الواتساب الخاص بك
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI/gviz/tq?tqx=out:csv';
+    const restaurantPhoneNumber = "963948893053";
 
-    async function fetchMeals() {
+    async function loadMenu() {
+      const cachedData = localStorage.getItem('emadElDinMenuData');
+      
+      if (cachedData) {
+        try {
+          fullMenuData = JSON.parse(cachedData);
+          renderMenuItems(fullMenuData);
+        } catch(e) {}
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
       try {
-        const response = await fetch(CSV_URL);
-        const data = await response.text();
-        parseCSV(data);
+        const response = await fetch(sheetUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error('فشل جلب البيانات');
+
+        const csvText = await response.text();
+        const parsedData = parseCSV(csvText);
+
+        if (parsedData && parsedData.length > 0) {
+          fullMenuData = parsedData;
+          localStorage.setItem('emadElDinMenuData', JSON.stringify(fullMenuData));
+          renderMenuItems(fullMenuData);
+        }
       } catch (error) {
-        console.error('Error fetching sheet:', error);
-        document.getElementById('meals-grid').innerHTML = '<div class="loading">عذراً، تأكد من مشاركة ملف الشيت أو تفعيل النشر علناً ليعمل الاتصال بنجاح.</div>';
+        if (!cachedData || fullMenuData.length === 0) {
+          const container = document.getElementById('menu-container');
+          container.innerHTML = `
+            <div class="loading-status">
+              عذراً، تعذر تحميل القائمة حالياً. يرجى التأكد من الاتصال بالإنترنت.<br>
+              <button onclick="loadMenu()"><i class="fas fa-sync"></i> إعادة المحاولة</button>
+            </div>
+          `;
+        }
       }
     }
 
-    function parseCSV(text) {
-      const lines = text.split('\n');
-      allMeals = [];
+    function parseCSV(csvText) {
+      try {
+        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
+        if (lines.length < 2) return [];
 
-      for (let i = 1; i < lines.length; i++) {
-        const row = lines[i].trim();
-        if (!row) continue;
-        
-        const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-        if (cols.length >= 5) {
-          let cat = cols[3]?.replace(/"/g, '').trim() || 'عام';
-          if (cat === 'grilled-ch...' || cat.includes('grilled')) {
+        const delimiter = lines[0].includes(';') ? ';' : ',';
+        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+
+        return lines.slice(1).map(line => {
+          if (!line.trim()) return null;
+          
+          let values = [];
+          let insideQuote = false;
+          let currentValue = '';
+
+          for (let i = 0; i < line.length; i++) {
+            let char = line[i];
+            if (char === '"') {
+              insideQuote = !insideQuote;
+            } else if (char === delimiter && !insideQuote) {
+              values.push(currentValue.replace(/^"|"$/g, '').trim());
+              currentValue = '';
+            } else {
+              currentValue += char;
+            }
+          }
+          values.push(currentValue.replace(/^"|"$/g, '').trim());
+
+          let item = {};
+          headers.forEach((h, idx) => {
+            item[h] = values[idx] || '';
+          });
+
+          const priceTryNum = parseFloat((item.price_try || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+          const priceSNum = parseFloat((item.price_syr || item.price_s || item.price_syp || '0').toString().replace(/[^0-9.]/g, '')) || 0;
+
+          let cat = item.category || 'shawarma-meals';
+          if (cat.includes('grilled') || cat.includes('فروج')) {
             cat = 'manasif';
           }
 
-          allMeals.push({
-            title: cols[0]?.replace(/"/g, '').trim() || '',
-            priceTRY: cols[1]?.replace(/"/g, '').trim() || '0',
-            priceSYP: cols[2]?.replace(/"/g, '').trim() || '0',
+          return {
+            title: item.title || item['عنوان'] || '',
+            price_try: priceTryNum,
+            price_s: priceSNum,
             category: cat,
-            desc: cols[4]?.replace(/"/g, '').trim() || '',
-            image: cols[5]?.replace(/"/g, '').trim() || 'https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600'
-          });
-        }
+            description: item.description || '',
+            image: item.image || ''
+          };
+        }).filter(item => item && item.title);
+      } catch (e) {
+        return [];
       }
-
-      renderCategories();
-      updateView();
     }
 
-    function renderCategories() {
-      const categories = ['all', ...new Set(allMeals.map(m => m.category).filter(Boolean))];
-      const tabsContainer = document.getElementById('category-tabs');
-      
-      const categoryNames = {
-        'all': 'الكل',
-        'shawarma-meals': 'وجبات الشاورما',
-        'western-meals': 'الوجبات الغربية',
-        'shawarma-sand': 'سندويش شاورما',
-        'western-sand': 'سندويش غريب',
-        'appetizers': 'مقبلات وبطاطا',
-        'manasif': 'قسم المناسف'
-      };
-
-      tabsContainer.innerHTML = categories.map(cat => `
-        <button class="tab-btn ${cat === 'all' ? 'active' : ''}" onclick="filterCategory('${cat}', this)">
-          ${categoryNames[cat] || cat}
-        </button>
-      `).join('');
+    function changeCurrency(curr) {
+      selectedCurrency = curr;
+      renderMenuItems(fullMenuData);
+      updateCartBar();
     }
 
-    function filterCategory(cat, btn) {
-      activeCategory = cat;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      updateView();
-    }
+    function renderMenuItems(menuData) {
+      const container = document.getElementById('menu-container');
+      if (!container) return;
 
-    function updateView() {
-      const currency = document.getElementById('currency').value;
-      const grid = document.getElementById('meals-grid');
-      
-      const filtered = activeCategory === 'all' 
-        ? allMeals 
-        : allMeals.filter(m => m.category === activeCategory);
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '<div class="loading">لا توجد وجبات في هذا القسم.</div>';
+      if (menuData.length === 0) {
+        container.innerHTML = '<div class="loading-status">لا توجد عناصر مضافة بعد.</div>';
         return;
       }
 
-      grid.innerHTML = filtered.map(meal => {
-        const isTRY = currency === 'TRY';
-        const priceVal = isTRY ? meal.priceTRY : meal.priceSYP;
-        const priceFormatted = isTRY ? `${priceVal} TL` : `${priceVal} ل.س`;
-        
-        const waText = encodeURIComponent(`مرحباً مطعم عماد الدين، أرغب بطلب:\n- ${meal.title}\n- السعر: ${priceFormatted}`);
-        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+      container.className = 'menu-grid';
+      container.innerHTML = menuData.map(item => {
+        const imageName = item.image ? item.image.trim() : '';
+        const imagePath = imageName.startsWith('http') ? imageName : (imageName ? `images/${imageName}` : 'images/default.jpg');
+        const qty = cart[item.title] ? cart[item.title].qty : 0;
 
-        const imgSrc = meal.image.startsWith('http') 
-          ? meal.image 
-          : 'https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80';
+        const priceDisplay = selectedCurrency === "TRY" 
+          ? `${item.price_try} TL` 
+          : `${item.price_s} SYP`;
 
         return `
           <div class="card">
-            <div class="card-img-wrapper">
-              <img src="${imgSrc}" alt="${meal.title}" onerror="this.src='https://images.unsplash.com/photo-1561651823-34feb02250e4?auto=format&fit=crop&w=600&q=80'">
+            <div class="card-img-container">
+              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1561651823-34feb02250e4?w=500'">
+              <div class="price-badges">
+                <span class="badge-price">${priceDisplay}</span>
+              </div>
             </div>
-            <div class="card-content">
-              <h3 class="card-title">${meal.title}</h3>
-              <p class="card-desc">${meal.desc}</p>
-              <div class="card-footer">
-                <span class="price-tag">${priceFormatted}</span>
-                <a href="${waLink}" target="_blank" class="btn-whatsapp">
-                  <i class="fa-brands fa-whatsapp"></i> طلب
-                </a>
+            <div class="card-body">
+              <h3 class="card-title">${item.title}</h3>
+              <p class="card-description">${item.description}</p>
+              <div id="btn-container-${encodeURIComponent(item.title)}">
+                ${renderCartButton(item, qty)}
               </div>
             </div>
           </div>
@@ -472,7 +549,117 @@
       }).join('');
     }
 
-    window.onload = fetchMeals;
-  </script>
-</body>
-</html>
+    function renderCartButton(item, qty) {
+      const titleEsc = encodeURIComponent(item.title);
+      if (qty === 0) {
+        return `
+          <button class="add-to-cart-btn" onclick="updateQty('${titleEsc}', 1)">
+            <i class="fas fa-cart-plus"></i> إضافة إلى السلة
+          </button>
+        `;
+      } else {
+        return `
+          <div class="quantity-controls">
+            <button class="qty-btn" onclick="updateQty('${titleEsc}', ${qty - 1})">-</button>
+            <span class="qty-count">${qty}</span>
+            <button class="qty-btn" onclick="updateQty('${titleEsc}', ${qty + 1})">+</button>
+          </div>
+        `;
+      }
+    }
+
+    function updateQty(titleEsc, newQty) {
+      const title = decodeURIComponent(titleEsc);
+      const item = fullMenuData.find(i => i.title === title);
+      if (!item) return;
+
+      if (newQty <= 0) {
+        delete cart[title];
+      } else {
+        cart[title] = { item: item, qty: newQty };
+      }
+
+      const btnContainer = document.getElementById(`btn-container-${titleEsc}`);
+      if (btnContainer) {
+        btnContainer.innerHTML = renderCartButton(item, newQty <= 0 ? 0 : newQty);
+      }
+
+      updateCartBar();
+    }
+
+    function updateCartBar() {
+      const cartBar = document.getElementById('cart-bar');
+      const cartCountText = document.getElementById('cart-count-text');
+      const cartTotalText = document.getElementById('cart-total-text');
+      const whatsappBtn = document.getElementById('whatsapp-order-btn');
+
+      const cartItems = Object.values(cart);
+      if (cartItems.length === 0) {
+        cartBar.classList.remove('active');
+        return;
+      }
+
+      cartBar.classList.add('active');
+
+      let totalItems = 0;
+      let totalAmount = 0;
+      let messageLines = ["مرحبا مطعم عماد الدين، أرغب بتسجيل الطلب التالي:\n"];
+
+      cartItems.forEach(cartItem => {
+        const { item, qty } = cartItem;
+        totalItems += qty;
+        
+        const price = selectedCurrency === "TRY" ? item.price_try : item.price_s;
+        const itemTotal = price * qty;
+        totalAmount += itemTotal;
+
+        const currSymbol = selectedCurrency === "TRY" ? "TL" : "SYP";
+        messageLines.push(`• ${item.title} (العدد: ${qty}) - ${itemTotal} ${currSymbol}`);
+      });
+
+      const currSymbol = selectedCurrency === "TRY" ? "TL" : "SYP";
+      messageLines.push(`\n📌 الإجمالي الكلي: ${totalAmount} ${currSymbol}`);
+
+      cartCountText.innerText = `الطلب: ${totalItems} عناصر`;
+      cartTotalText.innerText = `المجموع: ${totalAmount} ${currSymbol}`;
+
+      const whatsappText = encodeURIComponent(messageLines.join('\n'));
+      whatsappBtn.href = `https://wa.me/${restaurantPhoneNumber}?text=${whatsappText}`;
+    }
+
+    function filterMenu(category) {
+      document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+
+      if (category === 'all') {
+        renderMenuItems(fullMenuData);
+      } else {
+        const filtered = fullMenuData.filter(item => {
+          if (!item.category) return false;
+          const cat = item.category.trim().toLowerCase();
+
+          if (category === 'shawarma-sand') {
+            return cat.includes('shawarma-sand') || (cat.includes('shawarma') && cat.includes('sand'));
+          } else if (category === 'western-sand') {
+            return cat.includes('western-sand') || (cat.includes('west') && cat.includes('sand'));
+          } else if (category === 'shawarma-meals') {
+            return cat.includes('shawarma-meal') || (cat.includes('shawarma') && cat.includes('meal'));
+          } else if (category === 'western-meals') {
+            return cat.includes('western-meal') || (cat.includes('west') && cat.includes('meal'));
+          } else if (category === 'manasif') {
+            return cat.includes('manasif') || cat.includes('grilled') || cat.includes('مناسف') || cat.includes('فروج');
+          } else if (category === 'appetizers') {
+            return cat.includes('appetizer') || cat.includes('مقبلات') || cat.includes('بطاطا');
+          } else if (category === 'drinks') {
+            return cat.includes('drink') || cat.includes('مشروب');
+          }
+          return cat === category.toLowerCase();
+        });
+        renderMenuItems(filtered);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMenu);
+  </scri
