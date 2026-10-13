@@ -12,6 +12,9 @@
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- PapaParse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
     :root {
@@ -98,7 +101,7 @@
       font-size: 26px;
     }
 
-    /* Hero Banner الفخم بدون دائرة */
+    /* Hero Banner */
     .hero-banner {
       text-align: center;
       padding: 45px 15px 35px 15px;
@@ -484,81 +487,46 @@
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
     const restaurantPhoneNumber = "963948893053";
 
-    async function loadMenuFromSheet() {
-      try {
-        const response = await fetch(sheetUrl);
-        if (!response.ok) throw new Error('فشل جلب البيانات من الشيت');
-        
-        const csvText = await response.text();
-        parseCSVData(csvText);
-      } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('menu-grid').innerHTML = `
-          <div class="status-msg">
-            عذراً، تعذر الاتصال بملف قوقل شيت.<br>
-            <button onclick="loadMenuFromSheet()" style="margin-top:15px; padding:8px 18px; background:var(--gold-primary); color:#051811; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">
-              <i class="fas fa-sync"></i> إعادة المحاولة
-            </button>
-          </div>
-        `;
-      }
-    }
+    function fetchSheetData() {
+      Papa.parse(sheetUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          if (results && results.data && results.data.length > 0) {
+            fullMenuData = results.data.map(row => {
+              // قراءة القيم بناءً على اسم العمود أو الترتيب
+              const title = row['title'] || row['title '] || Object.values(row)[0] || '';
+              const priceTry = row['price_try'] || Object.values(row)[1] || '0';
+              const priceSyr = row['price_syr'] || row['price_s'] || row['price_syp'] || Object.values(row)[2] || '0';
+              let category = row['category'] || Object.values(row)[3] || 'shawarma-meals';
+              const description = row['description'] || Object.values(row)[4] || '';
+              const image = row['image'] || Object.values(row)[5] || '';
 
-    function parseCSVData(csvText) {
-      try {
-        const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-        if (lines.length < 2) return;
+              if (category.includes('grilled') || category.includes('فروج') || category.includes('grilled-ch...')) {
+                category = 'manasif';
+              }
 
-        const delimiter = lines[0].includes(';') ? ';' : ',';
-        const headers = lines[0].split(delimiter).map(h => h.replace(/^"|"$/g, '').trim().toLowerCase());
+              return {
+                title: title.trim(),
+                price_try: parseFloat(priceTry.toString().replace(/[^0-9.]/g, '')) || 0,
+                price_s: parseFloat(priceSyr.toString().replace(/[^0-9.]/g, '')) || 0,
+                category: category.trim().toLowerCase(),
+                description: description.trim(),
+                image: image.trim()
+              };
+            }).filter(item => item.title !== '' && item.title.toLowerCase() !== 'title');
 
-        fullMenuData = lines.slice(1).map(line => {
-          if (!line.trim()) return null;
-          
-          let values = [];
-          let insideQuote = false;
-          let currentValue = '';
-
-          for (let i = 0; i < line.length; i++) {
-            let char = line[i];
-            if (char === '"') {
-              insideQuote = !insideQuote;
-            } else if (char === delimiter && !insideQuote) {
-              values.push(currentValue.replace(/^"|"$/g, '').trim());
-              currentValue = '';
-            } else {
-              currentValue += char;
-            }
+            renderMenuCards(fullMenuData);
+          } else {
+            document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر العثور على وجبات في القائمة.</div>';
           }
-          values.push(currentValue.replace(/^"|"$/g, '').trim());
-
-          let item = {};
-          headers.forEach((h, idx) => {
-            item[h] = values[idx] || '';
-          });
-
-          const priceTryNum = parseFloat((item.price_try || item.price || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-          const priceSNum = parseFloat((item.price_syr || item.price_s || item.price_syp || '0').toString().replace(/[^0-9.]/g, '')) || 0;
-
-          let cat = item.category || 'shawarma-meals';
-          if (cat.includes('grilled') || cat.includes('فروج') || cat.includes('grilled-ch...')) {
-            cat = 'manasif';
-          }
-
-          return {
-            title: item.title || item['عنوان'] || '',
-            price_try: priceTryNum,
-            price_s: priceSNum,
-            category: cat,
-            description: item.description || '',
-            image: item.image || ''
-          };
-        }).filter(item => item && item.title);
-
-        renderMenuCards(fullMenuData);
-      } catch (e) {
-        console.error(e);
-      }
+        },
+        error: function(err) {
+          console.error(err);
+          document.getElementById('menu-grid').innerHTML = '<div class="status-msg">خطأ في جلب البيانات، يرجى التأكد من الشيت.</div>';
+        }
+      });
     }
 
     function switchCurrency(curr) {
@@ -673,4 +641,21 @@
         messageLines.push(`• ${item.title} (العدد: ${qty}) - ${itemTotal} ${currSymbol}`);
       });
 
-      const currSymbol = currentCurrency === "TRY" ? "TL
+      const currSymbol = currentCurrency === "TRY" ? "TL" : "SYP";
+      messageLines.push(`\n📌 الإجمالي الكلي: ${totalAmount} ${currSymbol}`);
+
+      cartCountText.innerText = `الطلب: ${totalItems} عناصر`;
+      cartTotalText.innerText = `المجموع: ${totalAmount} ${currSymbol}`;
+
+      const whatsappText = encodeURIComponent(messageLines.join('\n'));
+      whatsappLink.href = `https://wa.me/${restaurantPhoneNumber}?text=${whatsappText}`;
+    }
+
+    function filterMenuCategory(category) {
+      document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
+      if (window.event && window.event.target) {
+        window.event.target.classList.add('active');
+      }
+
+      if (category === 'all') {
+        renderMenuCard
