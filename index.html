@@ -12,7 +12,7 @@
     <style>
         :root {
             --bg-dark: #07120a;
-            --bg-card: rgba(14, 34, 23, 0.82);
+            --bg-card: rgba(14, 34, 23, 0.85);
             --gold-primary: #d4af37;
             --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             --text-light: #f5f8f6;
@@ -91,7 +91,7 @@
             color: var(--text-muted);
         }
 
-        /* --- Search & Categories --- */
+        /* --- Controls --- */
         .controls-area {
             max-width: 1000px;
             margin: 20px auto 10px;
@@ -157,7 +157,7 @@
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
-        /* --- Menu Cards Grid --- */
+        /* --- Menu Grid --- */
         .menu-grid {
             max-width: 1000px;
             margin: 20px auto;
@@ -316,7 +316,7 @@
             gap: 8px;
         }
 
-        /* --- Bottom Sheet Cart Drawer --- */
+        /* --- Drawer --- */
         .cart-modal-overlay {
             position: fixed;
             top: 0;
@@ -478,7 +478,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header class="header">
         <div class="header-container">
             <div class="brand-box">
@@ -492,7 +491,6 @@
         </div>
     </header>
 
-    <!-- Controls -->
     <div class="controls-area">
         <div class="search-box-wrapper">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -501,10 +499,8 @@
         <div class="cat-scroll-bar" id="categoriesBar"></div>
     </div>
 
-    <!-- Menu Grid Area -->
     <main class="menu-grid" id="menuContainer"></main>
 
-    <!-- Floating Cart Bar -->
     <div class="cart-bar" id="cartBar" onclick="toggleCartDrawer(true)">
         <div class="cart-bar-info">
             <div class="cart-badge" id="cartBadgeCount">0</div>
@@ -518,7 +514,6 @@
         </button>
     </div>
 
-    <!-- Bottom Sheet Cart Modal -->
     <div class="cart-modal-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)">
         <div class="cart-drawer" onclick="event.stopPropagation()">
             <div class="drawer-header">
@@ -547,12 +542,10 @@
     </div>
 
     <script>
-        // ================= Configuration (طريقة مطعم الزين المباشرة) =================
         const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
         const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
         const WHATSAPP_NUMBER = '963948893053';
 
-        // ترجمة وتجميل أسماء الأقسام
         const categoryNames = {
             'shawarma-meals': 'وجبات شاورما',
             'shawarma-sand': 'سندويش شاورما',
@@ -562,52 +555,75 @@
             'drinks': 'مشروبات'
         };
 
-        const fallbackMenu = [
+        const fallbackData = [
+            { name: "وجبة شاورما عادي", price: 450, category: "وجبات شاورما", desc: "شاورما دجاج 110غ" },
             { name: "وجبة شاورما دبل", price: 720, category: "وجبات شاورما", desc: "شاورما دجاج 220غ + بطاطا" },
-            { name: "وجبة كريسبي عادي", price: 660, category: "وجبات غربية", desc: "فتيلة صدر + بطاطا" },
-            { name: "كولا", price: 210, category: "مشروبات", desc: "مشروب بارد" }
+            { name: "وجبة كريسبي عادي", price: 660, category: "وجبات غربية", desc: "4 قطع فتيلة صدر + بطاطا" },
+            { name: "كوكا كولا", price: 210, category: "مشروبات", desc: "مشروب بارد" }
         ];
 
         let menuData = [];
         let cart = {};
         let currentCategory = 'الكل';
 
-        async function loadMenu() {
+        // محول CSV فائق الأمان لا يستسلم للأخطاء البرمجية
+        function safeParseCSV(text) {
             try {
-                const res = await fetch(CSV_URL);
-                const text = await res.text();
-                const parsed = parseCSV(text);
-                menuData = (parsed && parsed.length > 0) ? parsed : fallbackMenu;
-            } catch (e) {
-                console.warn("استخدام البيانات الاحتياطية:", e);
-                menuData = fallbackMenu;
+                let lines = text.split(/\r\n|\n/);
+                if (lines.length < 2) return null;
+
+                let results = [];
+                for (let i = 1; i < lines.length; i++) {
+                    let line = lines[i].trim();
+                    if (!line) continue;
+
+                    // تقسيم السطر بحسب الفواصل مع التعامل السليم مع النصوص
+                    let cols = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"\vert{}"$/g, '').trim());
+                    
+                    if (cols.length > 0 && cols[0] && cols[0] !== 'title') {
+                        let name = cols[0];
+                        let rawPriceSyr = cols[2];
+                        let rawPriceTry = cols[1];
+                        let rawCat = cols[3] || 'عام';
+                        let desc = cols[4] || 'وجبة طازجة ومجهزة يومياً بأعلى جودة';
+
+                        let price = parseFloat(rawPriceSyr) || parseFloat(rawPriceTry) || 0;
+                        let catName = categoryNames[rawCat] || rawCat;
+
+                        results.push({
+                            name: name,
+                            price: price,
+                            category: catName,
+                            desc: desc
+                        });
+                    }
+                }
+                return results.length > 0 ? results : null;
+            } catch (err) {
+                console.error("CSV error:", err);
+                return null;
             }
-            buildCategories();
-            renderMenu();
         }
 
-        // محلل CSV بسيط ومباشر
-        function parseCSV(text) {
-            const lines = text.split('\n').filter(l => l.trim() !== '');
-            if (lines.length < 2) return null;
+        async function loadMenu() {
+            try {
+                let response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error("HTTP error");
+                let csvText = await response.text();
+                let parsed = safeParseCSV(csvText);
 
-            const items = [];
-            for (let i = 1; i < lines.length; i++) {
-                const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g, ''));
-                if (cols[0]) {
-                    const rawCat = cols[3] || 'عام';
-                    const readableCat = categoryNames[rawCat] || rawCat;
-                    const priceVal = parseFloat(cols[2]) || parseFloat(cols[1]) || 0;
-
-                    items.push({
-                        name: cols[0],
-                        price: priceVal,
-                        category: readableCat,
-                        desc: cols[4] || 'وجبة طازجة ومجهزة يومياً'
-                    });
+                if (parsed) {
+                    menuData = parsed;
+                } else {
+                    menuData = fallbackData;
                 }
+            } catch (e) {
+                console.warn("استخدام القائمة البديلة الحية:", e);
+                menuData = fallbackData;
             }
-            return items;
+
+            buildCategories();
+            renderMenu();
         }
 
         function buildCategories() {
@@ -627,15 +643,4 @@
         }
 
         function renderMenu() {
-            const container = document.getElementById('menuContainer');
-            const searchVal = document.getElementById('searchInput').value.toLowerCase();
-
-            const filtered = menuData.filter(item => {
-                const matchesCat = currentCategory === 'الكل' || item.category === currentCategory;
-                const matchesSearch = item.name.toLowerCase().includes(searchVal) || item.desc.toLowerCase().includes(searchVal);
-                return matchesCat && matchesSearch;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="status-msg">لا توجد وجبات تطابق البحث حالياً</div>`;
-                retur
+            const c
