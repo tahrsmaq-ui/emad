@@ -453,7 +453,7 @@
   <main class="main-container">
     <div id="menu-grid" class="menu-grid">
       <div class="status-msg">
-        <i class="fa-solid fa-spinner fa-spin"></i> جاري جلب القائمة من قوقل شيت...
+        <i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...
       </div>
     </div>
   </main>
@@ -483,47 +483,55 @@
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
     const restaurantPhoneNumber = "963948893053";
 
-    // دالة JSONP المعالجة للبيانات القادمة من قوقل شيت بدون حظر CORS
-    window.handleGvizResponse = function(response) {
-      if (!response || !response.table || !response.table.rows) {
-        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر قراءة بيانات الشيت.</div>';
-        return;
-      }
-
-      const rows = response.table.rows;
-      fullMenuData = rows.map(r => {
-        const c = r.c;
-        if (!c || !c[0] || !c[0].v) return null;
-
-        const title = c[0] ? String(c[0].v).trim() : '';
-        const priceTry = c[1] ? parseFloat(String(c[1].v).replace(/[^0-9.]/g, '')) || 0 : 0;
-        const priceSyr = c[2] ? parseFloat(String(c[2].v).replace(/[^0-9.]/g, '')) || 0 : 0;
-        let category = c[3] ? String(c[3].v).trim().toLowerCase() : 'shawarma-meals';
-        const description = c[4] ? String(c[4].v).trim() : '';
-        const image = c[5] ? String(c[5].v).trim() : '';
-
-        if (category.includes('grilled') || category.includes('فروج') || category.includes('grilled-ch...')) {
-          category = 'manasif';
+    // الاستجابة المباشرة من قوقل شيت بدون الحاجة للـ Publish to web
+    window.gvizCallback = function(json) {
+      try {
+        if (!json || !json.table || !json.table.rows) {
+          document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر قراءة البيانات من الشيت.</div>';
+          return;
         }
 
-        return {
-          title: title,
-          price_try: priceTry,
-          price_s: priceSyr,
-          category: category,
-          description: description,
-          image: image
-        };
-      }).filter(item => item && item.title !== '' && item.title.toLowerCase() !== 'title');
+        const rows = json.table.rows;
+        fullMenuData = rows.map(row => {
+          const c = row.c;
+          if (!c || !c[0] || c[0].v === null) return null;
 
-      renderMenuCards(fullMenuData);
+          const title = c[0] && c[0].v !== null ? String(c[0].v).trim() : '';
+          if (!title || title.toLowerCase() === 'title') return null;
+
+          const priceTry = c[1] && c[1].v !== null ? parseFloat(String(c[1].v).replace(/[^0-9.]/g, '')) || 0 : 0;
+          const priceSyr = c[2] && c[2].v !== null ? parseFloat(String(c[2].v).replace(/[^0-9.]/g, '')) || 0 : 0;
+          let category = c[3] && c[3].v !== null ? String(c[3].v).trim().toLowerCase() : 'shawarma-meals';
+          const description = c[4] && c[4].v !== null ? String(c[4].v).trim() : '';
+          const image = c[5] && c[5].v !== null ? String(c[5].v).trim() : '';
+
+          if (category.includes('grilled') || category.includes('فروج')) {
+            category = 'manasif';
+          }
+
+          return {
+            title: title,
+            price_try: priceTry,
+            price_s: priceSyr,
+            category: category,
+            description: description,
+            image: image
+          };
+        }).filter(item => item !== null);
+
+        renderMenuCards(fullMenuData);
+      } catch (err) {
+        console.error("Error parsing Gviz data:", err);
+        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">حدث خطأ في معالجة البيانات.</div>';
+      }
     };
 
-    function loadSheetViaJSONP() {
+    function fetchSheetJSONP() {
       const script = document.createElement('script');
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
+      // استخدام callback صريح يلتف حول قيود حظر المتصفح
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:gvizCallback`;
       script.onerror = function() {
-        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">خطأ في الاتصال بالشيت.</div>';
+        document.getElementById('menu-grid').innerHTML = '<div class="status-msg">تعذر الاتصال بملف الشيت، يرجى التأكد من أن خيار المشاركة هو "يمكن لأي شخص لديه الرابط العرض".</div>';
       };
       document.body.appendChild(script);
     }
@@ -653,16 +661,4 @@
     function filterMenuCategory(category) {
       document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
       if (window.event && window.event.target) {
-        window.event.target.classList.add('active');
-      }
-
-      if (category === 'all') {
-        renderMenuCards(fullMenuData);
-      } else {
-        const filtered = fullMenuData.filter(item => {
-          if (!item.category) return false;
-          const cat = item.category.trim().toLowerCase();
-
-          if (category === 'shawarma-sand') {
-            return cat.includes('shawarma-sand') || (cat.includes('shawarma') && cat.includes('sand'));
-          } else if (category
+        window.event.
