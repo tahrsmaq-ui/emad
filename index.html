@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مطعم عماد الدين - القائمة الرقمية</title>
+  <title>مطعم عماد الدين - شاورما وغربي ومقبلات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -217,7 +217,17 @@
       padding: 40px 20px;
       color: var(--text-muted);
       font-size: 1.05rem;
-      grid-column: 1 / -1;
+    }
+
+    .loading-status button {
+      margin-top: 15px;
+      padding: 8px 18px;
+      background: var(--gold-gradient);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .menu-grid {
@@ -257,16 +267,33 @@
       object-fit: cover;
     }
 
-    .price-badge {
+    .price-badges {
       position: absolute;
       top: 10px;
       right: 10px;
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .badge-try {
       background-color: var(--gold-primary);
       color: var(--bg-dark);
       padding: 4px 10px;
       border-radius: 6px;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .badge-syp {
+      background-color: #15452d;
+      color: #fff;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
 
@@ -537,7 +564,7 @@
         <i class="fa-solid fa-bars-staggered"></i> الأقسام
       </div>
       <div class="cat-list" id="categoriesBar">
-        <button class="cat-item-btn active" onclick="filterCategory('الكل', this)">الكل</button>
+        <button class="cat-item-btn active" onclick="filterMenu('all')">الكل</button>
       </div>
     </aside>
 
@@ -588,8 +615,8 @@
   <script>
     let fullMenuData = [];
     let cart = {}; 
-    let currentCategory = 'الكل';
     let currentCurrency = 'syr';
+    let currentCategory = 'all';
 
     const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
@@ -597,28 +624,21 @@
 
     async function loadMenu() {
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000);
-
-        const response = await fetch(sheetUrl, { signal: controller.signal });
-        clearTimeout(timeoutId);
-
-        if (!response.ok) throw new Error('فشل جلب البيانات');
-
+        const response = await fetch(sheetUrl);
         const csvText = await response.text();
         const parsedData = parseCSV(csvText);
 
         if (parsedData && parsedData.length > 0) {
           fullMenuData = parsedData;
-          buildCategoriesNav();
-          renderMenuItems();
+          buildCategoriesNav(fullMenuData);
+          renderMenuItems(fullMenuData);
         }
       } catch (error) {
         const container = document.getElementById('menu-container');
         container.innerHTML = `
           <div class="loading-status">
             عذراً، تعذر تحميل القائمة حالياً. يرجى التأكد من الاتصال بالإنترنت.<br>
-            <button onclick="loadMenu()" style="margin-top:15px; padding:8px 18px; background:var(--gold-gradient); color:var(--bg-dark); border:none; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-sync"></i> إعادة المحاولة</button>
+            <button onclick="loadMenu()"><i class="fas fa-sync"></i> إعادة المحاولة</button>
           </div>
         `;
       }
@@ -664,7 +684,7 @@
             title: item.title || item['عنوان'] || '',
             price_try: priceTryNum,
             price_s: priceSNum,
-            category: item.category || item['قسم'] || 'وجبات عامة',
+            category: item.category || item['قسم'] || 'عام',
             description: item.description || item['وصف'] || '',
             image: item.image || ''
           };
@@ -678,50 +698,50 @@
       currentCurrency = curr;
       document.getElementById('btn-syr').classList.toggle('active', curr === 'syr');
       document.getElementById('btn-try').classList.toggle('active', curr === 'try');
-      renderMenuItems();
+      filterMenu(currentCategory);
       updateCartUI();
     }
 
-    function buildCategoriesNav() {
+    function buildCategoriesNav(menuData) {
       const container = document.getElementById('categoriesBar');
-      const cats = ['الكل', ...new Set(fullMenuData.map(i => i.category))];
+      const cats = [...new Set(menuData.map(i => i.category))];
       
-      container.innerHTML = cats.map(cat => `
-        <button class="cat-item-btn ${cat === currentCategory ? 'active' : ''}" onclick="filterCategory('${cat}', this)">${cat}</button>
-      `).join('');
+      let html = `<button class="cat-item-btn active" onclick="filterMenu('all')">الكل</button>`;
+      cats.forEach(cat => {
+        html += `<button class="cat-item-btn" onclick="filterMenu('${cat}')">${cat}</button>`;
+      });
+      container.innerHTML = html;
     }
 
-    function filterCategory(cat, btn) {
-      document.querySelectorAll('.cat-item-btn').forEach(p => p.classList.remove('active'));
-      if (btn) btn.classList.add('active');
-      currentCategory = cat;
-      renderMenuItems();
+    function filterMenu(category) {
+      currentCategory = category;
+      document.querySelectorAll('.cat-item-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.trim() === (category === 'all' ? 'الكل' : category)) {
+          btn.classList.add('active');
+        }
+      });
+
+      if (category === 'all') {
+        renderMenuItems(fullMenuData);
+      } else {
+        const filtered = fullMenuData.filter(item => item.category && item.category.trim() === category.trim());
+        renderMenuItems(filtered);
+      }
     }
 
-    function renderMenuItems() {
+    function renderMenuItems(menuData) {
       const container = document.getElementById('menu-container');
       if (!container) return;
 
-      const filtered = fullMenuData.filter(item => {
-        if (currentCategory === 'الكل') return true;
-        return item.category && item.category.trim().toLowerCase() === currentCategory.toLowerCase();
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="loading-status">لا توجد عناصر مضافة بعد في هذا القسم.</div>';
+      if (menuData.length === 0) {
+        container.innerHTML = '<div class="loading-status">لا توجد عناصر في هذا القسم.</div>';
         return;
       }
 
       container.className = 'menu-grid';
-      container.innerHTML = filtered.map(item => {
+      container.innerHTML = menuData.map(item => {
         const imageName = item.image ? item.image.trim() : '';
         const imagePath = imageName ? `images/${imageName}` : 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=500&q=80';
         const qty = cart[item.title] ? cart[item.title].qty : 0;
-        const encodedTitle = encodeURIComponent(item.title);
-
-        let priceVal = currentCurrency === 'syr' ? `${item.price_s.toLocaleString()} ل.س` : `${item.price_try.toLocaleString()} TL`;
-
-        return `
-          <div class="card">
-            <div class="card-img-container">
-              <img src="${imagePath}" alt="${item.title}" class="card-img" onerror="this.src='ht
+        const encodedTitle = encode
