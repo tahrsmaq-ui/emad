@@ -7,14 +7,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
-  --bg:#0a140f;
-  --panel:#12261c;
+  --bg:#070d0a;
+  --panel:#101f17;
   --gold:#d4af37;
   --gold-light:#f3e5ab;
   --text:#f5f7f6;
-  --muted:#a3b899;
+  --muted:#9ab095;
   --green:#25d366;
-  --border:rgba(212,175,55,.22);
+  --border:rgba(212,175,55,0.25);
+  --card-bg:linear-gradient(145deg, #0e1c14, #08110c);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:Tajawal,system-ui,sans-serif}
 body{background:var(--bg);color:var(--text);direction:rtl;padding-bottom:35px}
@@ -25,87 +26,92 @@ body.no-scroll{overflow:hidden}
 
 .sidebar{
   position:fixed;right:0;top:0;bottom:0;width:260px;
-  background:linear-gradient(180deg,#122b1d,#08110c);
+  background:linear-gradient(180deg,#0f2418,#050b08);
   border-left:1px solid var(--border);padding:22px 15px;
   z-index:1100;overflow-y:auto;transition:transform .3s;
 }
 .brand{display:flex;align-items:center;gap:12px;padding:8px 7px 22px;border-bottom:1px solid var(--border)}
-.brand-icon{width:45px;height:45px;border:1px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:23px}
+.brand-icon{width:45px;height:45px;border:1px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:23px;background:rgba(212,175,55,0.08)}
 .brand h2{font-size:17px;color:var(--gold)}
 .brand p{font-size:12px;color:var(--muted);margin-top:5px}
 .side-label{font-size:12px;color:var(--muted);margin:23px 9px 10px}
 .categories{display:grid;gap:7px}
 .cat-btn{
   width:100%;display:flex;align-items:center;gap:12px;text-align:right;
-  padding:12px;border:1px solid transparent;border-radius:10px;
+  padding:12px;border:1px solid transparent;border-radius:12px;
   background:transparent;color:#d5e0d6;transition:.2s
 }
 .cat-btn i{width:20px;text-align:center;color:var(--gold)}
-.cat-btn:hover,.cat-btn.active{background:rgba(212,175,55,.12);border-color:var(--border);color:var(--gold-light)}
-.sidebar-note{margin-top:25px;padding:13px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.8}
+.cat-btn:hover,.cat-btn.active{background:rgba(212,175,55,0.15);border-color:var(--border);color:var(--gold-light)}
+.sidebar-note{margin-top:25px;padding:13px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.8;background:rgba(212,175,55,0.03)}
 
 .main{margin-right:260px;min-width:0}
 .topbar{
   min-height:75px;padding:14px 25px;display:flex;align-items:center;
   justify-content:space-between;gap:14px;flex-wrap:wrap;
   position:sticky;top:0;z-index:500;
-  background:rgba(10,20,15,.94);backdrop-filter:blur(14px);
+  background:rgba(7,13,10,0.92);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border)
 }
 .topbar-start,.topbar-actions{display:flex;align-items:center;gap:12px}
 .menu-toggle{display:none}
 .icon-btn{
-  width:42px;height:42px;border:1px solid var(--border);border-radius:11px;
-  background:var(--panel);color:var(--gold);font-size:17px;position:relative
+  width:42px;height:42px;border:1px solid var(--border);border-radius:12px;
+  background:var(--panel);color:var(--gold);font-size:17px;position:relative;
+  display:grid;place-items:center;transition:0.2s
 }
-.currency-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#101e15}
-.currency-btn{padding:9px 12px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-size:12px;font-weight:800}
-.currency-btn.active{background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);color:#10170f}
+.icon-btn:hover{background:rgba(212,175,55,0.15)}
+.currency-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#0d1a13}
+.currency-btn{padding:9px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:800;transition:0.2s}
+.currency-btn.active{background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);color:#0c1510;box-shadow:0 4px 12px rgba(212,175,55,0.25)}
 .top-cart-count{
   position:absolute;top:-6px;left:-6px;min-width:20px;height:20px;
   padding:0 4px;border-radius:20px;background:#d94b40;color:white;
-  font-size:11px;display:grid;place-items:center
+  font-size:11px;display:grid;place-items:center;font-weight:bold
 }
 .hero{
-  padding:37px 25px;background:
-  radial-gradient(circle at 80% 10%,rgba(212,175,55,.12),transparent 35%),
-  linear-gradient(135deg,#153c28,#0a140f);
+  padding:35px 25px;background:
+  radial-gradient(circle at 85% 15%,rgba(212,175,55,0.12),transparent 40%),
+  linear-gradient(135deg,#12281d,#070d0a);
   border-bottom:1px solid var(--border)
 }
-.hero h1{font-size:clamp(25px,3vw,36px);color:var(--gold);margin-bottom:10px}
-.hero p{font-size:14px;line-height:1.9;color:var(--muted);max-width:700px}
+.hero h1{font-size:clamp(25px,3vw,36px);color:var(--gold);margin-bottom:8px}
+.hero p{font-size:14px;line-height:1.8;color:var(--muted);max-width:700px}
 .content{max-width:1500px;margin:auto;padding:24px}
 .section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
-.section-heading h2{font-size:20px}
+.section-heading h2{font-size:20px;color:var(--gold-light)}
 .section-heading span{font-size:13px;color:var(--muted)}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:20px}
 
+/* تحسين تصميم البطاقات العصري */
 .card{
-  min-width:0;background:linear-gradient(145deg,rgba(18,38,28,0.95),rgba(10,20,15,0.98));
-  border:1px solid var(--border);border-radius:16px;overflow:hidden;
+  min-width:0;background:var(--card-bg);
+  border:1px solid var(--border);border-radius:18px;overflow:hidden;
   display:flex;flex-direction:column;transition:all .3s ease;
-  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);position:relative;
 }
-.card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 12px 30px rgba(212,175,55,0.15)}
-.card-img-container{height:175px;position:relative;background:#101a12;overflow:hidden}
-.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
-.card:hover .card-img{transform:scale(1.05)}
-.price-badges{position:absolute;top:10px;right:10px;display:flex;flex-wrap:wrap;gap:6px;z-index:2}
+.card:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 15px 35px rgba(212,175,55,0.18)}
+.card-img-container{height:180px;position:relative;background:#0b1410;overflow:hidden}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.card:hover .card-img{transform:scale(1.07)}
+
+.price-badges{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:5px;z-index:2;align-items:flex-end}
 .price-badge{
-  padding:6px 12px;border-radius:10px;
+  padding:6px 12px;border-radius:11px;
   background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
-  color:#11180f;font-size:12px;font-weight:900;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3)
+  color:#0c1510;font-size:12px;font-weight:900;
+  box-shadow:0 4px 12px rgba(0,0,0,0.4)
 }
-.card-body{padding:16px;display:flex;flex-direction:column;flex:1}
-.card-title{font-size:17px;font-weight:700;margin-bottom:8px;color:var(--text)}
-.card-description{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:15px;flex:1}
-.card-price{font-size:14px;color:var(--gold-light);margin-bottom:14px;font-weight:800;letter-spacing:0.5px}
+
+.card-body{padding:18px;display:flex;flex-direction:column;flex:1}
+.card-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.card-description{font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:14px;flex:1}
+.card-price{font-size:14px;color:var(--gold-light);margin-bottom:14px;font-weight:800}
 
 .add-to-cart-btn{
   display:flex;justify-content:center;align-items:center;gap:8px;width:100%;
   padding:12px;border:1px solid rgba(212,175,55,0.4);border-radius:12px;
-  background:linear-gradient(135deg, rgba(212,175,55,0.15), rgba(18,38,28,0.6));
+  background:linear-gradient(135deg, rgba(212,175,55,0.15), rgba(16,31,23,0.8));
   backdrop-filter:blur(5px);
   color:var(--gold-light);font-weight:800;font-size:13px;
   transition:all 0.3s ease;
@@ -113,55 +119,55 @@ body.no-scroll{overflow:hidden}
 }
 .add-to-cart-btn:hover{
   background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
-  color:#10170f;border-color:transparent;
-  box-shadow:0 6px 20px rgba(212,175,55,0.3);
+  color:#0c1510;border-color:transparent;
+  box-shadow:0 6px 20px rgba(212,175,55,0.35);
   transform:translateY(-2px);
 }
 
-.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px;background:#07120a;border:1px solid var(--gold);border-radius:12px}
-.qty-btn{width:35px;height:34px;border:0;border-radius:8px;background:var(--gold);color:#10170f;font-weight:900;transition:transform 0.1s}
+.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px;background:#08140f;border:1px solid var(--gold);border-radius:12px}
+.qty-btn{width:35px;height:34px;border:0;border-radius:9px;background:var(--gold);color:#0c1510;font-weight:900;transition:0.1s}
 .qty-btn:active{transform:scale(0.92)}
 .qty-count{font-weight:900;color:var(--gold-light)}
 
-.loading-status{text-align:center;padding:45px 15px;color:var(--muted);line-height:2}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1050;display:none}
+.loading-status{text-align:center;padding:50px 15px;color:var(--muted);line-height:2;grid-column:1/-1}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1050;display:none;backdrop-filter:blur(3px)}
 .overlay.show{display:block}
 
 .cart-drawer{
   position:fixed;top:0;left:0;bottom:0;width:min(440px,100%);
-  background:#0d1b12;border-right:1px solid var(--border);
+  background:#0a1710;border-right:1px solid var(--border);
   z-index:1300;display:flex;flex-direction:column;
   transform:translateX(-105%);transition:transform .3s ease;
-  box-shadow:10px 0 35px rgba(0,0,0,.4)
+  box-shadow:10px 0 40px rgba(0,0,0,0.5)
 }
 .cart-drawer.open{transform:translateX(0)}
-.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border)}
-.cart-header h2{font-size:19px;color:var(--gold)}
-.close-btn{background:transparent;border:1px solid var(--border);color:white;border-radius:9px;width:38px;height:38px}
-.cart-items{padding:15px;overflow-y:auto;flex:1}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);background:#0f2418}
+.cart-header h2{font-size:18px;color:var(--gold)}
+.close-btn{background:transparent;border:1px solid var(--border);color:white;border-radius:10px;width:38px;height:38px;display:grid;place-items:center}
+.cart-items{padding:16px;overflow-y:auto;flex:1}
 .empty-cart{text-align:center;color:var(--muted);padding:55px 15px;line-height:2}
-.empty-cart i{display:block;font-size:40px;color:var(--gold);margin-bottom:15px}
-.cart-item{padding:13px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:12px}
-.cart-item h3{font-size:14px;margin-bottom:6px}
+.empty-cart i{display:block;font-size:42px;color:var(--gold);margin-bottom:15px}
+.cart-item{padding:14px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr auto;gap:12px}
+.cart-item h3{font-size:14px;margin-bottom:6px;color:var(--text)}
 .cart-item-price{font-size:12px;color:var(--muted);line-height:1.8}
-.cart-item-controls{display:flex;align-items:center;gap:7px;margin-top:10px}
-.cart-item-controls button{width:28px;height:28px;border:0;border-radius:6px;background:var(--gold);color:#10170f}
+.cart-item-controls{display:flex;align-items:center;gap:8px;margin-top:10px}
+.cart-item-controls button{width:28px;height:28px;border:0;border-radius:7px;background:var(--gold);color:#0c1510}
 .remove-item{background:#3b211d!important;color:#ffb2a8!important}
 .cart-item-subtotal{text-align:left;color:var(--gold-light);font-size:13px;font-weight:800;align-self:center}
-.cart-footer{padding:17px;border-top:1px solid var(--border);display:grid;gap:12px}
+.cart-footer{padding:18px;border-top:1px solid var(--border);display:grid;gap:12px;background:#0d1e15}
 .cart-field{display:grid;gap:6px}
 .cart-field label{font-size:12px;color:var(--muted)}
 .cart-field select,.cart-field input{
-  width:100%;padding:11px;border-radius:8px;background:#14261a;
+  width:100%;padding:11px;border-radius:10px;background:#132d20;
   border:1px solid var(--border);color:white;min-width:0
 }
-.cart-totals{padding:12px;background:#13261a;border-radius:10px;display:grid;gap:8px}
+.cart-totals{padding:12px;background:#132d20;border-radius:12px;display:grid;gap:8px;border:1px solid rgba(212,175,55,0.15)}
 .total-line{display:flex;justify-content:space-between;gap:10px;font-size:13px}
 .total-line strong{color:var(--gold-light)}
 .send-whatsapp-btn{
   width:100%;display:flex;justify-content:center;align-items:center;gap:9px;
-  padding:13px;border:0;border-radius:9px;background:var(--green);
-  color:white;text-decoration:none;font-weight:900
+  padding:14px;border:0;border-radius:11px;background:var(--green);
+  color:white;text-decoration:none;font-weight:900;box-shadow:0 4px 15px rgba(37,211,102,0.3)
 }
 .send-whatsapp-btn.disabled{opacity:.4;pointer-events:none}
 
@@ -171,20 +177,20 @@ body.no-scroll{overflow:hidden}
   .main{margin-right:0}
   .menu-toggle{display:inline-grid;place-items:center}
   .topbar{padding:12px 15px}
-  .hero{padding:27px 18px}
+  .hero{padding:25px 18px}
   .content{padding:18px 14px}
 }
 @media(max-width:480px){
-  .currency-btn{padding:8px;font-size:11px}
+  .currency-btn{padding:8px 10px;font-size:11px}
   .topbar{gap:8px}
   .topbar-start,.topbar-actions{gap:7px}
-  .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .card-img-container{height:125px}
-  .card-body{padding:10px}
+  .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .card-img-container{height:130px}
+  .card-body{padding:11px}
   .card-title{font-size:14px}
-  .card-description{font-size:12px}
-  .price-badge{font-size:10px;padding:5px 6px}
-  .add-to-cart-btn{font-size:12px;padding:10px 6px}
+  .card-description{font-size:11px;margin-bottom:10px}
+  .price-badge{font-size:10px;padding:4px 8px}
+  .add-to-cart-btn{font-size:11px;padding:9px 5px}
   .qty-btn{width:30px;height:30px}
 }
 </style>
@@ -273,78 +279,25 @@ body.no-scroll{overflow:hidden}
   <main class="content">
     <div class="section-heading">
       <h2 id="section-title">كل الوجبات</h2>
-      <span id="items-count">جاري التحميل...</span>
+      <span id="items-count">جاري التحميل من غوغل شيت...</span>
     </div>
-    <div id="menu-container"></div>
+    <div id="menu-container">
+      <div class="loading-status"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب القائمة من غوغل شيت...</div>
+    </div>
   </main>
-</div><script>
+</div>
+<script>
 'use strict';
 
-const fullMenuData = [
-  {title: "وجبة شاورما عادي", price_try: 150, price_syr: 450, category: "shawarma-meal", description: "شاورما دجاج 110غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
-  {title: "وجبة شاورما دبل", price_try: 240, price_syr: 720, category: "shawarma-meal", description: "شاورما دجاج 220غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
-  {title: "وجبة شاورما اكسترا عادي", price_try: 200, price_syr: 600, category: "shawarma-meal", description: "شاورما 110غ + جبنة موزريلا 60غ + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
-  {title: "وجبة شاورما اكسترا دبل", price_try: 270, price_syr: 810, category: "shawarma-meal", description: "شاورما 220غ + جبنة موزريلا + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
-  {title: "وجبة شاورما بانيه عادي", price_try: 210, price_syr: 630, category: "shawarma-meal", description: "شاورما 140غ + جبنة + ذرة + فطر + بطاطا + ثوم + روسية + كوكتيل صوص", image: "pa.jpg"},
-  {title: "وجبة شاورما بانيه دبل", price_try: 350, price_syr: 1050, category: "shawarma-meal", description: "شاورما 220غ + جبنة + ذرة + بطاطا + ثوم + روسية + صوص", image: "pa.jpg"},
-  {title: "مشروح شاورما فرط 1 كيلو", price_try: 620, price_syr: 1860, category: "shawarma-meal", description: "شاورما أخصائي 1كغ + محمرة + بطاطا 400غ + ثوم + مخلل + لتر رمان", image: "shal.jpg"},
-  {title: "شاورما فرط نص كيلو", price_try: 310, price_syr: 930, category: "shawarma-meal", description: "شاورما 500غ + محمرة + بطاطا 200غ + ثوم + مخلل + رمان", image: "shal.jpg"},
-  {title: "شاورما فرط 250غ", price_try: 170, price_syr: 510, category: "shawarma-meal", description: "شاورما 250غ + محمرة + بطاطا 200غ + ثوم + مخلل + رمان", image: "shal.jpg"},
-  {title: "شاورما فرط 100غ", price_try: 90, price_syr: 270, category: "shawarma-meal", description: "شاورما 100غ + محمرة + بطاطا 100غ + ثوم + مخلل + رمان", image: "shal.jpg"},
-  {title: "وجبة عصافيري", price_try: 250, price_syr: 750, category: "shawarma-meal", description: "4 قراطيس + 200غ بطاطا + ثوم + مخلل + كتشب + رمان", image: "sha.jpg"},
-  {title: "وجبة فاهيتا عادي", price_try: 250, price_syr: 750, category: "shawarma-meal", description: "250غ صدر دجاج + ذرة + فطر + بصل + فليفلة + جبنة شيدر + قشقوان + كولسلو", image: "fah.jpg"},
-  {title: "وجبة فاهيتا دبل", price_try: 330, price_syr: 990, category: "shawarma-meal", description: "400غ صدر دجاج + ذرة + فطر + بصل + فليفلة + جبنة + كولسلو", image: "fah.jpg"},
-  {title: "وجبة مكسيكانو عادي", price_try: 210, price_syr: 630, category: "western-meals", description: "250غ صدر دجاج + فطر + بصل + فليفلة + صوص + كولسلو", image: "mac.jpg"},
-  {title: "وجبة مكسيكانو دبل", price_try: 260, price_syr: 780, category: "western-meals", description: "400غ صدر دجاج + فطر + بصل + فليفلة + صوص + كولسلو", image: "mac.jpg"},
-  {title: "وجبة كريسبي عادي", price_try: 220, price_syr: 660, category: "western-meals", description: "250غ فتيلة صدر + بطاطا 200غ + روسية + صوص + كولسلو", image: "cry.jpg"},
-  {title: "وجبة كريسبي دبل", price_try: 270, price_syr: 810, category: "western-meals", description: "370غ فتيلة صدر + بطاطا 200غ + روسية + صوص + كولسلو", image: "cry.jpg"},
-  {title: "وجبة زنجر عادي", price_try: 220, price_syr: 660, category: "western-meals", description: "250غ فتيلة صدر + بطاطا 200غ + روسية + صوص + كولسلو + حار", image: "zn.jpg"},
-  {title: "وجبة زنجر دبل", price_try: 270, price_syr: 810, category: "western-meals", description: "370غ فتيلة صدر + بطاطا 200غ + روسية + صوص + كولسلو + حار", image: "zn.jpg"},
-  {title: "وجبة سبايسي عادي", price_try: 220, price_syr: 660, category: "western-meals", description: "250غ فتيلة صدر + بطاطا 200غ + روسية + صوص سبايسي", image: "cry.jpg"},
-  {title: "وجبة سبايسي دبل", price_try: 270, price_syr: 810, category: "western-meals", description: "370غ فتيلة صدر + بطاطا 200غ + روسية + صوص سبايسي", image: "cry.jpg"},
-  {title: "وجبة برغر دجاج عادي", price_try: 170, price_syr: 510, category: "western-meals", description: "لحم دجاج + بطاطا", image: "b.jpg"},
-  {title: "وجبة برغر دجاج دبل", price_try: 220, price_syr: 660, category: "western-meals", description: "لحم دجاج + بطاطا", image: "b.jpg"},
-  {title: "وجبة برغر لحم عادي", price_try: 220, price_syr: 660, category: "western-meals", description: "لحم عجل + بطاطا", image: "bl.jpg"},
-  {title: "وجبة برغر لحم دبل", price_try: 260, price_syr: 780, category: "western-meals", description: "لحم عجل + بطاطا", image: "bl.jpg"},
-  {title: "وجبة برغر كريسبي", price_try: 200, price_syr: 600, category: "western-meals", description: "فتيلة صدر + بطاطا", image: "crys.jpg"},
-  {title: "صحن بطاطا وسط", price_try: 70, price_syr: 210, category: "appetizers", description: "بطاطا ساح + ثوم", image: "bat.jpg"},
-  {title: "صحن بطاطا كبير", price_try: 100, price_syr: 300, category: "appetizers", description: "بطاطا ساح + ثوم", image: "bat.jpg"},
-  {title: "سندويش شاورما عادي", price_try: 90, price_syr: 270, category: "shawarma-sand", description: "ثوم + مخلل 110غ", image: "sh.jpg"},
-  {title: "سندويش شاورما دبل", price_try: 110, price_syr: 330, category: "shawarma-sand", description: "ثوم + مخلل 140غ", image: "sh.jpg"},
-  {title: "سندويش شاورما اكسترا عادي", price_try: 120, price_syr: 360, category: "shawarma-sand", description: "ثوم + مخلل 110غ", image: "shj.jpg"},
-  {title: "سندويش شاورما اكسترا دبل", price_try: 150, price_syr: 450, category: "shawarma-sand", description: "ثوم + مخلل 140غ", image: "shj.jpg"},
-  {title: "سندويش كريسبي عادي", price_try: 110, price_syr: 330, category: "western-sand", description: "صوص + كتشب 120غ", image: "c.jpg"},
-  {title: "سندويش كريسبي دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "صوص + كتشب 150غ", image: "c.jpg"},
-  {title: "سندويش زنجر عادي", price_try: 110, price_syr: 330, category: "western-sand", description: "كتشب+حار 120غ", image: "c.jpg"},
-  {title: "سندويش زنجر دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "صوص + كتشب 150غ", image: "c.jpg"},
-  {title: "سندويش سبايسي عادي", price_try: 110, price_syr: 330, category: "western-sand", description: "صوص سبايسي 120غ", image: "c.jpg"},
-  {title: "سندويش سبايسي دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "صوص سبايسي 150غ", image: "c.jpg"},
-  {title: "سندويش مكسيكانو عادي", price_try: 100, price_syr: 300, category: "western-sand", description: "ثوم + صوص 110غ", image: "m.jpg"},
-  {title: "سندويش مكسيكانو دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "ثوم + صوص 150غ", image: "m.jpg"},
-  {title: "عصفورة", price_try: 40, price_syr: 120, category: "shawarma-sand", description: "شاورما دجاج + لوم", image: "sha.jpg"},
-  {title: "سندويش بطاطا عادي", price_try: 50, price_syr: 150, category: "western-sand", description: "صوص + كتشب 150غ", image: "ba.jpg"},
-  {title: "سندويش بطاطا دبل", price_try: 60, price_syr: 180, category: "western-sand", description: "صوص + كتشب 250غ", image: "ba.jpg"},
-  {title: "سندويش فاهيتا عادي", price_try: 120, price_syr: 360, category: "western-sand", description: "ثوم + صوص 120غ", image: "fa.jpg"},
-  {title: "سندويش فاهيتا دبل", price_try: 140, price_syr: 420, category: "western-sand", description: "ثوم + صوص 140غ", image: "fa.jpg"},
-  {title: "برغر دجاج عادي", price_try: 120, price_syr: 360, category: "western-sand", description: "لحم دجاج + روسية", image: "b.jpg"},
-  {title: "برغر دجاج دبل", price_try: 170, price_syr: 510, category: "western-sand", description: "لحم دجاج + روسية", image: "b.jpg"},
-  {title: "برغر لحم عادي", price_try: 170, price_syr: 510, category: "western-sand", description: "لحم عجل + روسية", image: "bl.jpg"},
-  {title: "برغر لحم دبل", price_try: 220, price_syr: 660, category: "western-sand", description: "لحم عجل + روسية", image: "bl.jpg"},
-  {title: "برغر كريسبي", price_try: 130, price_syr: 390, category: "western-sand", description: "فتيلة صدر + روسية", image: "cb.jpg"},
-  {title: "كوكولا 2", price_try: 70, price_syr: 210, category: "drinks", description: "", image: "cola.jpg"},
-  {title: "كوكولا 1", price_try: 40, price_syr: 120, category: "drinks", description: "", image: "peps.jpg"},
-  {title: "بيبسي تنك", price_try: 30, price_syr: 90, category: "drinks", description: "", image: "pepso.jpg"},
-  {title: "ميرندا تنك", price_try: 40, price_syr: 90, category: "drinks", description: "", image: "mir.jpg"},
-  {title: "سفن أب", price_try: 30, price_syr: 90, category: "drinks", description: "", image: "sa.jpg"},
-  {title: "لفت اب صغير", price_try: 25, price_syr: 75, category: "drinks", description: "", image: "lef.jpg"}
-];
-
+let fullMenuData = [];
 let cart = {};
 let currentCategory = 'all';
 let currencyMode = 'both';
 
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwACXz7Kui9DxWhlOjYpbssZvKo_rndBw8eOnKBoGuNzZhGlVuVyqabmmb_c69CkeAu/exec';
 const restaurantPhoneNumber = '963948893053';
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
+
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
@@ -375,9 +328,45 @@ window.setCurrency = function(mode) {
   updateCartBar();
 };
 
-function initMenu() {
-  renderMenuItems(getFilteredMenu());
-  updateCartBar();
+function loadMenu() {
+  const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+  window[callbackName] = function(data) {
+    delete window[callbackName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+    
+    if (Array.isArray(data) && data.length > 0) {
+      fullMenuData = data.map(item => ({
+        title: item.title || '',
+        price_try: parseFloat(String(item.price_try || '0').replace(/[^0-9.]/g,'')) || 0,
+        price_syr: parseFloat(String(item.price_syr || item.price_s || '0').replace(/[^0-9.]/g,'')) || 0,
+        category: String(item.category || 'general').trim().toLowerCase(),
+        description: item.description || '',
+        image: item.image || ''
+      })).filter(item => item.title);
+
+      renderMenuItems(getFilteredMenu());
+      updateCartBar();
+    } else {
+      showErrorState();
+    }
+  };
+
+  const script = document.createElement('script');
+  script.src = `${WEB_APP_URL}?callback=${callbackName}`;
+  script.onerror = function() {
+    delete window[callbackName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+    showErrorState();
+  };
+  document.body.appendChild(script);
+}
+
+function showErrorState() {
+  document.getElementById('menu-container').innerHTML = `
+    <div class="loading-status">
+      تعذر الاتصال بجدول غوغل شيت.<br>
+      <button onclick="loadMenu()" style="margin-top:10px;padding:8px 16px;border-radius:8px;background:var(--gold);border:0;color:#111;font-weight:bold;">إعادة المحاولة 🔄</button>
+    </div>`;
 }
 
 function getFilteredMenu() {
@@ -389,8 +378,7 @@ function getFilteredMenu() {
     return itemCat === cleanCat;
   });
 }
-
-window.filterMenu = function(category) {
+  window.filterMenu = function(category) {
   currentCategory = category;
   document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
@@ -602,7 +590,7 @@ window.closePanels = function() {
   closeCart();
 };
 
-document.addEventListener('DOMContentLoaded', initMenu);
+document.addEventListener('DOMContentLoaded', loadMenu);
 </script>
 </body>
 </html>
