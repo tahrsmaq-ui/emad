@@ -7,15 +7,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root {
-  --bg:#070d0a;
-  --panel:#101f17;
-  --gold:#d4af37;
-  --gold-light:#f3e5ab;
-  --text:#f5f7f6;
-  --muted:#9ab095;
+  --bg:#050907;
+  --panel:#0d1812;
+  --gold:#e6c547;
+  --gold-light:#faefc5;
+  --text:#f0f4f1;
+  --muted:#8fa696;
   --green:#25d366;
-  --border:rgba(212,175,55,0.25);
-  --card-bg:linear-gradient(145deg, #0e1c14, #08110c);
+  --border:rgba(230,197,71,0.2);
+  --card-bg:linear-gradient(160deg, #102118, #08110c);
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:Tajawal,system-ui,sans-serif}
 body{background:var(--bg);color:var(--text);direction:rtl;padding-bottom:35px}
@@ -26,12 +26,12 @@ body.no-scroll{overflow:hidden}
 
 .sidebar{
   position:fixed;right:0;top:0;bottom:0;width:260px;
-  background:linear-gradient(180deg,#0f2418,#050b08);
+  background:linear-gradient(180deg,#0d2015,#040705);
   border-left:1px solid var(--border);padding:22px 15px;
   z-index:1100;overflow-y:auto;transition:transform .3s;
 }
 .brand{display:flex;align-items:center;gap:12px;padding:8px 7px 22px;border-bottom:1px solid var(--border)}
-.brand-icon{width:45px;height:45px;border:1px solid var(--gold);border-radius:13px;display:grid;place-items:center;color:var(--gold);font-size:23px;background:rgba(212,175,55,0.08)}
+.brand-icon{width:45px;height:45px;border:1px solid var(--gold);border-radius:14px;display:grid;place-items:center;color:var(--gold);font-size:23px;background:rgba(230,197,71,0.08)}
 .brand h2{font-size:17px;color:var(--gold)}
 .brand p{font-size:12px;color:var(--muted);margin-top:5px}
 .side-label{font-size:12px;color:var(--muted);margin:23px 9px 10px}
@@ -42,15 +42,15 @@ body.no-scroll{overflow:hidden}
   background:transparent;color:#d5e0d6;transition:.2s
 }
 .cat-btn i{width:20px;text-align:center;color:var(--gold)}
-.cat-btn:hover,.cat-btn.active{background:rgba(212,175,55,0.15);border-color:var(--border);color:var(--gold-light)}
-.sidebar-note{margin-top:25px;padding:13px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.8;background:rgba(212,175,55,0.03)}
+.cat-btn:hover,.cat-btn.active{background:rgba(230,197,71,0.12);border-color:var(--border);color:var(--gold-light)}
+.sidebar-note{margin-top:25px;padding:13px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:12px;line-height:1.8;background:rgba(230,197,71,0.03)}
 
 .main{margin-right:260px;min-width:0}
 .topbar{
   min-height:75px;padding:14px 25px;display:flex;align-items:center;
   justify-content:space-between;gap:14px;flex-wrap:wrap;
   position:sticky;top:0;z-index:500;
-  background:rgba(7,13,10,0.92);backdrop-filter:blur(14px);
+  background:rgba(5,9,7,0.92);backdrop-filter:blur(14px);
   border-bottom:1px solid var(--border)
 }
 .topbar-start,.topbar-actions{display:flex;align-items:center;gap:12px}
@@ -60,10 +60,10 @@ body.no-scroll{overflow:hidden}
   background:var(--panel);color:var(--gold);font-size:17px;position:relative;
   display:grid;place-items:center;transition:0.2s
 }
-.icon-btn:hover{background:rgba(212,175,55,0.15)}
-.currency-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#0d1a13}
+.icon-btn:hover{background:rgba(230,197,71,0.15)}
+.currency-switch{display:flex;gap:4px;padding:4px;border:1px solid var(--border);border-radius:12px;background:#09140e}
 .currency-btn{padding:9px 14px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:800;transition:0.2s}
-.currency-btn.active{background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);color:#0c1510;box-shadow:0 4px 12px rgba(212,175,55,0.25)}
+.currency-btn.active{background:linear-gradient(135deg,#e6c547,#faefc5,#c8a22b);color:#08110c;box-shadow:0 4px 12px rgba(230,197,71,0.25)}
 .top-cart-count{
   position:absolute;top:-6px;left:-6px;min-width:20px;height:20px;
   padding:0 4px;border-radius:20px;background:#d94b40;color:white;
@@ -71,8 +71,8 @@ body.no-scroll{overflow:hidden}
 }
 .hero{
   padding:35px 25px;background:
-  radial-gradient(circle at 85% 15%,rgba(212,175,55,0.12),transparent 40%),
-  linear-gradient(135deg,#12281d,#070d0a);
+  radial-gradient(circle at 85% 15%,rgba(230,197,71,0.1),transparent 40%),
+  linear-gradient(135deg,#112519,#050907);
   border-bottom:1px solid var(--border)
 }
 .hero h1{font-size:clamp(25px,3vw,36px);color:var(--gold);margin-bottom:8px}
@@ -81,51 +81,52 @@ body.no-scroll{overflow:hidden}
 .section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:20px}
 .section-heading h2{font-size:20px;color:var(--gold-light)}
 .section-heading span{font-size:13px;color:var(--muted)}
-.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:20px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
 
+/* التعديل الجديد والمميز للبطاقات (مختلف عن موقعك الثاني) */
 .card{
   min-width:0;background:var(--card-bg);
-  border:1px solid var(--border);border-radius:18px;overflow:hidden;
+  border:1px solid var(--border);border-radius:20px;overflow:hidden;
   display:flex;flex-direction:column;transition:all .3s ease;
-  box-shadow:0 10px 25px rgba(0,0,0,0.3);position:relative;
+  box-shadow:0 8px 22px rgba(0,0,0,0.35);position:relative;
 }
-.card:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 15px 35px rgba(212,175,55,0.18)}
-.card-img-container{height:180px;position:relative;background:#0b1410;overflow:hidden}
-.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
-.card:hover .card-img{transform:scale(1.07)}
+.card:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 12px 30px rgba(230,197,71,0.15)}
 
-.price-badges{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:5px;z-index:2;align-items:flex-end}
+.card-top-info{padding:16px 16px 8px;display:flex;flex-direction:column;gap:6px}
+.card-title{font-size:17px;font-weight:800;color:var(--gold-light)}
+
+.card-img-container{height:160px;position:relative;background:#08110c;overflow:hidden;margin:0 12px;border-radius:14px;border:1px solid rgba(230,197,71,0.15)}
+.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.card:hover .card-img{transform:scale(1.06)}
+
+.price-badges{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:4px;z-index:2;align-items:flex-end}
 .price-badge{
-  padding:6px 12px;border-radius:11px;
-  background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
-  color:#0c1510;font-size:12px;font-weight:900;
-  box-shadow:0 4px 12px rgba(0,0,0,0.4)
+  padding:5px 10px;border-radius:9px;
+  background:linear-gradient(135deg,#e6c547,#faefc5,#c8a22b);
+  color:#08110c;font-size:11px;font-weight:900;
+  box-shadow:0 3px 8px rgba(0,0,0,0.3)
 }
 
-.card-body{padding:18px;display:flex;flex-direction:column;flex:1}
-.card-title{font-size:17px;font-weight:700;margin-bottom:6px;color:var(--text)}
-.card-description{font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:14px;flex:1}
-.card-price{font-size:14px;color:var(--gold-light);margin-bottom:14px;font-weight:800}
+.card-body{padding:12px 16px 18px;display:flex;flex-direction:column;flex:1}
+.card-description{font-size:12px;line-height:1.7;color:var(--muted);margin-bottom:12px;flex:1}
+.card-price{font-size:13px;color:var(--gold);margin-bottom:12px;font-weight:800;background:rgba(230,197,71,0.06);padding:6px 10px;border-radius:8px;display:inline-block;border:1px solid rgba(230,197,71,0.15)}
 
 .add-to-cart-btn{
   display:flex;justify-content:center;align-items:center;gap:8px;width:100%;
-  padding:12px;border:1px solid rgba(212,175,55,0.4);border-radius:12px;
-  background:linear-gradient(135deg, rgba(212,175,55,0.15), rgba(16,31,23,0.8));
+  padding:11px;border:1px solid rgba(230,197,71,0.4);border-radius:12px;
+  background:linear-gradient(135deg, rgba(230,197,71,0.15), rgba(13,24,18,0.8));
   backdrop-filter:blur(5px);
   color:var(--gold-light);font-weight:800;font-size:13px;
   transition:all 0.3s ease;
-  box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
 .add-to-cart-btn:hover{
-  background:linear-gradient(135deg,#bf953f,#fcf6ba,#b38728);
-  color:#0c1510;border-color:transparent;
-  box-shadow:0 6px 20px rgba(212,175,55,0.35);
-  transform:translateY(-2px);
+  background:linear-gradient(135deg,#e6c547,#faefc5,#c8a22b);
+  color:#08110c;border-color:transparent;
+  box-shadow:0 5px 15px rgba(230,197,71,0.3);
 }
 
-.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px;background:#08140f;border:1px solid var(--gold);border-radius:12px}
-.qty-btn{width:35px;height:34px;border:0;border-radius:9px;background:var(--gold);color:#0c1510;font-weight:900;transition:0.1s}
-.qty-btn:active{transform:scale(0.92)}
+.quantity-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:5px;background:#06100b;border:1px solid var(--gold);border-radius:12px}
+.qty-btn{width:34px;height:32px;border:0;border-radius:9px;background:var(--gold);color:#08110c;font-weight:900}
 .qty-count{font-weight:900;color:var(--gold-light)}
 
 .loading-status{text-align:center;padding:50px 15px;color:var(--muted);line-height:2;grid-column:1/-1}
@@ -134,13 +135,13 @@ body.no-scroll{overflow:hidden}
 
 .cart-drawer{
   position:fixed;top:0;left:0;bottom:0;width:min(440px,100%);
-  background:#0a1710;border-right:1px solid var(--border);
+  background:#09150e;border-right:1px solid var(--border);
   z-index:1300;display:flex;flex-direction:column;
   transform:translateX(-105%);transition:transform .3s ease;
   box-shadow:10px 0 40px rgba(0,0,0,0.5)
 }
 .cart-drawer.open{transform:translateX(0)}
-.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);background:#0f2418}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:20px;border-bottom:1px solid var(--border);background:#0d2015}
 .cart-header h2{font-size:18px;color:var(--gold)}
 .close-btn{background:transparent;border:1px solid var(--border);color:white;border-radius:10px;width:38px;height:38px;display:grid;place-items:center}
 .cart-items{padding:16px;overflow-y:auto;flex:1}
@@ -150,17 +151,17 @@ body.no-scroll{overflow:hidden}
 .cart-item h3{font-size:14px;margin-bottom:6px;color:var(--text)}
 .cart-item-price{font-size:12px;color:var(--muted);line-height:1.8}
 .cart-item-controls{display:flex;align-items:center;gap:8px;margin-top:10px}
-.cart-item-controls button{width:28px;height:28px;border:0;border-radius:7px;background:var(--gold);color:#0c1510}
+.cart-item-controls button{width:28px;height:28px;border:0;border-radius:7px;background:var(--gold);color:#08110c}
 .remove-item{background:#3b211d!important;color:#ffb2a8!important}
 .cart-item-subtotal{text-align:left;color:var(--gold-light);font-size:13px;font-weight:800;align-self:center}
-.cart-footer{padding:18px;border-top:1px solid var(--border);display:grid;gap:12px;background:#0d1e15}
+.cart-footer{padding:18px;border-top:1px solid var(--border);display:grid;gap:12px;background:#0b1b13}
 .cart-field{display:grid;gap:6px}
 .cart-field label{font-size:12px;color:var(--muted)}
 .cart-field select,.cart-field input{
-  width:100%;padding:11px;border-radius:10px;background:#132d20;
+  width:100%;padding:11px;border-radius:10px;background:#11281c;
   border:1px solid var(--border);color:white;min-width:0
 }
-.cart-totals{padding:12px;background:#132d20;border-radius:12px;display:grid;gap:8px;border:1px solid rgba(212,175,55,0.15)}
+.cart-totals{padding:12px;background:#11281c;border-radius:12px;display:grid;gap:8px;border:1px solid rgba(230,197,71,0.15)}
 .total-line{display:flex;justify-content:space-between;gap:10px;font-size:13px}
 .total-line strong{color:var(--gold-light)}
 .send-whatsapp-btn{
@@ -184,11 +185,12 @@ body.no-scroll{overflow:hidden}
   .topbar{gap:8px}
   .topbar-start,.topbar-actions{gap:7px}
   .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-  .card-img-container{height:130px}
-  .card-body{padding:11px}
+  .card-img-container{height:120px;margin:0 8px}
+  .card-body{padding:10px 12px 14px}
+  .card-top-info{padding:12px 12px 6px}
   .card-title{font-size:14px}
-  .card-description{font-size:11px;margin-bottom:10px}
-  .price-badge{font-size:10px;padding:4px 8px}
+  .card-description{font-size:11px;margin-bottom:8px}
+  .price-badge{font-size:10px;padding:4px 7px}
   .add-to-cart-btn{font-size:11px;padding:9px 5px}
   .qty-btn{width:30px;height:30px}
 }
@@ -278,17 +280,24 @@ body.no-scroll{overflow:hidden}
   <main class="content">
     <div class="section-heading">
       <h2 id="section-title">كل الوجبات</h2>
-      <span id="items-count">جاري الاتصال بغوغل شيت...</span>
+      <span id="items-count">القائمة</span>
     </div>
-    <div id="menu-container">
-      <div class="loading-status"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب القائمة مباشرة من غوغل شيت...</div>
-    </div>
+    <div id="menu-container"></div>
   </main>
 </div>
 <script>
 'use strict';
 
-let fullMenuData = [];
+const fallbackMenuData = [
+  {title: "وجبة شاورما عادي", price_try: 150, price_syr: 450, category: "shawarma-meal", description: "شاورما دجاج 110غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
+  {title: "وجبة شاورما دبل", price_try: 240, price_syr: 720, category: "shawarma-meal", description: "شاورما دجاج 220غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
+  {title: "وجبة شاورما اكسترا عادي", price_try: 200, price_syr: 600, category: "shawarma-meal", description: "شاورما 110غ + جبنة موزريلا 60غ + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
+  {title: "وجبة شاورما اكسترا دبل", price_try: 270, price_syr: 810, category: "shawarma-meal", description: "شاورما 220غ + جبنة موزريلا + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
+  {title: "صحن بطاطا وسط", price_try: 70, price_syr: 210, category: "appetizers", description: "بطاطا ساح + ثوم", image: "bat.jpg"},
+  {title: "كوكولا 2", price_try: 70, price_syr: 210, category: "drinks", description: "", image: "cola.jpg"}
+];
+
+let fullMenuData = JSON.parse(localStorage.getItem('emad_menu_cache') || JSON.stringify(fallbackMenuData));
 let cart = {};
 let currentCategory = 'all';
 let currencyMode = 'both';
@@ -327,7 +336,13 @@ window.setCurrency = function(mode) {
   updateCartBar();
 };
 
-function loadMenu() {
+function initMenu() {
+  renderMenuItems(getFilteredMenu());
+  updateCartBar();
+  fetchLiveMenu();
+}
+
+function fetchLiveMenu() {
   const callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
   
   window[callbackName] = function(data) {
@@ -344,10 +359,9 @@ function loadMenu() {
         image: item.image || ''
       })).filter(item => item.title);
 
+      localStorage.setItem('emad_menu_cache', JSON.stringify(fullMenuData));
       renderMenuItems(getFilteredMenu());
       updateCartBar();
-    } else {
-      showErrorState();
     }
   };
 
@@ -356,17 +370,8 @@ function loadMenu() {
   script.onerror = function() {
     delete window[callbackName];
     if (script.parentNode) script.parentNode.removeChild(script);
-    showErrorState();
   };
   document.body.appendChild(script);
-}
-
-function showErrorState() {
-  document.getElementById('menu-container').innerHTML = `
-    <div class="loading-status">
-      تعذر جلب البيانات من غوغل شيت.<br>
-      <button onclick="loadMenu()" style="margin-top:10px;padding:8px 16px;border-radius:8px;background:var(--gold);border:0;color:#111;font-weight:bold;">إعادة المحاولة 🔄</button>
-    </div>`;
 }
 
 function getFilteredMenu() {
@@ -379,7 +384,7 @@ function getFilteredMenu() {
   });
 }
 
-window.filterMenu = function(category) {
+  window.filterMenu = function(category) {
   currentCategory = category;
   document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.category === category);
@@ -429,13 +434,15 @@ function renderMenuItems(menuData) {
 
     return `
       <article class="card">
+        <div class="card-top-info">
+          <h3 class="card-title">${escapeHTML(item.title)}</h3>
+        </div>
         <div class="card-img-container">
           <img src="${escapeHTML(imagePath)}" alt="${escapeHTML(item.title)}" class="card-img"
                loading="lazy" onerror="this.onerror=null;this.src='${defaultImage}'">
           <div class="price-badges">${badges}</div>
         </div>
         <div class="card-body">
-          <h3 class="card-title">${escapeHTML(item.title)}</h3>
           <p class="card-description">${escapeHTML(item.description)}</p>
           <div class="card-price">${formatPrice(item)}</div>
           ${qty === 0 ? `
@@ -591,8 +598,7 @@ window.closePanels = function() {
   closeCart();
 };
 
-document.addEventListener('DOMContentLoaded', loadMenu);
+document.addEventListener('DOMContentLoaded', initMenu);
 </script>
 </body>
 </html>
-  
