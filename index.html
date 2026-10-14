@@ -285,7 +285,7 @@ body.no-scroll{overflow:hidden}
   <main class="content">
     <div class="section-heading">
       <h2 id="section-title">كل الوجبات</h2>
-      <span id="items-count">جاري تحميل القائمة...</span>
+      <span id="items-count">جاري التحميل...</span>
     </div>
     <div id="menu-container">
       <div class="loading-status"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القائمة...</div>
@@ -301,19 +301,9 @@ let cart = {};
 let currentCategory = 'all';
 let currencyMode = 'both';
 
-const SHEET_ID = '1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI';
-// استخدام بروكسي مجاني لتجاوز حظر CORS نهائياً وعرض بيانات الشيت المباشرة
-const sheetUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`);
-
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwACXz7Kui9DxWhlOjYpbssZvKo_rndBw8eOnKBoGuNzZhGlVuVyqabmmb_c69CkeAu/exec';
 const restaurantPhoneNumber = '963948893053';
 const defaultImage = 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80';
-
-// القائمة الاحتياطية في حال تعذر الاتصال تماماً بالإنترنت
-const fallbackMenu = [
-  {title:'وجبة شاورما دبل',price_try:240,price_s:720,category:'shawarma-meal',description:'شاورما دجاج 220غ مع البطاطا والثومية',image:'sha.jpg'},
-  {title:'سندويش شاورما عادي',price_try:90,price_s:270,category:'shawarma-sand',description:'شاورما + ثوم + مخلل 110غ',image:'sh.jpg'},
-  {title:'كوكولا 2',price_try:70,price_s:210,category:'drinks',description:'',image:'cola.jpg'}
-];
 
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -331,7 +321,7 @@ function formatPrice(item, qty = 1) {
     parts.push(`${formatNumber(item.price_try * qty)} TL`);
   }
   if (currencyMode === 'both' || currencyMode === 'syp') {
-    parts.push(`${formatNumber(item.price_s * qty)} ل.س`);
+    parts.push(`${formatNumber(item.price_syr * qty)} ل.س`);
   }
   return parts.join(' / ');
 }
@@ -347,76 +337,28 @@ window.setCurrency = function(mode) {
 
 async function loadMenu() {
   try {
-    const response = await fetch(sheetUrl);
-    if (!response.ok) throw new Error('فشل الاتصال');
-    const csvText = await response.text();
-    const parsedData = parseCSV(csvText);
+    const response = await fetch(WEB_APP_URL);
+    if (!response.ok) throw new Error('فشل جلب البيانات');
+    const data = await response.json();
     
-    if (parsedData.length > 0) {
-      fullMenuData = parsedData;
-    } else {
-      throw new Error('بيانات فارغة');
-    }
+    fullMenuData = data.map(item => ({
+      title: item.title || '',
+      price_try: parseFloat(String(item.price_try || '0').replace(/[^0-9.]/g,'')) || 0,
+      price_syr: parseFloat(String(item.price_syr || item.price_s || '0').replace(/[^0-9.]/g,'')) || 0,
+      category: String(item.category || 'general').trim().toLowerCase(),
+      description: item.description || '',
+      image: item.image || ''
+    })).filter(item => item.title);
+
+    renderMenuItems(getFilteredMenu());
+    updateCartBar();
   } catch (error) {
-    console.warn('تم استخدام القائمة الاحتياطية:', error);
-    fullMenuData = fallbackMenu;
-  }
-  
-  renderMenuItems(getFilteredMenu());
-  updateCartBar();
-}
-
-function parseCSV(csvText) {
-  try {
-    const lines = csvText.replace(/^\uFEFF/, '').trim().split(/\r?\n/);
-    if (lines.length < 2) return [];
-
-    const delimiter = lines[0].includes(';') ? ';' : ',';
-
-    function splitCSVLine(line) {
-      const values = [];
-      let current = '';
-      let insideQuote = false;
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        if (char === '"') {
-          if (insideQuote && line[i + 1] === '"') {
-            current += '"';
-            i++;
-          } else {
-            insideQuote = !insideQuote;
-          }
-        } else if (char === delimiter && !insideQuote) {
-          values.push(current.trim());
-          current = '';
-        } else {
-          current += char;
-        }
-      }
-      values.push(current.trim());
-      return values;
-    }
-
-    const headers = splitCSVLine(lines[0]).map(h => h.trim().toLowerCase());
-    return lines.slice(1).filter(line => line.trim()).map(line => {
-      const values = splitCSVLine(line);
-      const item = {};
-      headers.forEach((header, index) => item[header] = values[index] || '');
-
-      const priceTry = parseFloat(String(item.price_try || item.pricetry || item.price || '0').replace(/[^0-9.]/g,'')) || 0;
-      const priceSyp = parseFloat(String(item.price_syr || item.pricesyr || item.price_s || '0').replace(/[^0-9.]/g,'')) || 0;
-
-      return {
-        title: item.title || item['عنوان'] || '',
-        price_try: priceTry,
-        price_s: priceSyp,
-        category: String(item.category || item['قسم'] || 'general').trim().toLowerCase(),
-        description: item.description || item['وصف'] || '',
-        image: item.image || ''
-      };
-    }).filter(item => item.title);
-  } catch (error) {
-    return [];
+    console.error('خطأ في تحميل القائمة:', error);
+    document.getElementById('menu-container').innerHTML = `
+      <div class="loading-status">
+        تعذر تحميل القائمة من غوغل شيت.<br>
+        <button onclick="loadMenu()" style="margin-top:10px;padding:8px 16px;border-radius:8px;background:var(--gold);border:0;color:#111;font-weight:bold;">إعادة المحاولة 🔄</button>
+      </div>`;
   }
 }
 
@@ -473,4 +415,54 @@ function renderMenuItems(menuData) {
     if ((currencyMode === 'both' || currencyMode === 'try') && item.price_try) {
       badges += `<span class="price-badge">${formatNumber(item.price_try)} TL</span>`;
     }
-    if ((currencyMode
+    if ((currencyMode === 'both' || currencyMode === 'syp') && item.price_syr) {
+      badges += `<span class="price-badge">${formatNumber(item.price_syr)} ل.س</span>`;
+    }
+
+    const encodedTitle = encodeURIComponent(item.title);
+
+    return `
+      <article class="card">
+        <div class="card-img-container">
+          <img src="${escapeHTML(imagePath)}" alt="${escapeHTML(item.title)}" class="card-img"
+               loading="lazy" onerror="this.onerror=null;this.src='${defaultImage}'">
+          <div class="price-badges">${badges}</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${escapeHTML(item.title)}</h3>
+          <p class="card-description">${escapeHTML(item.description)}</p>
+          <div class="card-price">${formatPrice(item)}</div>
+          ${qty === 0 ? `
+            <button class="add-to-cart-btn" onclick="addToCart('${encodedTitle}')">
+              <i class="fa-solid fa-cart-plus"></i> إضافة للسلة
+            </button>
+          ` : `
+            <div class="quantity-controls">
+              <button class="qty-btn" onclick="changeQty('${encodedTitle}', -1)">-</button>
+              <span class="qty-count">${qty}</span>
+              <button class="qty-btn" onclick="changeQty('${encodedTitle}', 1)">+</button>
+            </div>
+          `}
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+window.addToCart = function(encodedTitle) {
+  const title = decodeURIComponent(encodedTitle);
+  const item = fullMenuData.find(i => i.title === title);
+  if (!item) return;
+
+  if (!cart[title]) {
+    cart[title] = { item, qty: 1 };
+  } else {
+    cart[title].qty++;
+  }
+  renderMenuItems(getFilteredMenu());
+  updateCartBar();
+};
+
+window.changeQty = function(encodedTitle, delta) {
+  const title = decodeURIComponent(encodedTitle);
+  if (cart[title]) {
