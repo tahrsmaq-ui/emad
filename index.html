@@ -83,7 +83,6 @@ body.no-scroll{overflow:hidden}
 .section-heading span{font-size:13px;color:var(--muted)}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
 
-/* التعديل الجديد والمميز للبطاقات (مختلف عن موقعك الثاني) */
 .card{
   min-width:0;background:var(--card-bg);
   border:1px solid var(--border);border-radius:20px;overflow:hidden;
@@ -289,15 +288,44 @@ body.no-scroll{overflow:hidden}
 'use strict';
 
 const fallbackMenuData = [
+  // سندويشات الشاورما كاملة
+  {title: "سندويش شاورما عادي", price_try: 90, price_syr: 270, category: "shawarma-sand", description: "ثوم + مخلل 110غ دجاج", image: "sh.jpg"},
+  {title: "سندويش شاورما دبل", price_try: 110, price_syr: 330, category: "shawarma-sand", description: "ثوم + مخلل 140غ دجاج", image: "sh.jpg"},
+  {title: "سندويش شاورما اكسترا عادي", price_try: 120, price_syr: 360, category: "shawarma-sand", description: "ثوم + مخلل 110غ + جبنة موزريلا", image: "shj.jpg"},
+  {title: "سندويش شاورما اكسترا دبل", price_try: 150, price_syr: 450, category: "shawarma-sand", description: "ثوم + مخلل 140غ + جبنة موزريلا", image: "shj.jpg"},
+  {title: "عصفورة", price_try: 40, price_syr: 120, category: "shawarma-sand", description: "شاورما دجاج + ثوم", image: "sha.jpg"},
+
+  // وجبات الشاورما
   {title: "وجبة شاورما عادي", price_try: 150, price_syr: 450, category: "shawarma-meal", description: "شاورما دجاج 110غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
   {title: "وجبة شاورما دبل", price_try: 240, price_syr: 720, category: "shawarma-meal", description: "شاورما دجاج 220غ + بطاطا + ثوم + مخلل + دبس رمان", image: "sha.jpg"},
   {title: "وجبة شاورما اكسترا عادي", price_try: 200, price_syr: 600, category: "shawarma-meal", description: "شاورما 110غ + جبنة موزريلا 60غ + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
   {title: "وجبة شاورما اكسترا دبل", price_try: 270, price_syr: 810, category: "shawarma-meal", description: "شاورما 220غ + جبنة موزريلا + فطر + بطاطا + ثوم + مخلل + رمان", image: "shap.jpg"},
+  {title: "وجبة شاورما بانيه عادي", price_try: 210, price_syr: 630, category: "shawarma-meal", description: "شاورما 140غ + جبنة + ذرة + فطر + بطاطا + ثوم + روسية + كوكتيل صوص", image: "pa.jpg"},
+  {title: "وجبة شاورما بانيه دبل", price_try: 350, price_syr: 1050, category: "shawarma-meal", description: "شاورما 220غ + جبنة + ذرة + بطاطا + ثوم + روسية + صوص", image: "pa.jpg"},
+  {title: "مشروح شاورما فرط 1 كيلو", price_try: 620, price_syr: 1860, category: "shawarma-meal", description: "شاورما أخصائي 1كغ + محمرة + بطاطا 400غ + ثوم + مخلل + لتر رمان", image: "shal.jpg"},
+  {title: "شاورما فرط نص كيلو", price_try: 310, price_syr: 930, category: "shawarma-meal", description: "شاورما 500غ + محمرة + بطاطا 200غ + ثوم + مخلل + رمان", image: "shal.jpg"},
+  {title: "شاورما فرط 250غ", price_try: 170, price_syr: 510, category: "shawarma-meal", description: "شاورما 250غ + محمرة + بطاطا 200غ + ثوم + مخلل + رمان", image: "shal.jpg"},
+  {title: "شاورما فرط 100غ", price_try: 90, price_syr: 270, category: "shawarma-meal", description: "شاورما 100غ + محمرة + بطاطا 100غ + ثوم + مخلل + رمان", image: "shal.jpg"},
+  {title: "وجبة عصافيري", price_try: 250, price_syr: 750, category: "shawarma-meal", description: "4 قراطيس + 200غ بطاطا + ثوم + مخلل + كتشب + رمان", image: "sha.jpg"},
+
+  // الغربي
+  {title: "سندويش كريسبي عادي", price_try: 110, price_syr: 330, category: "western-sand", description: "صوص + كتشب 120غ", image: "c.jpg"},
+  {title: "سندويش كريسبي دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "صوص + كتشب 150غ", image: "c.jpg"},
+  {title: "سندويش زنجر عادي", price_try: 110, price_syr: 330, category: "western-sand", description: "كتشب+حار 120غ", image: "c.jpg"},
+  {title: "سندويش زنجر دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "صوص + كتشب 150غ", image: "c.jpg"},
+  {title: "سندويش مكسيكانو عادي", price_try: 100, price_syr: 300, category: "western-sand", description: "ثوم + صوص 110غ", image: "m.jpg"},
+  {title: "سندويش مكسيكانو دبل", price_try: 130, price_syr: 390, category: "western-sand", description: "ثوم + صوص 150غ", image: "m.jpg"},
+  {title: "وجبة مكسيكانو عادي", price_try: 210, price_syr: 630, category: "western-meals", description: "250غ صدر دجاج + فطر + بصل + فليفلة + صوص + كولسلو", image: "mac.jpg"},
+  {title: "وجبة كريسبي عادي", price_try: 220, price_syr: 660, category: "western-meals", description: "250غ فتيلة صدر + بطاطا 200غ + روسية + صوص + كولسلو", image: "cry.jpg"},
+  
+  // مقبلات ومشروبات
   {title: "صحن بطاطا وسط", price_try: 70, price_syr: 210, category: "appetizers", description: "بطاطا ساح + ثوم", image: "bat.jpg"},
-  {title: "كوكولا 2", price_try: 70, price_syr: 210, category: "drinks", description: "", image: "cola.jpg"}
+  {title: "صحن بطاطا كبير", price_try: 100, price_syr: 300, category: "appetizers", description: "بطاطا ساح + ثوم", image: "bat.jpg"},
+  {title: "كوكولا 2", price_try: 70, price_syr: 210, category: "drinks", description: "", image: "cola.jpg"},
+  {title: "بيبسي تنك", price_try: 30, price_syr: 90, category: "drinks", description: "", image: "pepso.jpg"}
 ];
 
-let fullMenuData = JSON.parse(localStorage.getItem('emad_menu_cache') || JSON.stringify(fallbackMenuData));
+let fullMenuData = JSON.parse(localStorage.getItem('emad_menu_v2') || JSON.stringify(fallbackMenuData));
 let cart = {};
 let currentCategory = 'all';
 let currencyMode = 'both';
@@ -359,7 +387,7 @@ function fetchLiveMenu() {
         image: item.image || ''
       })).filter(item => item.title);
 
-      localStorage.setItem('emad_menu_cache', JSON.stringify(fullMenuData));
+      localStorage.setItem('emad_menu_v2', JSON.stringify(fullMenuData));
       renderMenuItems(getFilteredMenu());
       updateCartBar();
     }
@@ -376,13 +404,21 @@ function fetchLiveMenu() {
 
 function getFilteredMenu() {
   if (currentCategory === 'all') return fullMenuData;
-  const cleanCat = currentCategory.toLowerCase().replace(/s$/, '');
+  const cleanCat = currentCategory.toLowerCase().replace(/s$/, '').replace(/-sand$/, '-sand').replace(/-sandwiches$/, '-sand');
   
   return fullMenuData.filter(item => {
-    const itemCat = String(item.category || '').trim().toLowerCase().replace(/s$/, '');
+    let itemCat = String(item.category || '').trim().toLowerCase();
+    itemCat = itemCat.replace(/s$/, '').replace(/-sandwiches$/, '-sand');
+    
+    if (cleanCat === 'shawarma-sand' && (itemCat === 'shawarma-sand' || itemCat === 'shawarma-sandwiches' || itemCat === 'shawarma_sand')) return true;
+    if (cleanCat === 'western-sand' && (itemCat === 'western-sand' || itemCat === 'western-sandwiches' || itemCat === 'western_sand')) return true;
+    if (cleanCat === 'shawarma-meal' && (itemCat === 'shawarma-meal' || itemCat === 'shawarma-meals' || itemCat === 'shawarma_meal')) return true;
+    if (cleanCat === 'western-meal' && (itemCat === 'western-meal' || itemCat === 'western-meals' || itemCat === 'western_meals')) return true;
+
     return itemCat === cleanCat;
   });
 }
+
 
   window.filterMenu = function(category) {
   currentCategory = category;
