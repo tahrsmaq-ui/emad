@@ -256,7 +256,7 @@
     .loader { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--gold); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-  <script>
+ <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI/export?format=csv";
     const RESTAURANT_WHATSAPP = "963948893053";
 
@@ -268,22 +268,6 @@
     function cleanStr(str) {
       if (!str) return '';
       return str.toString().replace(/[\u200B-\u200D\uFEFF]/g, '').trim().toLowerCase();
-    }
-
-    // نظام أيقونات فخمة وسريعة جداً بدلاً من الصور الثقيلة
-    function getCategoryEmoji(title, category) {
-      let t = (title || "").toString().toLowerCase();
-      let c = (category || "").toString().toLowerCase();
-
-      if (t.includes('شاورما') || c.includes('shawarma')) return '🌯';
-      if (t.includes('برغر') || t.includes('burger') || c.includes('western')) return '🍔';
-      if (t.includes('كريسبي') || t.includes('زنجر') || t.includes('سياسي')) return '🍗';
-      if (t.includes('بطاطا') || t.includes('fries')) return '🍟';
-      if (t.includes('كولا') || t.includes('مشروب') || t.includes('بيبسي') || t.includes('عيران') || t.includes('سفن') || t.includes('ميرندا') || c.includes('drink')) return '🥤';
-      if (t.includes('منسف') || t.includes('مناسف') || c.includes('manasaf')) return '🍲';
-      if (t.includes('كول سلو') || t.includes('ثوم') || t.includes('صوص') || c.includes('appetizer')) return '🥗';
-      
-      return '🍽️';
     }
 
     function loadMenuData() {
@@ -339,8 +323,8 @@
         const priceTry = item.price_try || '0';
         const priceSyr = item.price_syr || '0';
         
-        // الأيقونة الفخمة السريعة بدلاً من الصورة
-        const emojiIcon = getCategoryEmoji(title, item.category);
+        // جلب اسم الصورة مباشرة من عامود image في غوغل شيتس
+        const imgSrc = (item.image && item.image.trim() !== '') ? item.image.trim() : 'sha.jpg';
 
         let priceDisplayHTML = "";
         let badgesHTML = "";
@@ -370,8 +354,8 @@
         }
 
         card.innerHTML = `
-          <div class="card-img-container" style="display: flex; align-items: center; justify-content: center; font-size: 3.5rem; background: radial-gradient(circle, #152e1f 0%, #0d1a12 100%); border: 1px solid rgba(212,175,55,0.2);">
-            <span>${emojiIcon}</span>
+          <div class="card-img-container">
+            <img class="card-img" src="images/${imgSrc}" alt="${title}" onerror="this.src='images/sha.jpg'">
             <div class="price-badges">${badgesHTML}</div>
           </div>
           <div>
