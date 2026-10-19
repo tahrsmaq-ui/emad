@@ -39,13 +39,9 @@
       font-size: 0.8rem;
       color: var(--gold);
     }
-    .developer-bar a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: bold;
-    }
+    .developer-bar a { color: var(--text-main); text-decoration: none; font-weight: bold; }
 
-    /* الهيدر العلوي تماماً مثل التصميم الأصلي */
+    /* الهيدر العلوي */
     header {
       background-color: var(--card-bg);
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -58,75 +54,59 @@
       z-index: 100;
     }
 
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .menu-icon { font-size: 1.4rem; color: var(--gold); cursor: pointer; }
+    .header-title { font-size: 1.2rem; color: var(--gold); font-weight: bold; margin: 0; }
 
-    .menu-icon {
-      font-size: 1.4rem;
-      color: var(--gold);
-      cursor: pointer;
-    }
-
-    .header-title {
-      font-size: 1.2rem;
-      color: var(--gold);
-      font-weight: bold;
-      margin: 0;
-    }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
+    .header-left { display: flex; align-items: center; gap: 8px; }
     .currency-badge {
       background: linear-gradient(135deg, #d4af37, #aa820a);
-      color: #000;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 0.85rem;
+      color: #000; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
     }
-
     .cart-btn {
-      background: var(--card-bg);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      position: relative;
+      background: var(--card-bg); border: 1px solid var(--gold); color: var(--gold); padding: 6px 12px; border-radius: 8px; cursor: pointer; position: relative;
     }
 
-    /* قسم الترحيب ووصف المطعم */
-    .hero-section {
-      padding: 20px;
-      text-align: right;
-    }
+    .hero-section { padding: 20px; text-align: right; }
+    .hero-section h2 { color: var(--gold); font-size: 1.5rem; margin: 0 0 8px 0; }
+    .hero-section p { color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5; }
+    .section-title { padding: 0 20px; font-size: 1.2rem; color: var(--text-main); margin: 15px 0; }
 
-    .hero-section h2 {
-      color: var(--gold);
-      font-size: 1.5rem;
-      margin: 0 0 8px 0;
+    /* القائمة الجانبية (Sidebar) */
+    .sidebar {
+      position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background-color: var(--card-bg);
+      border-left: 1px solid rgba(212, 175, 55, 0.3); z-index: 1000; transition: right 0.3s ease; padding: 20px; overflow-y: auto;
     }
+    .sidebar.active { right: 0; }
+    .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 15px; margin-bottom: 15px; }
+    .sidebar-title { color: var(--gold); font-size: 1.2rem; font-weight: bold; }
+    .close-btn { background: none; border: none; color: var(--gold); font-size: 1.5rem; cursor: pointer; }
+    
+    .category-item {
+      padding: 12px; color: var(--text-main); cursor: pointer; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s; display: flex; align-items: center; gap: 10px;
+    }
+    .category-item:hover, .category-item.active { background-color: rgba(212, 175, 55, 0.15); color: var(--gold); }
 
-    .hero-section p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin: 0;
-      line-height: 1.5;
+    /* نافذة سلة المشتريات (Cart Modal) */
+    .cart-modal {
+      position: fixed; top: 0; left: -100%; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; transition: left 0.3s ease; display: flex; justify-content: flex-end;
     }
-
-    .section-title {
-      padding: 0 20px;
-      font-size: 1.2rem;
-      color: var(--text-main);
-      margin: 15px 0;
+    .cart-modal.active { left: 0; }
+    .cart-content {
+      width: 100%; max-width: 400px; height: 100%; background-color: var(--card-bg); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto;
     }
+    .cart-items-list { flex-grow: 1; overflow-y: auto; margin: 15px 0; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 10px 0; }
+    
+    .checkout-section { border-top: 1px solid rgba(212,175,55,0.2); padding-top: 15px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+    .form-control { width: 100%; background: #0b140f; border: 1px solid rgba(212,175,55,0.3); color: var(--text-main); padding: 10px; border-radius: 8px; font-family: inherit; }
+    
+    .whatsapp-send-btn {
+      background-color: #15803d; color: #fff; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center;
+    }
+    .whatsapp-send-btn:hover { background-color: #16a34a; }
   </style>
 </head>
 <body>
@@ -138,174 +118,101 @@
 
   <header>
     <div class="header-right">
-      <span class="menu-icon">☰</span>
+      <span class="menu-icon" id="open-sidebar">☰</span>
       <h1 class="header-title">قائمة الطعام</h1>
     </div>
     <div class="header-left">
-      <div class="currency-badge">العملتان</div>
-      <button class="cart-btn">🛒 <span id="cart-count">0</span></button>
+      <div class="currency-badge" id="currency-toggle">TL</div>
+      <button class="cart-btn" id="open-cart">🛒 <span id="cart-count">0</span></button>
     </div>
   </header>
-
   <div class="hero-section">
     <h2>مطعم عماد الدين</h2>
     <p>أطيب الوجبات الغربية والشاورما والمقبلات. اختر وجبتك واستمتع بطلب سهل وسريع عبر الواتساب.</p>
   </div>
+
+  <h3 class="section-title"><span id="current-category-name">كل الوجبات</span> <span id="items-count" style="font-size: 0.85rem; color: var(--text-muted);"></span></h3>
 
   <div class="main-container" style="padding: 0 15px; max-width: 1200px; margin: auto;">
     <div id="loader" class="loader"></div>
     <div id="cards-container" class="cards-grid"></div>
   </div>
 
+  <!-- القائمة الجانبية (Sidebar) للأقسام -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">أقسام القائمة</span>
+      <button class="close-btn" id="close-sidebar">&times;</button>
+    </div>
+    <div class="category-item active" onclick="filterCategory('all', 'كل الوجبات')">🍽️ الكل</div>
+    <div class="category-item" onclick="filterCategory('shawarma-sand', 'سندويش شاورما')">🌯 سندويش شاورما</div>
+    <div class="category-item" onclick="filterCategory('western-sand', 'سندويش غربي')">🥪 سندويش غربي</div>
+    <div class="category-item" onclick="filterCategory('shawarma-meals', 'وجبات شاورما')">🥙 وجبات شاورما</div>
+    <div class="category-item" onclick="filterCategory('western-meals', 'وجبات غربية')">🍔 وجبات غربية</div>
+    <div class="category-item" onclick="filterCategory('appetizers', 'مقبلات')">🍟 مقبلات</div>
+    <div class="category-item" onclick="filterCategory('drinks', 'مشروبات')">🥤 مشروبات</div>
+    <div class="category-item" onclick="filterCategory('manasaf', 'مناسف')">🍲 المناسف</div>
+  </div>
+
+  <!-- نافذة سلة المشتريات -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;">
+          <h3 style="color: var(--gold); margin: 0;">🛒 سلة المشتريات</h3>
+          <button class="close-btn" id="close-cart">&times;</button>
+        </div>
+        <div class="cart-items-list" id="cart-items-container">
+          <p style="text-align: center; color: var(--text-muted); margin-top: 40px;">سلتك فارغة حالياً.<br>أضف بعض الوجبات الشهية لبدء الطلب!</p>
+        </div>
+      </div>
+      
+      <div class="checkout-section">
+        <div class="form-group">
+          <label>طريقة الطلب</label>
+          <select class="form-control" id="order-type">
+            <option value="توصيل للمنزل">🚴‍♂️ توصيل للمنزل</option>
+            <option value="استلام من المطعم">🏃‍♂️ استلام من المطعم</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>عنوان التوصيل أو ملاحظات</label>
+          <input type="text" class="form-control" id="order-notes" placeholder="اكتب العنوان أو ملاحظاتك...">
+        </div>
+        <button class="whatsapp-send-btn" onclick="sendOrderToWhatsApp()">إرسال الطلب عبر واتساب</button>
+      </div>
+    </div>
+  </div>
+
   <style>
-    /* شبكة الكروت المطابقة تماماً لتصميمك */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      padding-bottom: 40px;
-    }
-
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; padding-bottom: 40px; }
     .card {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(212, 175, 55, 0.25);
-      border-radius: 16px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      opacity: 0;
-      animation: cardAppear 0.5s ease forwards;
+      background-color: var(--card-bg); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 16px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
-    }
-
-    .card-img-container {
-      position: relative;
-      width: 100%;
-      height: 170px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-bottom: 12px;
-      background: #000;
-    }
-
-    .card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* شارات الأسعار العلوية داخل الصورة مطابقة للصورة بالضبط */
-    .price-badges {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .badge-tl, .badge-syr {
-      background: linear-gradient(135deg, #d4af37, #aa820a);
-      color: #000;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 0.8rem;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-    }
-
-    .card h3 {
-      font-size: 1.1rem;
-      color: var(--gold);
-      margin: 0 0 8px 0;
-      text-align: right;
-    }
-
-    .card p {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin: 0 0 15px 0;
-      line-height: 1.4;
-      text-align: right;
-      flex-grow: 1;
-    }
-
-    /* زر عرض السعر المزدوج بالأسفل */
-    .price-display-btn {
-      background-color: #0d1b12;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      color: var(--gold);
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 0.95rem;
-      margin-bottom: 10px;
-    }
-
-    /* زر إضافة للسلة */
-    .add-to-cart-btn {
-      background-color: #0d1b12;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      color: var(--text-main);
-      padding: 10px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-
-    .add-to-cart-btn:hover {
-      background-color: var(--gold);
-      color: #000;
-      border-color: var(--gold);
-    }
-
-    @keyframes cardAppear {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .loader {
-      width: 45px;
-      height: 45px;
-      border: 4px solid rgba(255,255,255,0.1);
-      border-top-color: var(--gold);
-      border-radius: 50%;
-      margin: 50px auto;
-      animation: spin 1s linear infinite;
-    }
+    .card-img-container { position: relative; width: 100%; height: 170px; border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: #000; }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+    .price-badges { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .badge-tl, .badge-syr { background: linear-gradient(135deg, #d4af37, #aa820a); color: #000; padding: 3px 10px; border-radius: 6px; font-weight: bold; font-size: 0.8rem; text-align: center; }
+    .card h3 { font-size: 1.1rem; color: var(--gold); margin: 0 0 8px 0; text-align: right; }
+    .card p { font-size: 0.82rem; color: var(--text-muted); margin: 0 0 15px 0; line-height: 1.4; text-align: right; flex-grow: 1; }
+    .price-display-btn { background-color: #0d1b12; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold); padding: 8px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 0.9rem; margin-bottom: 10px; }
+    .add-to-cart-btn { background-color: #0d1b12; border: 1px solid rgba(212, 175, 55, 0.4); color: var(--text-main); padding: 10px; border-radius: 10px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    .add-to-cart-btn:hover { background-color: var(--gold); color: #000; }
+    .loader { width: 45px; height: 45px; border: 4px solid rgba(255,255,255,0.1); border-top-color: var(--gold); border-radius: 50%; margin: 50px auto; animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
   </style>
   <script>
-    // رابط غوغل شيتس الخاص بك مهيأ مباشرة للـ CSV
     const CSV_URL = "https://docs.google.com/spreadsheets/d/1w1jxybn50MUJWVXRH5tWv0AvMdl6KRhXXoLmtgXfuvI/export?format=csv";
-    
-    // رقم واتساب المطعم للطلبات
     const RESTAURANT_WHATSAPP = "963948893053";
 
     let allProducts = [];
+    let cart = [];
+    let currentCurrency = 'TL'; // TL أو SYP أو "العملتان"
 
-    // دالة تنظيف ذكية لحذف الرموز المخفية والمسافات الزائدة من غوغل شيتس تلقائياً
+    // دالة تنظيف الكلمات من غوغل شيتس
     function cleanStr(str) {
       if (!str) return '';
-      return str.toString()
-                .replace(/[\u200B-\u200D\uFEFF]/g, '')
-                .trim()
-                .toLowerCase();
+      return str.toString().replace(/[\u200B-\u200D\uFEFF]/g, '').trim().toLowerCase();
     }
 
     function loadMenuData() {
@@ -316,30 +223,40 @@
         complete: function(results) {
           document.getElementById("loader").style.display = "none";
           allProducts = results.data;
-          
-          // تحديث عدد الأصناف الكلي في الأعلى
           document.getElementById("items-count").innerText = `(${allProducts.length} صنف)`;
-          
           renderCards(allProducts);
-        },
-        error: function(err) {
-          console.error("خطأ في تحميل البيانات:", err);
-          document.getElementById("loader").innerHTML = "<p style='color:red; text-align:center;'>فشل في تحميل القائمة من غوغل شيتس.</p>";
         }
       });
     }
 
-    // عرض الكروت في الشاشة مطابقة للصورة تماماً
+    // تصفية المنتجات حسب القسم
+    function filterCategory(catKey, catName) {
+      document.getElementById("current-category-name").innerText = catName;
+      document.getElementById("sidebar").classList.remove("active");
+
+      if (catKey === 'all') {
+        renderCards(allProducts);
+      } else {
+        const filtered = allProducts.filter(item => cleanStr(item.category) === cleanStr(catKey));
+        renderCards(filtered);
+      }
+    }
+
+    // عرض الكروت في الشاشة
     function renderCards(items) {
       const container = document.getElementById("cards-container");
       container.innerHTML = "";
 
-      items.forEach((item, index) => {
+      if (items.length === 0) {
+        container.innerHTML = "<p style='text-align:center; color:var(--text-muted); grid-column: 1/-1;'>لا توجد وجبات في هذا القسم حالياً.</p>";
+        return;
+      }
+
+      items.forEach((item) => {
         const card = document.createElement("div");
         card.classList.add("card");
-        card.style.animationDelay = `${index * 0.03}s`;
 
-        const title = item.title || item.الاسم || 'وجبة بدون عنوان';
+        const title = item.title || item.الاسم || 'وجبة';
         const desc = item.description || item.الوصف || '';
         const priceTry = item.price_try || '0';
         const priceSyr = item.price_syr || '0';
@@ -349,7 +266,7 @@
           <div class="card-img-container">
             <img class="card-img" src="images/${imgSrc}" alt="${title}" onerror="this.src='images/sha.jpg'">
             <div class="price-badges">
-              <span class="badge-tl">TL ${priceTry}</span>
+              <span class="badge-tl">${priceTry} TL</span>
               <span class="badge-syr">${priceSyr} ل.س</span>
             </div>
           </div>
@@ -358,30 +275,87 @@
             <p>${desc}</p>
           </div>
           <div>
-            <div class="price-display-btn">
-              ${priceTry} TL / ${priceSyr} ل.س
-            </div>
-            <button class="add-to-cart-btn" onclick="addToWhatsApp('${title}', '${priceTry} TL / ${priceSyr} ل.س')">
-              🛒 إضافة للسلة
-            </button>
+            <div class="price-display-btn">${priceTry} TL / ${priceSyr} ل.س</div>
+            <button class="add-to-cart-btn" onclick="addToCart('${title}', '${priceTry}', '${priceSyr}')">🛒 إضافة للسلة</button>
           </div>
         `;
-
         container.appendChild(card);
       });
     }
 
-    // إرسال الطلب عبر واتساب المطعم
-    function addToWhatsApp(itemName, itemPrice) {
-      const message = `مرحباً، أرغب بطلب:\n- ${itemName}\n- السعر: ${itemPrice}\n\nأرجو تأكيد الطلب.`;
+    // إضافة منتج للسلة
+    function addToCart(title, priceTry, priceSyr) {
+      const existing = cart.find(i => i.title === title);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ title, priceTry, priceSyr, quantity: 1 });
+      }
+      updateCartUI();
+      // فتح السلة تلقائياً أو إشعار خفيف
+    }
+
+    function updateCartUI() {
+      document.getElementById("cart-count").innerText = cart.reduce((sum, i) => sum + i.quantity, 0);
+      const container = document.getElementById("cart-items-container");
+      
+      if (cart.length === 0) {
+        container.innerHTML = `<p style='text-align: center; color: var(--text-muted); margin-top: 40px;'>سلتك فارغة حالياً.<br>أضف بعض الوجبات الشهية لبدء الطلب!</p>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      cart.forEach((item, index) => {
+        container.innerHTML += `
+          <div class="cart-item">
+            <div>
+              <strong style="color:var(--gold);">${item.title}</strong>
+              <div style="font-size:0.8rem; color:var(--text-muted);">${item.priceTry} TL / ${item.priceSyr} ل.س (العدد: ${item.quantity})</div>
+            </div>
+            <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:bold;">حذف</button>
+          </div>
+        `;
+      });
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    // إرسال الطلب عبر واتساب مع طريقة الطلب والملاحظات
+    function sendOrderToWhatsApp() {
+      if (cart.length === 0) {
+        alert("سلتك فارغة! يرجى إضافة وجبات أولاً.");
+        return;
+      }
+
+      const orderType = document.getElementById("order-type").value;
+      const notes = document.getElementById("order-notes").value;
+
+      let message = `مرحباً، أرغب بطلب جديد:\n\n`;
+      cart.forEach(item => {
+        message += `▪️ ${item.title} (العدد: ${item.quantity}) - السعر: ${item.priceTry} TL / ${item.priceSyr} ل.س\n`;
+      });
+      
+      message += `\n🛵 *طريقة الطلب:* ${orderType}`;
+      if (notes) {
+        message += `\n📝 *الملاحظات / العنوان:* ${notes}`;
+      }
+
       const url = `https://wa.me/${RESTAURANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
       window.open(url, '_blank');
     }
 
-    // التشغيل التلقائي عند فتح الصفحة
+    // التحكم بالقائمة الجانبية والسلة
+    document.getElementById("open-sidebar").onclick = () => document.getElementById("sidebar").classList.add("active");
+    document.getElementById("close-sidebar").onclick = () => document.getElementById("sidebar").classList.remove("active");
+    
+    document.getElementById("open-cart").onclick = () => document.getElementById("cart-modal").classList.add("active");
+    document.getElementById("close-cart").onclick = () => document.getElementById("cart-modal").classList.remove("active");
+
+    // التشغيل
     loadMenuData();
   </script>
 </body>
 </html>
-
-  <h3 class="section-title">كل الوجبات <span id="items-count" style="font-size: 0.85rem; color: var(--text-muted);"></span></h3>
