@@ -33,7 +33,7 @@
 
     *, *::before, *::after { box-sizing: inherit; }
 
-    /* شريط المطور العلوي */
+    /* شريط المطور العلوي الموجه لمحادثتك مباشرة */
     .developer-bar {
       background: linear-gradient(90deg, #0d1a12, #152e1f, #0d1a12);
       border-bottom: 1px solid rgba(212, 175, 55, 0.2);
@@ -113,7 +113,7 @@
 <body>
 
   <div class="developer-bar">
-    تصميم وتطوير: <a href="https://wa.me/963932510043" target="_blank">عبدالله طاهر سماق</a> ⚡ (+963 932 510 043)
+    تصميم وتطوير: <a href="https://wa.me/963932510043?text=مرحباً%20عبدالله،%20أعجبني%20موقع%20مطعم%20عماد%20الدين" target="_blank">عبدالله طاهر سماق</a> ⚡ (+963 932 510 043)
   </div>
 
   <header>
@@ -145,10 +145,10 @@
     <div id="cards-container" class="cards-grid"></div>
   </div>
 
-  <!-- الفوتر النهائي (اسمك في الأسفل) -->
+  <!-- الفوتر النهائي مع اسمك ورابط محادثتك -->
   <footer class="site-footer">
     <p>جميع الحقوق محفوظة © 2026 | مطعم عماد الدين</p>
-    <p>تصميم وتطوير: <a href="https://wa.me/963932510043" target="_blank">عبدالله طاهر سماق</a> ⚡ (+963 932 510 043)</p>
+    <p>تصميم وتطوير: <a href="https://wa.me/963932510043?text=مرحباً%20عبدالله،%20أعجبني%20موقع%20مطعم%20عماد%20الدين" target="_blank">عبدالله طاهر سماق</a> ⚡ (+963 932 510 043)</p>
   </footer>
 
   <!-- القائمة الجانبية -->
@@ -224,10 +224,9 @@
     .qty-controls { display: flex; align-items: center; justify-content: space-between; background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); border-radius: 8px; padding: 4px 10px; }
     .qty-btn { background: none; border: none; color: var(--gold); font-size: 1.1rem; font-weight: bold; cursor: pointer; }
 
-    .add-to-cart-btn { background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); color: var(--text-main); padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .add-to-cart-btn { background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); color: var(--text-main); padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; }
     .add-to-cart-btn:hover { background-color: var(--gold); color: #000; }
 
-    /* تنسيق الفوتر الأسفل */
     .site-footer {
       background-color: var(--card-bg);
       border-top: 1px solid rgba(212, 175, 55, 0.2);
@@ -343,13 +342,13 @@
         if (cartItem) {
           actionHTML = `
             <div class="qty-controls">
-              <button class="qty-btn" onclick="changeQty('${title}', 1)">+</button>
+              <button class="qty-btn" onclick="changeQty('${title.replace(/'/g, "\\'")}', 1)">+</button>
               <span style="font-weight: bold; color: var(--gold);">${cartItem.quantity}</span>
-              <button class="qty-btn" onclick="changeQty('${title}', -1)">-</button>
+              <button class="qty-btn" onclick="changeQty('${title.replace(/'/g, "\\'")}', -1)">-</button>
             </div>
           `;
         } else {
-          actionHTML = `<button class="add-to-cart-btn" onclick="addToCart('${title}', '${priceTry}', '${priceSyr}')">🛒 إضافة للسلة</button>`;
+          actionHTML = `<button class="add-to-cart-btn" onclick="addToCart('${title.replace(/'/g, "\\'")}', '${priceTry}', '${priceSyr}')">🛒 إضافة للسلة</button>`;
         }
 
         card.innerHTML = `
@@ -408,9 +407,9 @@
               <div style="font-size:0.8rem; color:var(--text-muted);">${item.priceTry} TL / ${item.priceSyr} ل.س</div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <button onclick="changeQty('${item.title}', 1)" style="background:#152e1f; border:1px solid var(--gold); color:var(--gold); width:25px; height:25px; border-radius:5px; cursor:pointer;">+</button>
+              <button onclick="changeQty('${item.title.replace(/'/g, "\\'")}', 1)" style="background:#152e1f; border:1px solid var(--gold); color:var(--gold); width:25px; height:25px; border-radius:5px; cursor:pointer;">+</button>
               <span style="font-weight:bold;">${item.quantity}</span>
-              <button onclick="changeQty('${item.title}', -1)" style="background:#152e1f; border:1px solid var(--gold); color:var(--gold); width:25px; height:25px; border-radius:5px; cursor:pointer;">-</button>
+              <button onclick="changeQty('${item.title.replace(/'/g, "\\'")}', -1)" style="background:#152e1f; border:1px solid var(--gold); color:var(--gold); width:25px; height:25px; border-radius:5px; cursor:pointer;">-</button>
             </div>
           </div>
         `;
