@@ -33,7 +33,6 @@
 
     *, *::before, *::after { box-sizing: inherit; }
 
-    /* الهيدر العلوي الرئيسي */
     header {
       background-color: var(--card-bg);
       border-bottom: 1px solid rgba(212, 175, 55, 0.15);
@@ -83,7 +82,6 @@
     .hero-section p { color: var(--text-muted); font-size: 0.88rem; margin: 0; line-height: 1.5; }
     .section-title { padding: 0 20px; font-size: 1.2rem; color: var(--text-main); margin: 15px 0; display: flex; justify-content: space-between; align-items: center; }
 
-    /* القائمة الجانبية للأقسام */
     .sidebar {
       position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background-color: var(--card-bg);
       border-left: 1px solid rgba(212, 175, 55, 0.3); z-index: 1000; transition: right 0.3s ease; padding: 20px; overflow-y: auto;
@@ -99,7 +97,6 @@
     }
     .category-item:hover, .category-item.active { background-color: rgba(212, 175, 55, 0.15); color: var(--gold); }
     
-    /* بطاقة المطور الاحترافية مع ثيم المطر */
     .developer-card {
       margin-top: 20px;
       padding: 16px;
@@ -216,12 +213,28 @@
     .add-to-cart-btn { background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); color: var(--text-main); padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; }
     .add-to-cart-btn:hover { background-color: var(--gold); color: #000; }
 
+    /* تنسيق الفوتر الجديد والراقي */
     .site-footer {
       background-color: var(--card-bg);
       border-top: 1px solid rgba(212, 175, 55, 0.2);
       text-align: center;
       padding: 25px 20px;
       margin-top: 40px;
+    }
+    .footer-text {
+      color: #c4d4c9;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .footer-phone {
+      margin-top: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--gold);
+      direction: ltr;
+      display: inline-block;
     }
 
     .cart-modal { position: fixed; top: 0; left: -100%; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 1000; transition: left 0.3s ease; display: flex; justify-content: flex-end; }
@@ -244,7 +257,6 @@
 </head>
 <body>
 
-  <!-- الهيدر الرئيسي -->
   <header>
     <div class="header-right">
       <span class="menu-icon" id="open-sidebar">☰</span>
@@ -260,7 +272,6 @@
     </div>
   </header>
 
-  <!-- القسم الترحيبي والعناوين -->
   <div class="hero-section">
     <h2>مطعم عماد الدين</h2>
     <p>أطيب الوجبات الغربية والشاورما والمقبلات. اختر وجبتك واستمتع بطلب سهل وسريع عبر الواتساب.</p>
@@ -271,20 +282,25 @@
     <span id="items-count" style="font-size: 0.85rem; color: var(--text-muted);"></span>
   </div>
 
-  <!-- حاوية كروت الوجبات -->
   <div class="main-container" style="padding: 0 15px; max-width: 1200px; margin: auto; flex: 1;">
     <div id="loader" class="loader"></div>
     <div id="cards-container" class="cards-grid"></div>
   </div>
 
-  <!-- الفوتر المخصص للمطعم -->
+  <!-- الفوتر الجديد للشكاوى والاستفسارات المضاف بدلاً من النص القديم -->
   <footer class="site-footer">
-    <h3 style="color: var(--gold); margin: 0 0 5px 0; font-size: 1.1rem; font-weight: bold;">✨ مطعم عماد الدين ✨</h3>
-    <p style="margin: 0 0 8px 0; color: var(--text-muted); font-size: 0.85rem;">أصل الطعم الرفيع والخدمة السريعة</p>
-    <p style="margin: 0; font-size: 0.78rem; color: #55665a;">جميع الحقوق محفوظة © 2026</p>
+    <div class="footer-text">
+      <p style="margin-bottom: 8px; font-weight: bold; color: var(--gold);">نسعد بتواصلكم معنا في مطبخ ومطعم عماد الدين 🌷</p>
+      <p style="margin: 0; font-size: 0.82rem; color: #a2b3a7;">
+        للاستفسارات والشكاوى، أو لتقديم ملاحظاتكم واقتراحاتكم البنّاءة، نرحّب بآرائكم بكل اهتمام، فملاحظاتكم وتغذيتكم الراجعة تساعدنا على التطور وتحسين جودة خدماتنا باستمرار.
+      </p>
+      <div style="margin-top: 10px;">
+        <span>📞 للشكاوى والاستفسارات والملاحظات:</span><br>
+        <a href="tel:963959146690" class="footer-phone">963959146690</a>
+      </div>
+    </div>
   </footer>
 
-  <!-- القائمة الجانبية + بطاقة المطور -->
   <div class="sidebar" id="sidebar">
     <div>
       <div class="sidebar-header">
@@ -301,18 +317,16 @@
       <div class="category-item" onclick="filterCategory('manasaf', 'مناسف')">🍲 المناسف</div>
     </div>
 
-    <!-- بطاقة المطور مع عبارة المطر الدافئة -->
     <div class="developer-card">
       <div class="dev-tag">💻 مطور الموقع</div>
       <div class="dev-name">عبدالله طاهر سماق</div>
-      <div class="dev-rain-quote">"كالظِّلِ في زَخاتِ المَطَرِ.. نُصَمِّمُ الجَمالَ لِيَبْقَى 🌧️✨"</div>
+      <div class="dev-rain-quote">"كالظِّـلِ في زَخاتِ المَطَـرِ.. نُصَمِّـمُ الجَـمَالَ لِيَبْقَى 🌧️✨"</div>
       <a href="https://wa.me/963932510043?text=مرحباً%20عبدالله،%20أعجبني%20تصميم%20موقع%20مطعم%20عماد%20الدين" target="_blank" class="dev-btn">
         <span>💬 تواصل مع المطور</span>
       </a>
     </div>
   </div>
 
-  <!-- نافذة سلة المشتريات الجانبية -->
   <div class="cart-modal" id="cart-modal">
     <div class="cart-content">
       <div>
@@ -390,6 +404,18 @@
       renderCards(currentFilteredItems, catName);
     }
 
+    // بناء مسار الصورة وتأمين ظهورها سواء كانت رابط أو اسم ملف
+    function getImageUrl(rawImage) {
+      if (!rawImage || rawImage.trim() === '') {
+        return 'images/sha.jpg';
+      }
+      const imgPath = rawImage.trim();
+      if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+        return imgPath;
+      }
+      return `images/${imgPath}`;
+    }
+
     function renderCards(items, catName) {
       const container = document.getElementById("cards-container");
       container.innerHTML = "";
@@ -410,8 +436,7 @@
         const priceTry = item.price_try || '0';
         const priceSyr = item.price_syr || '0';
         
-        // المسار محدث لمجلد images/
-        const imgSrc = (item.image && item.image.trim() !== '') ? item.image.trim() : 'sha.jpg';
+        const finalImgUrl = getImageUrl(item.image);
 
         let priceDisplayHTML = "";
         let badgesHTML = "";
@@ -442,7 +467,7 @@
 
         card.innerHTML = `
           <div class="card-img-container">
-            <img class="card-img" src="images/${imgSrc}" alt="${title}" loading="lazy" onerror="this.src='images/sha.jpg'">
+            <img class="card-img" src="${finalImgUrl}" alt="${title}" loading="lazy" onerror="this.onerror=null; this.src='images/sha.jpg';">
             <div class="price-badges">${badgesHTML}</div>
           </div>
           <div>
