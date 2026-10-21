@@ -213,7 +213,7 @@
     .add-to-cart-btn { background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); color: var(--text-main); padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; }
     .add-to-cart-btn:hover { background-color: var(--gold); color: #000; }
 
-    /* تنسيق الفوتر الجديد والراقي */
+    /* تنسيق الفوتر الجديد للشكاوى */
     .site-footer {
       background-color: var(--card-bg);
       border-top: 1px solid rgba(212, 175, 55, 0.2);
@@ -235,6 +235,7 @@
       color: var(--gold);
       direction: ltr;
       display: inline-block;
+      text-decoration: none;
     }
 
     .cart-modal { position: fixed; top: 0; left: -100%; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 1000; transition: left 0.3s ease; display: flex; justify-content: flex-end; }
@@ -287,7 +288,7 @@
     <div id="cards-container" class="cards-grid"></div>
   </div>
 
-  <!-- الفوتر الجديد للشكاوى والاستفسارات المضاف بدلاً من النص القديم -->
+  <!-- فوتر الشكاوى والاستفسارات الجديد -->
   <footer class="site-footer">
     <div class="footer-text">
       <p style="margin-bottom: 8px; font-weight: bold; color: var(--gold);">نسعد بتواصلكم معنا في مطبخ ومطعم عماد الدين 🌷</p>
@@ -404,18 +405,6 @@
       renderCards(currentFilteredItems, catName);
     }
 
-    // بناء مسار الصورة وتأمين ظهورها سواء كانت رابط أو اسم ملف
-    function getImageUrl(rawImage) {
-      if (!rawImage || rawImage.trim() === '') {
-        return 'images/sha.jpg';
-      }
-      const imgPath = rawImage.trim();
-      if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
-        return imgPath;
-      }
-      return `images/${imgPath}`;
-    }
-
     function renderCards(items, catName) {
       const container = document.getElementById("cards-container");
       container.innerHTML = "";
@@ -436,7 +425,7 @@
         const priceTry = item.price_try || '0';
         const priceSyr = item.price_syr || '0';
         
-        const finalImgUrl = getImageUrl(item.image);
+        const imgSrc = (item.image && item.image.trim() !== '') ? item.image.trim() : 'sha.jpg';
 
         let priceDisplayHTML = "";
         let badgesHTML = "";
@@ -467,7 +456,7 @@
 
         card.innerHTML = `
           <div class="card-img-container">
-            <img class="card-img" src="${finalImgUrl}" alt="${title}" loading="lazy" onerror="this.onerror=null; this.src='images/sha.jpg';">
+            <img class="card-img" src="images/${imgSrc}" alt="${title}" loading="lazy" onerror="this.src='images/sha.jpg'">
             <div class="price-badges">${badgesHTML}</div>
           </div>
           <div>
