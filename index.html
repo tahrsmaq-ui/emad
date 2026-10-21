@@ -213,7 +213,7 @@
     .add-to-cart-btn { background-color: #050a07; border: 1px solid rgba(212, 175, 55, 0.35); color: var(--text-main); padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; }
     .add-to-cart-btn:hover { background-color: var(--gold); color: #000; }
 
-    /* تنسيق الفوتر الجديد للشكاوى */
+    /* فوتر الشكاوى والاستفسارات */
     .site-footer {
       background-color: var(--card-bg);
       border-top: 1px solid rgba(212, 175, 55, 0.2);
@@ -288,7 +288,7 @@
     <div id="cards-container" class="cards-grid"></div>
   </div>
 
-  <!-- فوتر الشكاوى والاستفسارات الجديد -->
+  <!-- فوتر الشكاوى والاستفسارات المحدث -->
   <footer class="site-footer">
     <div class="footer-text">
       <p style="margin-bottom: 8px; font-weight: bold; color: var(--gold);">نسعد بتواصلكم معنا في مطبخ ومطعم عماد الدين 🌷</p>
@@ -318,6 +318,7 @@
       <div class="category-item" onclick="filterCategory('manasaf', 'مناسف')">🍲 المناسف</div>
     </div>
 
+    <!-- بطاقة المطور الشخصية -->
     <div class="developer-card">
       <div class="dev-tag">💻 مطور الموقع</div>
       <div class="dev-name">عبدالله طاهر سماق</div>
@@ -377,7 +378,13 @@
         skipEmptyLines: true,
         complete: function(results) {
           document.getElementById("loader").style.display = "none";
-          allProducts = results.data;
+          
+          // تصفية استثناء الأصناف غير المتوفرة تلقائياً بناءً على عمود status
+          allProducts = results.data.filter(item => {
+            const status = item.status ? item.status.trim().toLowerCase() : 'متوفر';
+            return status !== 'غير متوفر' && status !== 'out';
+          });
+
           filterCategory('all', 'كل الوجبات');
         }
       });
