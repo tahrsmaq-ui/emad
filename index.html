@@ -378,13 +378,7 @@
         skipEmptyLines: true,
         complete: function(results) {
           document.getElementById("loader").style.display = "none";
-          
-          // تصفية استثناء الأصناف غير المتوفرة تلقائياً بناءً على عمود status
-          allProducts = results.data.filter(item => {
-            const status = item.status ? item.status.trim().toLowerCase() : 'متوفر';
-            return status !== 'غير متوفر' && status !== 'out';
-          });
-
+          allProducts = results.data; // تحميل جميع الوجبات دون إخفاء
           filterCategory('all', 'كل الوجبات');
         }
       });
@@ -431,6 +425,8 @@
         const desc = item.description || item.الوصف || '';
         const priceTry = item.price_try || '0';
         const priceSyr = item.price_syr || '0';
+        const status = item.status ? item.status.trim().toLowerCase() : 'متوفر';
+        const isAvailable = (status !== 'غير متوفر' && status !== 'out');
         
         const imgSrc = (item.image && item.image.trim() !== '') ? item.image.trim() : 'sha.jpg';
 
@@ -449,7 +445,11 @@
 
         const cartItem = cart.find(i => i.title === title);
         let actionHTML = "";
-        if (cartItem) {
+
+        // إذا كانت الوجبة غير متوفرة
+        if (!isAvailable) {
+          actionHTML = `<div style="background-color: #2a1010; border: 1px solid #7f1d1d; color: #f87171; padding: 8px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 0.85rem;">🚫 غير متوفر حالياً</div>`;
+        } else if (cartItem) {
           actionHTML = `
             <div class="qty-controls">
               <button class="qty-btn" onclick="changeQty('${title.replace(/'/g, "\\'")}', 1)">+</button>
@@ -462,12 +462,12 @@
         }
 
         card.innerHTML = `
-          <div class="card-img-container">
+          <div class="card-img-container" style="${!isAvailable ? 'filter: grayscale(0.6); opacity: 0.8;' : ''}">
             <img class="card-img" src="images/${imgSrc}" alt="${title}" loading="lazy" onerror="this.src='images/sha.jpg'">
             <div class="price-badges">${badgesHTML}</div>
           </div>
           <div>
-            <h3>${title}</h3>
+            <h3 style="${!isAvailable ? 'opacity: 0.7;' : ''}">${title}</h3>
             <p>${desc}</p>
           </div>
           <div>
@@ -559,5 +559,7 @@
 
     loadMenuData();
   </script>
+</body>
+</html>
 </body>
 </html>
